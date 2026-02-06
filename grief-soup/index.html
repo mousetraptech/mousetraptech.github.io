@@ -1,0 +1,1152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Grief Soup: A Very Small Dark Comedy</title>
+  <style>
+    :root {
+      --bg: #0f0f12;
+      --fg: #e8e6e3;
+      --muted: #9aa0a6;
+      --accent: #ffcc66;
+      --danger: #ff6b6b;
+      --btn: #1f1f26;
+      --btn-hover: #2a2a34;
+      --border: #2f2f3a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Georgia", "Times New Roman", serif;
+      background: var(--bg);
+      color: var(--fg);
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+    .card {
+      width: min(720px, 100%);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 24px 22px;
+      background: #14141a;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .subtitle {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 18px;
+    }
+    .text {
+      font-size: 18px;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      margin-bottom: 18px;
+    }
+    .choices {
+      display: grid;
+      gap: 10px;
+    }
+    button {
+      background: var(--btn);
+      color: var(--fg);
+      border: 1px solid var(--border);
+      padding: 12px 14px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      text-align: left;
+    }
+    button:hover { background: var(--btn-hover); }
+    .meta {
+      margin-top: 16px;
+      font-size: 13px;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .pill {
+      border: 1px solid var(--border);
+      padding: 4px 8px;
+      border-radius: 999px;
+    }
+    .danger { color: var(--danger); }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Grief Soup</h1>
+    <div class="subtitle">A small, funny, dark, and faintly wise interactive fiction.</div>
+    <div id="text" class="text"></div>
+    <div id="choices" class="choices"></div>
+    <div class="meta">
+      <div class="pill">Scene: <span id="scene">1</span></div>
+      <div class="pill">Endings found: <span id="endings">0</span>/<span id="endingsTotal">0</span></div>
+      <div class="pill">Kindness: <span id="kindness">0</span></div>
+      <div class="pill">Dread: <span id="dread">0</span></div>
+    </div>
+  </div>
+
+  <script>
+    const state = {
+      scene: "start",
+      kindness: 0,
+      dread: 0,
+      endings: new Set(),
+      visited: new Set(),
+    };
+
+    const scenes = {
+      start: {
+        text: "You wake up in a laundromat at 3 a.m.\n\nThe machines hum like a choir of tired bees. A neon sign flickers: WASH AWAY WHAT YOU CAN.\n\nThe dryer door reflects you in warped glass, like a coffin window that forgot its job.\n\nYou are wearing a name tag that says: HELLO, MY NAME IS... (blank).\n\nA mop leans against a chair, as if it too needs a sit-down.",
+        choices: [
+          { label: "Check the name tag's sticky back for clues.", next: "tag" },
+          { label: "Speak to the mop. It looks like it has opinions.", next: "mop" },
+          { label: "Leave the laundromat. The world is not locked.", next: "street" }
+        ]
+      },
+
+      tag: {
+        text: "The sticky back reads: PROPERTY OF THE DEPARTMENT OF MINOR EPIPHANIES.\n\nBelow it, someone has written in pen: DON'T PANIC. DO LAUNDRY.\n\nYou remember you were supposed to meet someone here. The memory is soggy but present.",
+        choices: [
+          { label: "Wait for the someone. Breathe with the machines.", next: "waiting", kindness: 1 },
+          { label: "Take the name tag. Become the department.", next: "department" },
+          { label: "Put the tag on the mop. Promote it.", next: "mop_promo", kindness: 1 }
+        ]
+      },
+
+      mop: {
+        text: "You say, 'Rough night?'\n\nThe mop replies, in a way you hear inside your ribs: 'Every night. I clean up what nobody wants to think about.'\n\nIt glances at a clogged drain. You are not sure mops can glance.\n\n'You look rinsed,' it adds. 'Sit. Soak. Decide.'",
+        choices: [
+          { label: "Sit and talk about dirt. It feels familiar.", next: "mop_chat", kindness: 1 },
+          { label: "Ask about the Department of Minor Epiphanies.", next: "department" },
+          { label: "Tell the mop to mind its business and leave.", next: "street", dread: 1 }
+        ]
+      },
+
+      street: {
+        text: "Outside, the street is empty except for a cat sitting on a newspaper.\n\nThe headline reads: LOCAL PERSON AVOIDS IMPORTANT FEELING BY LEARNING TO JUGGLE.\n\nA bus wheezes past without stopping. It is not your bus.\n\nA streetlight flickers in a rhythm that feels like a bad omen trying to be polite.\n\nThe cat stares like it knows your browser history.",
+        choices: [
+          { label: "Offer the cat the newspaper. It already has it, but this is polite.", next: "cat", kindness: 1 },
+          { label: "Walk toward the bus stop anyway.", next: "bus" },
+          { label: "Return to the laundromat. The machines are honest.", next: "start" },
+          { label: "Answer the ringing phone booth that shouldn't be there.", next: "phone_booth", dread: 1 }
+        ]
+      },
+
+      waiting: {
+        text: "You wait. The machines tumble the same socks in a cosmic loop.\n\nEventually, a person arrives in a coat too big for the temperature.\n\nThey look at your blank name tag and smile like a small apology.",
+        choices: [
+          { label: "Say, 'I lost my name.'", next: "lost_name" },
+          { label: "Say nothing. Let the silence do the explaining.", next: "silence" },
+          { label: "Ask, 'What do you need?'", next: "what_need", kindness: 1 }
+        ]
+      },
+
+      department: {
+        text: "You decide to be the Department of Minor Epiphanies.\n\nA sense of responsibility settles on you like lint.\n\nA filing cabinet in the corner opens itself, revealing folders labeled: SPILLED COFFEE, FORGIVENESS, THE LAST EPISODE.\n\nOne folder is marked: YOU.",
+        choices: [
+          { label: "Open the YOU folder.", next: "you_folder", dread: 1 },
+          { label: "Ignore the cabinet and help a stranger fold socks.", next: "fold_socks", kindness: 1 },
+          { label: "Resign immediately. It's trendy.", next: "resign" }
+        ]
+      },
+
+      mop_promo: {
+        text: "You place the name tag on the mop.\n\nThe mop stands a little straighter, as much as a mop can.\n\n'Congratulations,' you say.\n\n'Bless you,' says the mop. 'We will now do paperwork.'\n\nSomewhere, a stapler weeps.",
+        choices: [
+          { label: "Assist with paperwork. Learn the rites of minor epiphanies.", next: "paperwork", kindness: 1 },
+          { label: "Use the mop to clean a mysterious stain shaped like a heart.", next: "clean_heart", kindness: 1 },
+          { label: "Let the mop lead and follow it into the back room.", next: "back_room", dread: 1 }
+        ]
+      },
+
+      mop_chat: {
+        text: "You sit with the mop. The mop tells you about a time it cleaned up a surprise party for a sad man.\n\n'He was surprised he was still sad,' it says.\n\nYou laugh, which feels like turning a stiff knob.\n\nThe mop waits for your question.",
+        choices: [
+          { label: "Ask, 'Do you ever get clean?'", next: "clean_question" },
+          { label: "Ask for advice. It's 3 a.m., after all.", next: "mop_advice", kindness: 1 },
+          { label: "Ask for the exit to the back room.", next: "back_room" }
+        ]
+      },
+
+      cat: {
+        text: "The cat blinks. This is its version of saying thank you.\n\nIt steps off the newspaper and the headline changes: LOCAL PERSON ADMITS THEY ARE AFRAID.\n\nIt nudges your shoe and then trots toward a narrow alley lit by a vending machine that sells only water and regret.",
+        choices: [
+          { label: "Follow the cat into the alley.", next: "alley" },
+          { label: "Pick up the newspaper and read it carefully.", next: "newspaper" },
+          { label: "Decide you are not a cat person. Walk away.", next: "bus", dread: 1 }
+        ]
+      },
+
+      bus: {
+        text: "The bus stop is a bench and a schedule that lies.\n\nA teenage philosopher sits there eating chips, explaining to no one that time is a loop but the chips are finite.\n\nYou sit beside them. You both stare at a timetable that feels like a threat.",
+        choices: [
+          { label: "Ask about the chips. It's the only truth here.", next: "chips", kindness: 1 },
+          { label: "Ask about the loop. You are tired of circles.", next: "loop" },
+          { label: "Stand up and leave. This is not your bench.", next: "street" }
+        ]
+      },
+
+      lost_name: {
+        text: "'I lost my name,' you say.\n\nThe person nods. 'Names are slippery. That's why we stitch them on.'\n\nThey hand you a pen. 'Write something temporary.'\n\nThe machines thrum approvingly.",
+        choices: [
+          { label: "Write the name of someone you miss.", next: "miss_name", dread: 1 },
+          { label: "Write a new name. Something brave.", next: "new_name", kindness: 1 },
+          { label: "Refuse to write. Stay blank and honest.", next: "blank_name" }
+        ]
+      },
+
+      silence: {
+        text: "You say nothing. The person sits across from you and folds a towel.\n\nThe silence fills in the blanks like a kind relative who refuses to ask hard questions.\n\nAfter a while, they say, 'I'm here to pick up the laundry of the dead.'\n\nYou wonder if that makes you the alive.",
+        choices: [
+          { label: "Offer to help fold. You can be useful in a soft way.", next: "fold_socks", kindness: 1 },
+          { label: "Ask if the dead have favorite detergent.", next: "detergent" },
+          { label: "Ask if they are afraid.", next: "afraid" }
+        ]
+      },
+
+      what_need: {
+        text: "'What do you need?' you ask.\n\nThey smile. 'A witness. Someone to say: yes, this happened. And then to keep going.'\n\nThey gesture to a pile of clean clothes. 'We all have chores, even grief.'",
+        choices: [
+          { label: "Agree to be the witness.", next: "witness", kindness: 1 },
+          { label: "Ask for a receipt.", next: "receipt" },
+          { label: "Decline. You are allergic to responsibility.", next: "decline", dread: 1 }
+        ]
+      },
+
+      you_folder: {
+        text: "Inside the YOU folder is a single index card that reads: YOU KEEP SHOWING UP.\n\nOn the back, in smaller letters: SOMETIMES THAT IS ENOUGH.\n\nA tiny bell rings. It is unclear where it lives.",
+        choices: [
+          { label: "Pocket the card and accept the small kindness.", next: "accept", kindness: 1 },
+          { label: "Crumple the card and feel a little worse.", next: "crumple", dread: 1 },
+          { label: "Leave it in the folder. For a future you.", next: "leave_card" },
+          { label: "Look at your reflection in the cabinet glass.", next: "mirror", dread: 1 }
+        ]
+      },
+
+      fold_socks: {
+        text: "You fold socks with the precision of someone who has been a little lonely for a long time.\n\nThe person watches you and says, 'There is a special heaven for matching pairs.'\n\nYou both laugh, which is what people do instead of collapsing.\n\nIt helps.",
+        choices: [
+          { label: "Keep folding and listen.", next: "listen", kindness: 1 },
+          { label: "Ask who they lost.", next: "who_lost" },
+          { label: "Stand up and walk into the back room.", next: "back_room" }
+        ]
+      },
+
+      resign: {
+        text: "You resign. The cabinet sighs with relief.\n\nA tiny golden parachute floats down from the ceiling, snagging on a ceiling fan.\n\nIt spins once and explodes into glitter.\n\nThe mop claps politely.",
+        choices: [
+          { label: "Sweep up the glitter. You made it, you clean it.", next: "clean_heart", kindness: 1 },
+          { label: "Leave it. Someone else is paid for this.", next: "street", dread: 1 },
+          { label: "Put in another application. You love pain.", next: "department" }
+        ]
+      },
+
+      paperwork: {
+        text: "You and the mop fill out forms for epiphanies already in progress.\n\nForm 7B: THE MOMENT YOU REALIZE YOU ARE LONELY BUT NOT ALONE.\n\nYou initial next to a box that says: DID IT HURT? You check YES and ALSO YES.\n\nThe mop nods and says, 'You're getting it.'",
+        choices: [
+          { label: "Keep working. Finish the shift.", next: "shift_end", kindness: 1 },
+          { label: "Ask for hazard pay.", next: "hazard" },
+          { label: "Quit mid-form. It feels honest.", next: "street" },
+          { label: "Offer to take the night shift alone.", next: "nightshift", dread: 1 }
+        ]
+      },
+
+      clean_heart: {
+        text: "You scrub the heart-shaped stain. It resists, then yields.\n\nUnderneath is clean tile and a tiny message scratched into the grout: LET IT BE MESSY.\n\nYou feel both lighter and suspicious.",
+        choices: [
+          { label: "Take the message as permission.", next: "permission", kindness: 1 },
+          { label: "Ignore it. You are a professional.", next: "professional" },
+          { label: "Ask the mop to sign it.", next: "mop_signature" }
+        ]
+      },
+
+      back_room: {
+        text: "The back room smells like old soap and older memories.\n\nThere is a single chair, a kettle, and a sign that says: CONFESSION IS OPTIONAL.\n\nThe kettle whistles without being on. You sit anyway.",
+        choices: [
+          { label: "Confess something small.", next: "confess_small", kindness: 1 },
+          { label: "Confess something big.", next: "confess_big", dread: 1 },
+          { label: "Refuse to confess. Drink invisible tea.", next: "invisible_tea" },
+          { label: "Go down the maintenance stairs.", next: "basement", dread: 1 }
+        ]
+      },
+
+      newspaper: {
+        text: "You read the paper. It is mostly ads for used dreams and an opinion column titled: WHY ARE WE LIKE THIS.\n\nA tiny box at the bottom says: FOUND: ONE PERSON'S SENSE OF PURPOSE. PLEASE CLAIM.\n\nThere is no number listed, just a sketch of the laundromat.",
+        choices: [
+          { label: "Go back to the laundromat. You are a clue now.", next: "start" },
+          { label: "Keep the paper. Maybe it's yours.", next: "keep_paper" },
+          { label: "Burn the paper in a trash can. It's too on-the-nose.", next: "burn_paper", dread: 1 }
+        ]
+      },
+
+      alley: {
+        text: "The alley is a narrow corridor of discarded cardboard and soft regrets.\n\nThe vending machine hums. Its buttons read: WATER, REGRET, AND WATER WITH REGRET.\n\nThe cat sits by a drain, watching you pick a button as if your soul is a small sandwich.",
+        choices: [
+          { label: "Buy water.", next: "water" },
+          { label: "Buy regret. If you're already here, be thorough.", next: "regret", dread: 1 },
+          { label: "Buy water with regret. It sounds like adulthood.", next: "water_regret" },
+          { label: "Press the unmarked button behind the grime.", next: "soap_oracle", dread: 1 }
+        ]
+      },
+
+      chips: {
+        text: "The philosopher hands you a chip. It tastes like salt and unfinished homework.\n\n'We are all timelines,' they say. 'Some of us just have better snacks.'\n\nYou nod like this helps, and it does, a little.",
+        choices: [
+          { label: "Offer to share your story. The chip was a contract.", next: "share_story", kindness: 1 },
+          { label: "Ask for the bus schedule anyway.", next: "bus_schedule" },
+          { label: "Stand up and go back to the laundromat.", next: "start" }
+        ]
+      },
+
+      loop: {
+        text: "'Time is a loop,' they say, 'but you still get to choose how you sit in it.'\n\nThey pat the bench. You sit. It's cold.\n\nYou notice a coin under the bench, as if left for someone to find.",
+        choices: [
+          { label: "Pick up the coin. It feels like a tiny yes.", next: "coin", kindness: 1 },
+          { label: "Leave it. You are done with tokens.", next: "leave_coin", dread: 1 },
+          { label: "Ask the philosopher if loops can break.", next: "break_loop" }
+        ]
+      },
+
+      miss_name: {
+        text: "You write the name of someone you miss. The ink trembles.\n\nThe person looks away, giving you privacy, which is a small mercy.\n\nWhen you hand the pen back, the name tag feels heavier, like a gentle weight.",
+        choices: [
+          { label: "Keep it. Carry the weight.", next: "carry_weight", kindness: 1 },
+          { label: "Peel it off. It's too much today.", next: "peel_off", dread: 1 },
+          { label: "Ask the person to hold it for you.", next: "hold_for_you", kindness: 1 }
+        ]
+      },
+
+      new_name: {
+        text: "You write a new name: BRAVER THAN BEFORE.\n\nIt is long and awkward on the tag, but you wear it anyway.\n\nThe person nods. 'That's the thing about names,' they say. 'You can grow into them.'",
+        choices: [
+          { label: "Ask how they grew into theirs.", next: "their_name" },
+          { label: "Help them with the laundry.", next: "fold_socks", kindness: 1 },
+          { label: "Step outside to try it on in the dark.", next: "street" }
+        ]
+      },
+
+      blank_name: {
+        text: "You refuse to write. The person doesn't push.\n\n'Okay,' they say. 'Some things are too new to label.'\n\nThey fold another towel with a care that feels like a prayer.",
+        choices: [
+          { label: "Stay and keep them company.", next: "listen", kindness: 1 },
+          { label: "Ask if they want to talk.", next: "talk" },
+          { label: "Leave. You will return when you're ready.", next: "street" }
+        ]
+      },
+
+      detergent: {
+        text: "'Do the dead have a favorite detergent?' you ask.\n\nThey laugh. 'They prefer the smell of Tuesday mornings.'\n\nYou both laugh. It feels like pulling a thorn from your sock.",
+        choices: [
+          { label: "Offer to help fold.", next: "fold_socks", kindness: 1 },
+          { label: "Ask about Tuesday mornings.", next: "tuesday" },
+          { label: "Go to the back room. You need quiet.", next: "back_room" }
+        ]
+      },
+
+      afraid: {
+        text: "'Are you afraid?' you ask.\n\n'Yes,' they say. 'But I show up anyway.'\n\nYou look at the machines. They also show up anyway, tumbling their small circles.",
+        choices: [
+          { label: "Say, 'Me too.'", next: "me_too", kindness: 1 },
+          { label: "Say, 'I wish I wasn't.'", next: "wish" },
+          { label: "Say nothing. Let that be a truth.", next: "silence" }
+        ]
+      },
+
+      witness: {
+        text: "You agree to be the witness.\n\nThey tell you a story. It is not dramatic. It is small and true, which is worse.\n\nWhen they're done, you say, 'Yes. This happened.'\n\nThey exhale like someone setting down a box.",
+        choices: [
+          { label: "Keep sitting. Be the quiet kind of brave.", next: "ending_witness", ending: "WITNESS" },
+          { label: "Ask if they need anything else.", next: "what_need", kindness: 1 },
+          { label: "Leave the laundromat with a lighter pocket.", next: "street" }
+        ]
+      },
+
+      receipt: {
+        text: "'Do you have a receipt for that grief?' you ask.\n\nThey raise an eyebrow. You both laugh. It's sharp and necessary.\n\n'No,' they say. 'It's all final sale.'\n\nYou nod. It doesn't seem fair, but it seems real.",
+        choices: [
+          { label: "Offer to help anyway.", next: "fold_socks", kindness: 1 },
+          { label: "Make a joke about store credit.", next: "store_credit" },
+          { label: "Back away slowly like a sensible animal.", next: "street" }
+        ]
+      },
+
+      decline: {
+        text: "You decline. You say you can't do it.\n\nThey accept this without making you feel smaller.\n\n'Okay,' they say. 'You can still be kind to yourself. That's a small job.'\n\nYou don't know how to do that. Yet.",
+        choices: [
+          { label: "Try anyway. Sit with them.", next: "fold_socks", kindness: 1 },
+          { label: "Leave. Walk until the night loosens.", next: "ending_walk", ending: "WALK" },
+          { label: "Ask how they do it.", next: "how_do" }
+        ]
+      },
+
+      accept: {
+        text: "You pocket the card. The bell rings again, like a tiny vote of confidence.\n\nYou feel a little ridiculous, and a little seen.\n\nThe mop salutes. You salute back. That's not how mops work, but okay.",
+        choices: [
+          { label: "Return to the front room. The night is still on.", next: "start" },
+          { label: "Sit in the back room with the kettle.", next: "back_room" },
+          { label: "End the night here, holding the card.", next: "ending_card", ending: "CARD" }
+        ]
+      },
+
+      crumple: {
+        text: "You crumple the card. The bell does not ring again.\n\nYou feel a small spike of regret, like stepping on a lego of the soul.\n\nYou can still uncrumple it, you think. Maybe.",
+        choices: [
+          { label: "Uncrumple it. It wasn't fair to the card.", next: "accept", kindness: 1 },
+          { label: "Keep it crumpled. Some things stay wrinkled.", next: "ending_wrinkle", ending: "WRINKLE", dread: 1 },
+          { label: "Put it back. Let it be a future problem.", next: "leave_card" }
+        ]
+      },
+
+      leave_card: {
+        text: "You leave the card where you found it.\n\nThe cabinet closes gently, as if to say: maybe later.\n\nYou take a long breath. You are still here.",
+        choices: [
+          { label: "Return to the laundromat front.", next: "start" },
+          { label: "Go outside. Find the cat.", next: "street" },
+          { label: "Sit a while and listen to the hum.", next: "ending_hum", ending: "HUM" }
+        ]
+      },
+
+      listen: {
+        text: "You listen. They talk about someone who always over-watered the plants.\n\n'Now the plants are alive and I am tired,' they say.\n\nYou both nod. The tired is shared, and therefore lighter.",
+        choices: [
+          { label: "Ask about the plants.", next: "plants" },
+          { label: "Ask if they want a break.", next: "break", kindness: 1 },
+          { label: "Say goodbye and leave softly.", next: "ending_soft", ending: "SOFT" }
+        ]
+      },
+
+      who_lost: {
+        text: "You ask who they lost. They pause, then answer.\n\nIt is a simple name. It is complicated anyway.\n\nYou repeat it back once, like a promise.",
+        choices: [
+          { label: "Offer to be the witness.", next: "witness", kindness: 1 },
+          { label: "Tell them you are sorry.", next: "sorry" },
+          { label: "Say nothing. The name is enough.", next: "ending_name", ending: "NAME" }
+        ]
+      },
+
+      shift_end: {
+        text: "You finish the shift with the mop. The paperwork is filed. The mop is promoted.\n\nAt dawn, the mop tells you: 'Sometimes being useful is a kind of healing.'\n\nOutside, the sky looks like it might start over.",
+        choices: [
+          { label: "Walk into the morning.", next: "ending_dawn", ending: "DAWN" },
+          { label: "Stay for another shift. You're needed.", next: "paperwork", kindness: 1 },
+          { label: "Quit dramatically. Throw a form in the air.", next: "ending_drama", ending: "DRAMA" }
+        ]
+      },
+
+      hazard: {
+        text: "'Hazard pay?' you ask.\n\nThe mop considers. 'We are paid in small epiphanies and coffee that tastes like dented hope.'\n\nYou accept the coffee. It is both terrible and perfect.",
+        choices: [
+          { label: "Keep working. You are caffeinated now.", next: "paperwork", kindness: 1 },
+          { label: "Spill the coffee accidentally on your fear.", next: "spill_fear" },
+          { label: "Leave with the coffee. You earned it.", next: "street" }
+        ]
+      },
+
+      permission: {
+        text: "You accept the messy permission. It feels like a door unlocked from the inside.\n\nYou don't step through yet. But you hold the handle.\n\nOutside, the world is still there. You can meet it when you choose.",
+        choices: [
+          { label: "End here, holding the door handle.", next: "ending_handle", ending: "HANDLE" },
+          { label: "Return to the front room with new softness.", next: "start", kindness: 1 },
+          { label: "Go outside and find the cat.", next: "street" }
+        ]
+      },
+
+      professional: {
+        text: "You ignore the message. You are a professional, which is a nice word for tired and capable.\n\nThe mop salutes again. You two are coworkers now.\n\nYou feel less alone in your competence.",
+        choices: [
+          { label: "Finish the shift.", next: "shift_end", kindness: 1 },
+          { label: "Take a break in the back room.", next: "back_room" },
+          { label: "Go outside to look at the sky.", next: "street" }
+        ]
+      },
+
+      mop_signature: {
+        text: "You ask the mop to sign the message.\n\nIt dips itself in ink and writes: SINCERELY, THE FLOOR.\n\nYou laugh. It's the kind of laugh that loosens your shoulders.",
+        choices: [
+          { label: "Keep the signed tile in your heart.", next: "ending_floor", ending: "FLOOR" },
+          { label: "Return to the front room.", next: "start" },
+          { label: "Go to the back room.", next: "back_room" }
+        ]
+      },
+
+      confess_small: {
+        text: "You confess something small: you still check if they texted.\n\nThe kettle whistles. The room doesn't judge.\n\nYou feel slightly lighter, like you took off shoes that pinched.",
+        choices: [
+          { label: "Stay and breathe.", next: "ending_breathe", ending: "BREATHE" },
+          { label: "Go back to the laundromat.", next: "start" },
+          { label: "Confess something big after all.", next: "confess_big", dread: 1 }
+        ]
+      },
+
+      confess_big: {
+        text: "You confess something big. The room absorbs it like a sponge.\n\nFor a moment you feel exposed, then oddly grounded.\n\nThe kettle whistles a long, low note. You take it as acceptance.",
+        choices: [
+          { label: "End here. You told the truth.", next: "ending_truth", ending: "TRUTH" },
+          { label: "Go back to the front room.", next: "start" },
+          { label: "Ask for tea. Real tea.", next: "real_tea" }
+        ]
+      },
+
+      invisible_tea: {
+        text: "You drink invisible tea. It tastes like the idea of comfort.\n\nYou sit. You breathe. You decide nothing, which is a decision.\n\nThe room hums with a quiet you can live with.",
+        choices: [
+          { label: "End here. Quiet is enough.", next: "ending_quiet", ending: "QUIET" },
+          { label: "Go back out.", next: "start" },
+          { label: "Confess something small after all.", next: "confess_small" }
+        ]
+      },
+
+      keep_paper: {
+        text: "You keep the paper. It feels like a fragile map.\n\nThe cat watches you do this and approves with a single whisker twitch.\n\nYou are not sure where to go, but at least you have a clue shaped like you.",
+        choices: [
+          { label: "Return to the laundromat.", next: "start" },
+          { label: "Follow the cat anyway.", next: "alley" },
+          { label: "Sit on the curb and read it again.", next: "ending_curb", ending: "CURB" }
+        ]
+      },
+
+      burn_paper: {
+        text: "You burn the paper. It flares, then curls into ash.\n\nThe cat looks mildly disappointed. You feel something similar.\n\nStill, the night doesn't punish you. It just keeps being night.",
+        choices: [
+          { label: "Go back to the laundromat.", next: "start" },
+          { label: "Follow the cat anyway.", next: "alley" },
+          { label: "Walk into the dark without a map.", next: "ending_dark", ending: "DARK" }
+        ]
+      },
+
+      water: {
+        text: "You buy water. It is cold and honest.\n\nThe cat drinks a little, because you tilt the bottle in its direction without being dramatic about it.\n\nYou feel, briefly, like you might be a decent person.",
+        choices: [
+          { label: "Go back to the laundromat.", next: "start" },
+          { label: "Sit with the cat.", next: "ending_cat", ending: "CAT" },
+          { label: "Ask the cat where to go next.", next: "cat_oracle" }
+        ]
+      },
+
+      regret: {
+        text: "You buy regret. The can is warm, which feels like a trick.\n\nYou open it. It tastes like a voicemail you never deleted.\n\nYou drink it anyway.",
+        choices: [
+          { label: "Decide to do better tomorrow.", next: "ending_tomorrow", ending: "TOMORROW" },
+          { label: "Pour some out for your past self.", next: "pour_out", kindness: 1 },
+          { label: "Throw the can away and go back.", next: "start" }
+        ]
+      },
+
+      water_regret: {
+        text: "You buy water with regret. It tastes like adulthood and dental bills.\n\nYou sip. The cat watches you like a therapist who doesn't speak.\n\nYou feel a little more awake to your own life.",
+        choices: [
+          { label: "Return to the laundromat.", next: "start" },
+          { label: "Stay in the alley and listen to the night.", next: "ending_alley", ending: "ALLEY" },
+          { label: "Ask the cat for advice.", next: "cat_oracle" }
+        ]
+      },
+
+      share_story: {
+        text: "You tell the philosopher a story. It is a small story about a small hurt.\n\nThey listen, which is rarer than you thought.\n\nWhen you finish, they nod once and offer you the last chip.",
+        choices: [
+          { label: "Take the chip. Accept the kindness.", next: "ending_chip", ending: "CHIP" },
+          { label: "Refuse and go back to the laundromat.", next: "start" },
+          { label: "Ask the philosopher for a question.", next: "philosophy" }
+        ]
+      },
+
+      bus_schedule: {
+        text: "The schedule says the next bus is 'soon.' You have been lied to before.\n\nThe philosopher shrugs. 'Soon is a place you stand in.'\n\nYou feel both annoyed and appreciative.",
+        choices: [
+          { label: "Wait anyway.", next: "ending_wait", ending: "WAIT" },
+          { label: "Leave the bench.", next: "street" },
+          { label: "Ask for another chip.", next: "chips" }
+        ]
+      },
+
+      coin: {
+        text: "You pick up the coin. It is warm, like it was just dropped by a kinder version of you.\n\nYou rub it and make a wish you don't fully believe in.\n\nStill, the wish feels good to say aloud.",
+        choices: [
+          { label: "Wish to be gentler with yourself.", next: "ending_wish", ending: "WISH", kindness: 1 },
+          { label: "Wish for answers.", next: "ending_answers", ending: "ANSWERS" },
+          { label: "Give the coin to the philosopher.", next: "give_coin", kindness: 1 }
+        ]
+      },
+
+      leave_coin: {
+        text: "You leave the coin. You are done with tokens.\n\nThe philosopher nods. 'Not everything is a clue,' they say.\n\nYou breathe. The night is still there, but so are you.",
+        choices: [
+          { label: "Go back to the laundromat.", next: "start" },
+          { label: "Sit a while.", next: "ending_sit", ending: "SIT" },
+          { label: "Ask if loops can break.", next: "break_loop" }
+        ]
+      },
+
+      break_loop: {
+        text: "'Loops can break,' the philosopher says, 'but not by force. By noticing.'\n\nYou notice the cold bench, the chips, your own tiredness.\n\nYou notice, too, that noticing is a kind of choice.",
+        choices: [
+          { label: "Choose to stand up.", next: "ending_stand", ending: "STAND" },
+          { label: "Choose to stay a little longer.", next: "bus" },
+          { label: "Choose to return to the laundromat.", next: "start" }
+        ]
+      },
+
+      carry_weight: {
+        text: "You carry the name. It sits on your chest like a hand.\n\nYou are heavy and grounded at once.\n\nYou decide to keep going, slowly.",
+        choices: [
+          { label: "End here, holding the weight.", next: "ending_weight", ending: "WEIGHT" },
+          { label: "Help fold laundry.", next: "fold_socks", kindness: 1 },
+          { label: "Step outside for air.", next: "street" }
+        ]
+      },
+
+      peel_off: {
+        text: "You peel the name off. The sticky back tugs at your skin.\n\n'Okay,' the person says. 'Maybe later.'\n\nYou breathe out like you've been holding it all night.",
+        choices: [
+          { label: "Sit quietly.", next: "silence" },
+          { label: "Leave the laundromat.", next: "street" },
+          { label: "End here, blank again.", next: "ending_blank", ending: "BLANK" }
+        ]
+      },
+
+      hold_for_you: {
+        text: "You ask them to hold it for you. They do, without comment.\n\nYou are not ready, and that is a kind of readiness.\n\nThe machines hum their soft, forgiving rhythm.",
+        choices: [
+          { label: "End here, letting someone carry it.", next: "ending_hold", ending: "HOLD" },
+          { label: "Take it back. You want to try.", next: "carry_weight", kindness: 1 },
+          { label: "Go outside.", next: "street" }
+        ]
+      },
+
+      their_name: {
+        text: "They shrug. 'I used to be called Avoider. Then Grief happened, and I became Washer of Sheets.'\n\nYou nod. It is a promotion and a sentence.\n\nThey smile. You smile back.",
+        choices: [
+          { label: "Help fold the sheets.", next: "fold_socks", kindness: 1 },
+          { label: "Ask about grief.", next: "afraid" },
+          { label: "End here, quietly understanding.", next: "ending_understand", ending: "UNDERSTAND" }
+        ]
+      },
+
+      talk: {
+        text: "You ask if they want to talk. They do.\n\nThey talk about a person who always left lights on.\n\nYou picture a bright house, even in daylight. It helps.",
+        choices: [
+          { label: "Offer to be the witness.", next: "witness", kindness: 1 },
+          { label: "Ask about the lights.", next: "lights" },
+          { label: "End here, letting the story settle.", next: "ending_story", ending: "STORY" }
+        ]
+      },
+
+      tuesday: {
+        text: "'Tuesday mornings?' you ask.\n\n'It smells like coffee and almost-worry,' they say. 'Like a day that expects you.'\n\nYou nod. You can picture it.",
+        choices: [
+          { label: "End here, thinking about Tuesday.", next: "ending_tuesday", ending: "TUESDAY" },
+          { label: "Help fold laundry.", next: "fold_socks", kindness: 1 },
+          { label: "Go outside.", next: "street" }
+        ]
+      },
+
+      me_too: {
+        text: "'Me too,' you say.\n\nThey smile, and for a moment the laundromat feels like a chapel of very ordinary courage.\n\nYou feel less alone in your fear.",
+        choices: [
+          { label: "End here, together.", next: "ending_together", ending: "TOGETHER" },
+          { label: "Ask what comes next.", next: "what_next" },
+          { label: "Go outside for air.", next: "street" }
+        ]
+      },
+
+      wish: {
+        text: "'I wish I wasn't,' you say.\n\nThey nod. 'Same.'\n\nYou both laugh a little. It's not cure, but it is company.",
+        choices: [
+          { label: "Stay and keep folding.", next: "fold_socks", kindness: 1 },
+          { label: "End here, with company.", next: "ending_company", ending: "COMPANY" },
+          { label: "Go to the back room.", next: "back_room" }
+        ]
+      },
+
+      store_credit: {
+        text: "You make a joke about store credit. They snort, a sound halfway between a laugh and a sigh.\n\n'If only,' they say. 'We'd spend it on naps.'\n\nYou nod. You feel that.",
+        choices: [
+          { label: "End here, with a small laugh.", next: "ending_laugh", ending: "LAUGH" },
+          { label: "Help fold laundry.", next: "fold_socks", kindness: 1 },
+          { label: "Go outside.", next: "street" }
+        ]
+      },
+
+      how_do: {
+        text: "'How do you do it?' you ask.\n\nThey shrug. 'Some days I don't. Some days I do. I keep a list. I drink water.'\n\nThey hand you a cup. It is empty but somehow full.",
+        choices: [
+          { label: "Drink the cup. Pretend it helps.", next: "ending_cup", ending: "CUP" },
+          { label: "Ask for the list.", next: "list" },
+          { label: "Go outside.", next: "street" }
+        ]
+      },
+
+      plants: {
+        text: "They show you a photo of plants that are slightly too alive.\n\n'He loved them,' they say. 'And now I'm the one watering.'\n\nYou nod. Love is a plant, too.",
+        choices: [
+          { label: "Offer to water them sometime.", next: "ending_water", ending: "WATER" },
+          { label: "Keep folding.", next: "fold_socks", kindness: 1 },
+          { label: "Go to the back room.", next: "back_room" }
+        ]
+      },
+
+      break: {
+        text: "You ask if they want a break. They do.\n\nYou both sit. The machines hum.\n\n'We can stop for a minute,' they say. 'The world won't collapse.'\n\nYou believe them.",
+        choices: [
+          { label: "End here, resting.", next: "ending_rest", ending: "REST" },
+          { label: "Start folding again.", next: "fold_socks", kindness: 1 },
+          { label: "Go outside.", next: "street" }
+        ]
+      },
+
+      sorry: {
+        text: "You say you're sorry.\n\nThey nod. 'Me too,' they say, which is not the same but is close.\n\nYou let the closeness be enough.",
+        choices: [
+          { label: "End here, with enough.", next: "ending_enough", ending: "ENOUGH" },
+          { label: "Offer to be the witness.", next: "witness", kindness: 1 },
+          { label: "Go outside.", next: "street" }
+        ]
+      },
+
+      spill_fear: {
+        text: "You spill coffee on your fear. It does not dissolve, but it does smell better.\n\nThe mop approves of this method.\n\nYou feel slightly braver, or at least warmer.",
+        choices: [
+          { label: "End here, warmer.", next: "ending_warm", ending: "WARM" },
+          { label: "Keep working.", next: "paperwork", kindness: 1 },
+          { label: "Go outside.", next: "street" }
+        ]
+      },
+
+      real_tea: {
+        text: "You ask for real tea. The kettle obliges.\n\nYou sip. It's bitter and grounding.\n\nSometimes that's all you get. Sometimes that's enough.",
+        choices: [
+          { label: "End here, with tea.", next: "ending_tea", ending: "TEA" },
+          { label: "Return to the front room.", next: "start" },
+          { label: "Confess something small.", next: "confess_small" }
+        ]
+      },
+
+      cat_oracle: {
+        text: "You ask the cat for advice.\n\nThe cat blinks twice, then headbutts your knee.\n\nYou take this as permission to keep being soft.",
+        choices: [
+          { label: "End here, with soft permission.", next: "ending_soft_permission", ending: "SOFTNESS" },
+          { label: "Go back to the laundromat.", next: "start" },
+          { label: "Follow the cat to the street.", next: "street" }
+        ]
+      },
+
+      give_coin: {
+        text: "You give the coin to the philosopher.\n\nThey hold it up to the light. 'Ah,' they say. 'A small yes.'\n\nYou both smile at the ridiculousness of meaning.",
+        choices: [
+          { label: "End here, smiling.", next: "ending_smile", ending: "SMILE" },
+          { label: "Go back to the laundromat.", next: "start" },
+          { label: "Ask for another chip.", next: "chips" }
+        ]
+      },
+
+      philosophy: {
+        text: "'Ask me a question,' you say.\n\nThey think. 'What will you forgive yourself for next?'\n\nThe question sits with you like a small lantern.",
+        choices: [
+          { label: "End here, carrying the lantern.", next: "ending_lantern", ending: "LANTERN" },
+          { label: "Go back to the laundromat.", next: "start" },
+          { label: "Answer aloud.", next: "answer" }
+        ]
+      },
+
+      list: {
+        text: "They show you their list: DRINK WATER, CALL FRIEND, GO OUTSIDE, DO LAUNDRY.\n\nIt's humble. It's powerful. You copy it in your mind.",
+        choices: [
+          { label: "End here, with the list.", next: "ending_list", ending: "LIST" },
+          { label: "Ask to add one more item.", next: "add_item" },
+          { label: "Go back to the laundromat.", next: "start" }
+        ]
+      },
+
+      lights: {
+        text: "They tell you about the lights. 'He left them on because he liked coming home to brightness.'\n\nYou nod. You like that, too.\n\nIn your head, you flip on a light.",
+        choices: [
+          { label: "End here, with a light.", next: "ending_light", ending: "LIGHT" },
+          { label: "Offer to help fold.", next: "fold_socks", kindness: 1 },
+          { label: "Go outside.", next: "street" }
+        ]
+      },
+
+      what_next: {
+        text: "'What comes next?' you ask.\n\n'Breakfast,' they say. 'Then laundry. Then maybe something that doesn't hurt as much.'\n\nYou find comfort in the ordinariness.",
+        choices: [
+          { label: "End here, with breakfast.", next: "ending_breakfast", ending: "BREAKFAST" },
+          { label: "Stay a little longer.", next: "fold_socks", kindness: 1 },
+          { label: "Go outside.", next: "street" }
+        ]
+      },
+
+      answer: {
+        text: "You answer aloud. The words are clumsy but true.\n\nThe philosopher nods like a judge of small truths.\n\nYou feel the question shift into a new shape.",
+        choices: [
+          { label: "End here, answering.", next: "ending_answer", ending: "ANSWER" },
+          { label: "Go back to the laundromat.", next: "start" },
+          { label: "Ask for another question.", next: "philosophy" }
+        ]
+      },
+
+      add_item: {
+        text: "You add an item: LAUGH AT LEAST ONCE.\n\nThey smile. 'Good addition,' they say.\n\nThe list feels more possible.",
+        choices: [
+          { label: "End here, with the list updated.", next: "ending_update", ending: "UPDATE" },
+          { label: "Go back to the laundromat.", next: "start" },
+          { label: "Ask for tea.", next: "real_tea" }
+        ]
+      },
+
+      basement: {
+        text: "The maintenance stairs lead to a basement the size of a confession.\n\nOld machines sit like retired beasts. A puddle reflects the ceiling as if it's trying to leave.\n\nA chain-link cage says LOST & FOUND, which feels optimistic.\n\nA boiler ticks like a slow clock.",
+        choices: [
+          { label: "Open the Lost & Found cage.", next: "lost_found", dread: 1 },
+          { label: "Check the boiler.", next: "boiler", dread: 1 },
+          { label: "Go back upstairs.", next: "back_room" }
+        ]
+      },
+
+      lost_found: {
+        text: "Inside the cage: a carnival mask, a waterlogged Polaroid, and a tiny shoe that seems too small to exist.\n\nThe air is colder here, like it remembers every forgotten thing.",
+        choices: [
+          { label: "Pick up the carnival mask.", next: "mask" },
+          { label: "Pick up the Polaroid.", next: "photo" },
+          { label: "Pick up the tiny shoe.", next: "tiny_shoe", dread: 1 },
+          { label: "Close the cage and step back.", next: "basement" }
+        ]
+      },
+
+      mask: {
+        text: "The mask is smiling too hard, as if it learned joy from a manual.\n\nYou feel it looking back, asking what face you'd like to borrow tonight.",
+        choices: [
+          { label: "Wear the mask.", next: "mask_wear", dread: 1 },
+          { label: "Put it back. You already have a face.", next: "lost_found" },
+          { label: "Keep it and leave the basement.", next: "ending_mask", ending: "MASK" }
+        ]
+      },
+
+      mask_wear: {
+        text: "The mask makes you feel safer and less yourself.\n\nUpstairs, the machines seem louder, as if they know you are pretending.\n\nYou can keep the mask, or you can take it off and be seen.",
+        choices: [
+          { label: "Take it off. Be seen.", next: "start", kindness: 1 },
+          { label: "Keep it on. Stay anonymous.", next: "ending_mask", ending: "MASK", dread: 1 },
+          { label: "Whisper into it and ask for a sign.", next: "mirror", dread: 1 }
+        ]
+      },
+
+      photo: {
+        text: "The Polaroid shows a person with their back turned. Their hair is damp, their shoulders small.\n\nThey could be you. They could be anyone. That's the problem.",
+        choices: [
+          { label: "Flip it over.", next: "photo_flip" },
+          { label: "Put it back. Not everything needs proof.", next: "lost_found" },
+          { label: "Keep it. Evidence feels safer.", next: "ending_photo", ending: "PHOTO", dread: 1 }
+        ]
+      },
+
+      photo_flip: {
+        text: "On the back: MEETING MYSELF LATE.\n\nYou feel a chill, but also a kind of permission.\n\nMaybe you can be late and still arrive.",
+        choices: [
+          { label: "End here, arriving late.", next: "ending_photo", ending: "PHOTO" },
+          { label: "Go back upstairs.", next: "back_room" },
+          { label: "Keep looking in the cage.", next: "lost_found" }
+        ]
+      },
+
+      tiny_shoe: {
+        text: "The shoe is cold and too light, like it never belonged to weight.\n\nYou feel a tug in your chest that doesn't have a name.\n\nSome things are not lost, just unfinished.",
+        choices: [
+          { label: "Hold it for a while and then set it down.", next: "ending_shoe", ending: "SHOE", dread: 1 },
+          { label: "Put it back and close the cage.", next: "basement" },
+          { label: "Ask the boiler if it knows anything.", next: "boiler", dread: 1 }
+        ]
+      },
+
+      boiler: {
+        text: "The boiler radiates a tired warmth. Its metal is scarred and steady.\n\nIt ticks like a heart you don't control.\n\nA tag hangs from a valve: PLEASE DO NOT TURN ME OFF.",
+        choices: [
+          { label: "Listen to its ticking.", next: "boiler_listen" },
+          { label: "Touch the warmth. Let it hurt a little.", next: "boiler_hand", dread: 1 },
+          { label: "Step away. You don't need to burn to feel.", next: "basement" }
+        ]
+      },
+
+      boiler_listen: {
+        text: "You listen. It sounds like a countdown and a lullaby at once.\n\nYou remember the bodies that kept working after they stopped being happy.\n\nYou whisper thanks to the stubborn heat.",
+        choices: [
+          { label: "End here, with the ticking.", next: "ending_boil", ending: "BOIL" },
+          { label: "Go back upstairs.", next: "back_room" },
+          { label: "Open the Lost & Found cage.", next: "lost_found" }
+        ]
+      },
+
+      boiler_hand: {
+        text: "You touch the boiler. It bites. You pull away.\n\nThe pain is sharp and honest. It doesn't last, but it leaves a lesson.\n\nYou are still here, still learning the temperature of your life.",
+        choices: [
+          { label: "End here, a little scorched.", next: "ending_burn", ending: "BURN" },
+          { label: "Go back upstairs.", next: "back_room" },
+          { label: "Sit by the boiler and breathe.", next: "ending_boil", ending: "BOIL" }
+        ]
+      },
+
+      soap_oracle: {
+        text: "You press the hidden button. The machine shudders and drops a single bar of soap.\n\nStamped into it: LATHER WHAT YOU LOSE.\n\nThe cat watches you decide what to do with a prophecy that smells like lavender and mistakes.",
+        choices: [
+          { label: "Use the soap. Clean your hands slow.", next: "soap_vision", kindness: 1 },
+          { label: "Give it to the cat. It seems like it could use a job.", next: "cat_oracle", kindness: 1 },
+          { label: "Throw it back into the machine.", next: "ending_soap", ending: "SOAP", dread: 1 }
+        ]
+      },
+
+      soap_vision: {
+        text: "The soap foams like a tiny storm. For a moment you see yourself in a brighter room.\n\nIt's not heaven. It's just a morning where you aren't running from yourself.\n\nYou rinse and decide that could be real.",
+        choices: [
+          { label: "End here, rinsed but not erased.", next: "ending_soap", ending: "SOAP" },
+          { label: "Go back to the laundromat.", next: "start" },
+          { label: "Sit in the alley with the cat.", next: "ending_cat", ending: "CAT" }
+        ]
+      },
+
+      phone_booth: {
+        text: "The phone booth is cracked and full of flyers for bands that no longer exist.\n\nIt rings anyway.\n\nYou feel the ring in your teeth.",
+        choices: [
+          { label: "Answer the phone.", next: "phone_voice", dread: 1 },
+          { label: "Let it ring until it stops.", next: "ending_ring", ending: "RING" },
+          { label: "Step inside and close the door.", next: "phone_dial", dread: 1 },
+          { label: "Lock the door from the inside.", next: "no_return", dread: 2 }
+        ]
+      },
+
+      phone_voice: {
+        text: "A voice says your name like it's a question.\n\nIt asks if you're still hiding. You do not know how to answer.\n\nThe line crackles with a storm that might be inside you.",
+        choices: [
+          { label: "Say, 'Not as much as before.'", next: "ending_selfcall", ending: "SELFCALL", kindness: 1 },
+          { label: "Hang up. You are not ready.", next: "ending_ring", ending: "RING", dread: 1 },
+          { label: "Ask who this is.", next: "phone_dial" }
+        ]
+      },
+
+      phone_dial: {
+        text: "You close the door and dial a number you shouldn't know.\n\nIt rings once, then connects to your own voicemail.\n\nYou leave yourself a message: 'Keep going.' You don't know if you'll listen.",
+        choices: [
+          { label: "End here, message sent.", next: "ending_selfcall", ending: "SELFCALL" },
+          { label: "Go back to the street.", next: "street" },
+          { label: "Stay in the booth a little longer.", next: "ending_ring", ending: "RING" }
+        ]
+      },
+
+      mirror: {
+        text: "The cabinet glass is a cloudy mirror. Your reflection looks like it slept in a storm.\n\nA word is smeared on the glass with a damp finger: LATER.\n\nYou wonder how long later is allowed to be.",
+        choices: [
+          { label: "Wipe the word away.", next: "mirror_wipe", kindness: 1 },
+          { label: "Trace the word with your finger.", next: "ending_mirror", ending: "MIRROR" },
+          { label: "Turn away. Not yet.", next: "start" }
+        ]
+      },
+
+      mirror_wipe: {
+        text: "You wipe the word away and your reflection sharpens.\n\nYou don't look happy, but you look real.\n\nThat is a kind of courage.",
+        choices: [
+          { label: "End here, looking real.", next: "ending_mirror", ending: "MIRROR" },
+          { label: "Go back to the front room.", next: "start" },
+          { label: "Go down the maintenance stairs.", next: "basement", dread: 1 }
+        ]
+      },
+
+      nightshift: {
+        text: "The laundromat is empty. The machines are off. The silence is loud.\n\nYou sign the nightshift log with a pen that barely writes.\n\nThe air smells like bleach and promises.",
+        choices: [
+          { label: "Walk between the machines.", next: "ghost_laundry", dread: 1 },
+          { label: "Sit at the counter and wait.", next: "night_wait" },
+          { label: "Change your mind. Go outside.", next: "street" },
+          { label: "Shut off the lights and stay.", next: "no_return", dread: 2 }
+        ]
+      },
+
+      night_wait: {
+        text: "You wait. The clock doesn't move much, but you do.\n\nSomewhere, a machine clicks by itself. It sounds like a knuckle cracking.\n\nYou are not alone, but you can't see who else is here.",
+        choices: [
+          { label: "Say hello to the empty room.", next: "ghost_laundry", dread: 1 },
+          { label: "Leave the nightshift log on the counter and walk out.", next: "ending_walk", ending: "WALK" },
+          { label: "Go down the maintenance stairs.", next: "basement", dread: 1 }
+        ]
+      },
+
+      ghost_laundry: {
+        text: "A sheet drifts across the aisle, slow and sure.\n\nIt's not a ghost, you tell yourself. It's a draft. Then it pauses and turns.\n\nYou feel your heartbeat in your wrists.",
+        choices: [
+          { label: "Follow it.", next: "ghost_follow", dread: 1 },
+          { label: "Ask it its name.", next: "ghost_name", dread: 1 },
+          { label: "Run outside.", next: "street", dread: 1 }
+        ]
+      },
+
+      ghost_name: {
+        text: "The sheet hesitates. Then it whispers a name you haven't heard in too long.\n\nYour eyes sting. The machine hums like a throat clearing.\n\nYou are not sure if this is mercy or a prank from the universe.",
+        choices: [
+          { label: "End here, with the name.", next: "ending_ghost", ending: "GHOST", dread: 1 },
+          { label: "Say the name back.", next: "witness", kindness: 1 },
+          { label: "Go back to the front room.", next: "start" }
+        ]
+      },
+
+      ghost_follow: {
+        text: "The sheet glides to a ledger on the counter. It flips itself open.\n\nInside are small entries: dates, names, single sentences about people who tried.\n\nYour name is not there. Yet.",
+        choices: [
+          { label: "Write your own entry.", next: "ledger_write", kindness: 1 },
+          { label: "Close the ledger. Not tonight.", next: "ending_ledger", ending: "LEDGER", dread: 1 },
+          { label: "Tear out a blank page and keep it.", next: "ending_page", ending: "PAGE", dread: 1 },
+          { label: "Scratch your name out before it's written.", next: "no_return", dread: 2 }
+        ]
+      },
+
+      no_return: {
+        text: "You make a small, irreversible choice.\n\nThe door clicks. The lights go out. The ledger closes.\n\nIt isn't punishment. It isn't mercy. It's just the sound of a path you chose that will not loop back.\n\nYou sit with it. The night does not soften.",
+        choices: [
+          { label: "End here, without consolation.", next: "ending_void", ending: "VOID" }
+        ]
+      },
+
+      ledger_write: {
+        text: "You write: SHOWED UP. FELT AFRAID. STAYED ANYWAY.\n\nThe pen doesn't judge you for how small it is.\n\nThe sheet folds itself, like a nod.",
+        choices: [
+          { label: "End here, written down.", next: "ending_ledger", ending: "LEDGER" },
+          { label: "Go back to the front room.", next: "start" },
+          { label: "Go outside and find the cat.", next: "street" }
+        ]
+      },
+
+      // Endings (all short)
+      ending_witness: { text: "You sit and bear witness. The night does not fix itself, but it feels less alone.\n\nENDING: WITNESS", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_walk: { text: "You walk into the night. The street is long, but you are moving.\n\nENDING: WALK", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_card: { text: "You keep the card. It's small. It matters.\n\nENDING: CARD", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_wrinkle: { text: "You keep it crumpled. You decide not to judge yourself for it.\n\nENDING: WRINKLE", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_hum: { text: "You sit with the hum and decide this, too, is living.\n\nENDING: HUM", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_soft: { text: "You say goodbye softly and mean it.\n\nENDING: SOFT", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_name: { text: "You hold the name in the air between you. It is enough.\n\nENDING: NAME", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_dawn: { text: "You walk into morning with a small, steady courage.\n\nENDING: DAWN", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_drama: { text: "You fling a form into the air. It's dramatic, and also kind of healing.\n\nENDING: DRAMA", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_handle: { text: "You hold the door handle and smile. Not yet. But soon.\n\nENDING: HANDLE", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_floor: { text: "Sincerely, the floor. You laugh again, and the night softens.\n\nENDING: FLOOR", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_breathe: { text: "You breathe. That is, for now, your best prayer.\n\nENDING: BREATHE", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_truth: { text: "You told the truth. The room took it in and didn't spit it back.\n\nENDING: TRUTH", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_quiet: { text: "Quiet is enough. You are enough for now.\n\nENDING: QUIET", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_curb: { text: "You sit on the curb with a paper and a pulse. That's a start.\n\nENDING: CURB", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_dark: { text: "You walk into the dark without a map. It is scary, and it is yours.\n\nENDING: DARK", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_cat: { text: "You sit with the cat. The night purrs back.\n\nENDING: CAT", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_tomorrow: { text: "You decide to do better tomorrow. It's a small oath.\n\nENDING: TOMORROW", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_alley: { text: "You sit in the alley and let the city breathe around you.\n\nENDING: ALLEY", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_chip: { text: "You accept the chip. Some kindnesses are just that simple.\n\nENDING: CHIP", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_wait: { text: "You wait. Waiting is a kind of courage too.\n\nENDING: WAIT", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_wish: { text: "You wish to be gentler with yourself. It feels possible.\n\nENDING: WISH", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_answers: { text: "You wish for answers. The night offers only the next step.\n\nENDING: ANSWERS", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_sit: { text: "You sit. You are still. The loop softens.\n\nENDING: SIT", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_stand: { text: "You stand and feel the smallest crack in the loop.\n\nENDING: STAND", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_weight: { text: "You carry the weight and keep moving. That's a kind of strength.\n\nENDING: WEIGHT", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_blank: { text: "You are blank for now. That is not failure. It's space.\n\nENDING: BLANK", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_hold: { text: "You let someone else hold it for a while. You are still here.\n\nENDING: HOLD", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_understand: { text: "You quietly understand. That's wisdom in its pajamas.\n\nENDING: UNDERSTAND", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_story: { text: "You let the story settle. You honor it by listening.\n\nENDING: STORY", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_tuesday: { text: "You hold onto the idea of Tuesday mornings. It's enough for now.\n\nENDING: TUESDAY", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_together: { text: "You are afraid together. It's not a cure, but it's real.\n\nENDING: TOGETHER", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_company: { text: "You keep each other company. It's small. It's huge.\n\nENDING: COMPANY", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_laugh: { text: "You share a small laugh. It punches a tiny hole in the night.\n\nENDING: LAUGH", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_cup: { text: "You drink the empty cup and feel oddly full.\n\nENDING: CUP", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_water: { text: "You offer to water the plants. You can't do everything, but you can do this.\n\nENDING: WATER", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_rest: { text: "You rest. The world doesn't collapse.\n\nENDING: REST", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_enough: { text: "You let 'enough' be enough. It's a quiet miracle.\n\nENDING: ENOUGH", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_warm: { text: "You feel warm, not healed, but warmer.\n\nENDING: WARM", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_tea: { text: "You drink tea and feel the night loosen.\n\nENDING: TEA", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_soft_permission: { text: "You accept softness as permission. It feels good.\n\nENDING: SOFTNESS", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_smile: { text: "You smile at meaning, even if it's a little ridiculous.\n\nENDING: SMILE", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_lantern: { text: "You carry the lantern question into the night.\n\nENDING: LANTERN", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_list: { text: "You take the list. It's humble and powerful.\n\nENDING: LIST", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_light: { text: "You keep the light on in your head. It's a start.\n\nENDING: LIGHT", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_breakfast: { text: "You imagine breakfast. It is ordinary. It is a promise.\n\nENDING: BREAKFAST", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_answer: { text: "You answer the question. The night nods.\n\nENDING: ANSWER", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_update: { text: "You update the list with laughter. The world doesn't change, but you do.\n\nENDING: UPDATE", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_mask: { text: "You keep the mask. Some nights, a borrowed face is how you survive.\n\nENDING: MASK", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_photo: { text: "You keep the photo. Proof is not comfort, but it's a kind of anchor.\n\nENDING: PHOTO", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_shoe: { text: "You set the tiny shoe down and feel the shape of a grief that doesn't fit you, but still hurts.\n\nENDING: SHOE", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_boil: { text: "You listen to the boiler and accept the stubborn heat of being alive.\n\nENDING: BOIL", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_burn: { text: "You burn your hand and remember that pain is a temperature, not a prison.\n\nENDING: BURN", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_soap: { text: "You follow the soap's quiet prophecy. Clean doesn't mean empty.\n\nENDING: SOAP", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_ring: { text: "You let the phone ring. Silence becomes its own answer.\n\nENDING: RING", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_mirror: { text: "You look at yourself and don't flinch. It's a small, hard miracle.\n\nENDING: MIRROR", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_selfcall: { text: "You leave yourself a message and hope you will listen later.\n\nENDING: SELFCALL", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_ghost: { text: "You hear the name and let it echo without trying to fix it.\n\nENDING: GHOST", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_ledger: { text: "You close the ledger. Not tonight. You will be written when you're ready.\n\nENDING: LEDGER", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_page: { text: "You keep a blank page. It's a promise and a dare.\n\nENDING: PAGE", choices: [ { label: "Play again.", next: "restart" } ] },
+      ending_void: { text: "There is no lesson. No ribbon. No soft landing. Just the room, the night, and the choice you made.\n\nENDING: VOID", choices: [ { label: "Play again.", next: "restart" } ] }
+    };
+
+    function countTotalEndings() {
+      const endings = new Set();
+      Object.values(scenes).forEach((scene) => {
+        if (!scene.choices) return;
+        scene.choices.forEach((choice) => {
+          if (choice.ending) endings.add(choice.ending);
+        });
+      });
+      return endings.size;
+    }
+
+    const totalEndings = countTotalEndings();
+
+    function updateScene(nextId) {
+      if (nextId === "restart") {
+        state.scene = "start";
+        state.kindness = 0;
+        state.dread = 0;
+        state.visited.clear();
+      } else {
+        state.scene = nextId;
+      }
+
+      const scene = scenes[state.scene];
+      if (!scene) return;
+
+      state.visited.add(state.scene);
+
+      const textEl = document.getElementById("text");
+      const choicesEl = document.getElementById("choices");
+      const sceneEl = document.getElementById("scene");
+      const endingsEl = document.getElementById("endings");
+      const kindnessEl = document.getElementById("kindness");
+      const dreadEl = document.getElementById("dread");
+      const endingsTotalEl = document.getElementById("endingsTotal");
+
+      textEl.textContent = scene.text;
+      choicesEl.innerHTML = "";
+
+      scene.choices.forEach((choice) => {
+        const btn = document.createElement("button");
+        btn.textContent = choice.label;
+        btn.addEventListener("click", () => {
+          if (choice.kindness) state.kindness += choice.kindness;
+          if (choice.dread) state.dread += choice.dread;
+          if (choice.ending) state.endings.add(choice.ending);
+          updateScene(choice.next);
+        });
+        choicesEl.appendChild(btn);
+      });
+
+      sceneEl.textContent = state.visited.size;
+      endingsEl.textContent = state.endings.size;
+      endingsTotalEl.textContent = totalEndings;
+      kindnessEl.textContent = state.kindness;
+      dreadEl.textContent = state.dread;
+    }
+
+    updateScene("start");
+  </script>
+</body>
+</html>
