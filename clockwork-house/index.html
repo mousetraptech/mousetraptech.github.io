@@ -388,17 +388,17 @@ const ROOMS = {
 <p>The door behind you doesn't so much close as <em>commit</em> — a final, irreversible merge into the house's main branch. You stand in an entrance hall that appears to have been designed by someone who learned architecture from a corrupted ZIP file. The wallpaper is load-bearing. You can tell because someone has written <strong>"LOAD-BEARING — DO NOT REMOVE"</strong> on it in Sharpie, and underneath, in a different hand: <em>"we removed some in '97. three rooms collapsed into a single namespace."</em></p>
 <p>A grandfather clock dominates the far wall, its face rendered in hexadecimal. It reads <strong>0x04</strong>, which is either the time, a memory address, or the number of regrets you'll accumulate per minute. The pendulum swings with the regularity of a well-configured cron job. Beneath the clock face, in tiny engraved letters: <em>"parseInt('04', 16) === parseInt('04', 10). This is not always the case. Treasure the coincidences."</em></p>
 <p>Five passages radiate outward like the fingers of a hand that has made several poor decisions. A moth circles the fourth passage with the obsessive determination of a pointer that has found something to dereference and <strong>will not be dissuaded</strong>. The moth's flight path traces a perfect figure-four, over and over, as if it's stuck in a recursive function with exactly one base case.</p>
-<p>The welcome mat reads: <strong>"THIS HOUSE HAS 200 ROOMS. YOU NEED 20. THE DOCUMENTATION IS LYING."</strong> Below that, in smaller text: <em>"The documentation is always lying. This is the first lesson. The second lesson is about pointers. You are not ready for the second lesson."</em> Someone has scratched into the plaster beside the first passage: "The hour tells you where to go, but the hour lies approximately 37.5% of the time. This is not one of those times." Three-eighths. You file that fraction away for later, when fractions might matter more and the clock might matter less.</p>
-<p>A small sign by the door reads: <em>"Fire exits lead to more fire. This is a feature, not a bug. — The Management"</em></p>
+<p>The welcome mat reads: <strong>"THIS HOUSE HAS 200 ROOMS. YOU NEED 20. THE DOCUMENTATION IS LYING."</strong> Below that, in smaller text: <em>"The documentation is always lying. This is the first lesson. The second lesson is about pointers. You are not ready for the second lesson."</em> Someone has scratched into the plaster beside the first passage: <em>"The hour tells you where to go, but the hour lies three-eighths of the time."</em> Three-eighths. You file that fraction away for later, when fractions might matter more and the clock might matter less.</p>
+<p>A small sign by the door reads: <em>"Fire exits lead to more fire. This is a feature, not a bug. — The Management"</em> Beside the sign, carved into the doorframe in letters so small you almost miss them: <em>"91 is not prime. Remember this when a sign claims otherwise. —A Friend"</em></p>
   `,
   exits: [
-    { label: "The passage the moth keeps circling", target: 4, flavor: "The moth approves. The moth has always approved." },
-    { label: "A narrow hallway lined with mirrors", target: 2, flavor: "Your reflection waves before you do." },
-    { label: "A well-lit corridor marked 'STAFF ONLY (this means you)'", target: 13, flavor: "The bell board chimes as you approach." },
+    { label: "The passage the moth keeps circling", target: 4, flavor: "The moth does not acknowledge your presence." },
+    { label: "A narrow hallway lined with mirrors", target: 2, flavor: "Your reflection gestures for you to follow." },
+    { label: "A well-lit corridor marked 'STAFF ONLY (this means you)'", target: 13, flavor: "A bell board chimes thirteen times. Welcoming." },
     { label: "A side door with a faded nursery rhyme pinned to it", target: 7, flavor: "You hear a toy telephone ringing." },
-    { label: "A grand staircase ascending into improbable geometry", target: 29, flavor: "The stairs go up. Probably. Geometry is negotiable here." },
+    { label: "A grand staircase ascending into improbable geometry", target: 29, flavor: "Twenty-nine steps, each one wider than the last." },
   ],
-  hint: "The grandfather clock reads 0x04. In hexadecimal, that's just 4. The scratched message confirms the hour isn't lying this time. Follow the moth.",
+  hint: "The grandfather clock reads 0x04. In hexadecimal, that's just 4. The scratched message says the hour lies three-eighths of the time. Is this one of those times?",
   correct: 4,
 },
 
@@ -406,19 +406,19 @@ const ROOMS = {
   id: 4, title: "The Study",
   description: `
 <p>Books. Thousands of them, and every single one is hollow. You pull one from the shelf — <em>"Advanced Load-Bearing Wallpaper: A Structural Analysis"</em> — and inside is nothing but a slip of paper reading <strong>"SEE OTHER BOOK."</strong> The other book contains an identical slip. You have discovered the house's first circular dependency, and you haven't even sat down yet.</p>
-<p>A mahogany desk dominates the room, its surface scarred with the kind of scratches that suggest someone once tried to solve a problem here and the problem won. On the desk, written in chalk that seems to replenish itself: <strong>2, 3, 5, 7, __</strong>. Beside it, a note in elegant script: <em>"The next prime opens the way."</em> The number 11 practically <em>glows</em> in your mind. It is obvious. It is elegant. It is, the house would like you to know, <strong>a trap</strong> — but the house isn't going to tell you that. The house has a non-disclosure agreement with itself.</p>
-<p>However. On a reading stand near the window sits an enormous volume: <strong>"A Brief History of Doors I Have Regretted Opening"</strong>, published by O'Reilly Media. The cover depicts what appears to be a segmentation fault rendered as a small woodland creature. The book is 4,000 pages long. Page 8 is bookmarked with a leather tab, and on that page, in large friendly letters — the kind of letters that would offer you a cup of tea and genuinely mean it — are the words: <strong>"THIS ONE."</strong></p>
+<p>A mahogany desk dominates the room, its surface scarred with the kind of scratches that suggest someone once tried to solve a problem here and the problem won. On the desk, written in chalk that seems to replenish itself: <strong>2, 3, 5, 7, __</strong>. Beside it, a note in elegant script: <em>"The next prime opens the way."</em> The number 11 practically <em>glows</em> in your mind. It is obvious. It is elegant. Eleven is prime. The sequence demands it.</p>
+<p>However. On a reading stand near the window sits an enormous volume: <strong>"A Brief History of Doors I Have Regretted Opening"</strong>, published by O'Reilly Media. The cover depicts what appears to be a segmentation fault rendered as a small woodland creature. The book is 4,000 pages long. Page 8 is bookmarked with a leather tab, and on that page, in careful typeset — the kind that suggests someone once cared about this page more than the other 3,999 — is a single annotation: <strong>"cf."</strong></p>
 <p>A whiteboard on the far wall displays a binary tree diagram, drawn with the precision of someone who has opinions about whiteboard markers. The root node contains the value <strong>8</strong>. Its children are labeled "regret" and "more regret." The leaf nodes all contain <em>null</em>. Someone has written beneath the tree: <em>"In computer science, we put the most important thing at the root. In this house, we do the same. The tree does not lie. The primes, however, have retained counsel."</em></p>
-<p>A desk drawer contains a sticky note: <em>"TODO: remove misleading prime sequence. Priority: low. Sprint: never."</em></p>
+<p>A desk drawer contains a sticky note: <em>"The tree has roots. The sequence has followers. Not every follower finds the root."</em></p>
   `,
   exits: [
-    { label: "The door marked with a bookmarked page number", target: 8, flavor: "The large friendly letters wish you well." },
-    { label: "A passage that smells of old paper and quiet certainty", target: 12, flavor: "Boxes of photographs await." },
-    { label: "A door with a prime number engraved on the handle", target: 11, flavor: "The primes beckon. The primes have always been persuasive." },
+    { label: "The door marked with a bookmarked page number", target: 8, flavor: "Someone bent the corner of page 8. Someone always does." },
+    { label: "A passage lined with twelve identical photographs", target: 12, flavor: "Each photograph shows a different door. All of them are open." },
+    { label: "A door with a prime number engraved on the handle", target: 23, flavor: "The next prime in the sequence. The sequence is clear." },
     { label: "The way you came, back to the entrance", target: 1, flavor: "The moth is still circling." },
-    { label: "A dark stairway descending into cool air", target: 10, flavor: "The temperature drops. The temperature is trying to warn you." },
+    { label: "A dark stairway descending into cool air", target: 10, flavor: "The temperature drops ten degrees. Exactly ten." },
   ],
-  hint: "The prime sequence is seductive but false — 11 is a trap. The O'Reilly book has page 8 bookmarked with 'THIS ONE' in large friendly letters. The binary tree's root node is 8. Two independent data sources agree. Trust the redundancy.",
+  hint: "Two things point to 8. One thing points to 11. In this house, consensus matters — but which sources are trustworthy?",
   correct: 8,
 },
 
@@ -428,15 +428,15 @@ const ROOMS = {
 <p>You ascend a spiral staircase through the exposed innards of the house's temporal infrastructure. Gears mesh and unmesh around you — brass teeth against iron teeth against what appears to be <em>actual bone</em>, though the house's HR department would like you to know that all skeletal components were ethically sourced from previous load-bearing structures. The staircase wraps around a central column like a helix, and the gears turn with the kind of precision that suggests someone once cared very deeply about this mechanism and has since <strong>moved on to other regrets</strong>.</p>
 <p>Four clock faces occupy the cardinal walls. The north face reads <strong>27:83</strong>, a time that has never existed and never will, though it's trying very hard. The east face reads <strong>π:∞</strong>, which is either a time, a ratio, or an emoticon for existential despair. The west face displays <em>a drawing of a horse</em>. Beneath the horse, a small brass plaque reads: <span style="font-family:monospace">title='Ignore me' alt='Seriously' aria-label='I am not a real clock'</span>. The horse looks somewhat offended by its own metadata.</p>
 <p>The south face shows <strong>16:00</strong>. It is labeled "SOUTH" in small letters, and displayed in crisp 24-hour time — the kind of unambiguous format that a production server would parse without throwing an exception. A sign mounted between the gears reads: <em>"Only the true face tells the true time. The true time is written in a format your production server would actually parse. If your production server parses horse, you have larger problems than this house."</em></p>
-<p>The bone gears click and whir. One of them appears to be a human femur, repurposed with the kind of pragmatic engineering that says <em>"the sprint deadline was yesterday."</em> A maintenance log dangles from a chain: <em>"Gear alignment nominal. Horse clock still not a clock. South face still correct. Bone gears — do not ask about the bone gears."</em></p>
+<p>The bone gears click and whir. One of them appears to be a human femur, repurposed with the kind of pragmatic engineering that says <em>"the sprint deadline was yesterday."</em> A maintenance log dangles from a chain: <em>"Gear alignment nominal. Horse clock still not a clock. South face still correct. Bone gears — do not ask about the bone gears."</em> Scratched into the femur itself, barely legible: <em>"When the strings sing, count the fundamentals, not the overtones. —L.B., Room 91"</em></p>
 <p>Through the south-facing window, you can see the garden far below, arranged in a pattern that might be hexadecimal if you squint. You don't squint. Squinting has never helped anyone in this house.</p>
   `,
   exits: [
-    { label: "The south door, beneath the only parseable clock", target: 16, flavor: "16:00. The server accepts this. You should too." },
-    { label: "A maintenance hatch leading to the kitchen below", target: 5, flavor: "Something smells like Fibonacci and regret." },
+    { label: "The south door, beneath the south-facing clock", target: 16, flavor: "The handle is warm from afternoon sun." },
+    { label: "A maintenance hatch leading to the kitchen below", target: 5, flavor: "Something smells like rosemary and warm copper." },
     { label: "Back down the spiral stairs", target: 4, flavor: "The binary tree's root still reads 8. It's sentimental." },
-    { label: "A narrow door behind the horse clock", target: 21, flavor: "The horse's aria-label said to ignore it. You didn't listen." },
-    { label: "An iron ladder ascending through a gap in the gears", target: 26, flavor: "The gears part reluctantly. They were enjoying your company." },
+    { label: "A narrow door behind the horse clock", target: 21, flavor: "The horse watches you approach. Its eyes track movement." },
+    { label: "An iron ladder ascending through a gap in the gears", target: 26, flavor: "Twenty-six rungs, each one colder than the last." },
   ],
   hint: "Four clocks, but only one shows a valid time. 27:83 is impossible, pi:infinity is absurd, the horse is explicitly tagged as not a clock. 16:00 in 24-hour format is the only thing a production server would parse. Go to 16.",
   correct: 16,
@@ -448,17 +448,17 @@ const ROOMS = {
 <p>A grand piano stands open in the center of the room, its strings exposed like a ribcage after autopsy — if the autopsy were performed by someone with strong opinions about equal temperament. The piano has more keys than standard. Significantly more. You count them and arrive at a number that makes you uncomfortable, so you count again and arrive at a different number. The piano's key count is, apparently, <strong>nondeterministic</strong>.</p>
 <p>On the music stand sits sheet music titled: <strong>"Composition in D Minor, for Thirty-Three Fingers (npm install fingers-extended required)."</strong> The composer is listed as "Anonymous (but in the way where everyone knows it was Dave)." Below the title, performance notes: <em>"Tempo: 33 BPM. Time signature: 33/4. If you do not have thirty-three fingers, the house recommends you grow additional ones. The house is not responsible for any fingers grown in response to this recommendation."</em></p>
 <p>A metronome on the piano ticks with the meditative patience of a process that will not be killed. Its current tempo: <strong>33 BPM</strong>. Each tick is exactly 1.818 seconds apart. Someone has taped a <span style="font-family:monospace">package.json</span> to the music stand. Under <em>dependencies</em>: <strong>"fingers-extended": "^33.0.0"</strong>. The caret means it will accept any minor or patch version above 33.0.0 but the major version — the <em>important</em> number — is <strong>thirty-three</strong>.</p>
-<p>A vinyl record spins on a turntable in the corner. Its label reads <strong>"Track 3"</strong> in embossed gold letters. Track 3 is loud, insistent, and playing something that might be jazz or might be a garbage disposal processing a French horn. The record <em>wants</em> your attention. The record has been <em>optimized</em> for your attention. A small sign next to the turntable reads: <em>"This record is a distraction. Like all good distractions, it is confident and well-produced. Do not confuse confidence with correctness."</em></p>
-<p>The metronome ticks. Thirty-three beats per minute. Thirty-three fingers. Version thirty-three. The room is not subtle about this. The room has tried subtlety before and found it <strong>insufficient</strong>.</p>
+<p>A vinyl record spins on a turntable in the corner. Its label reads <strong>"Track 3"</strong> in embossed gold letters. Track 3 is loud, insistent, and playing something that might be jazz or might be a garbage disposal processing a French horn. The record <em>wants</em> your attention. The record has been <em>optimized</em> for your attention. A small sign next to the turntable reads: <em>"Produced by Three Dog Night Studios. Mixed at Third & Main. Mastered on the Third."</em></p>
+<p>The metronome ticks. Thirty-three beats per minute. Thirty-three fingers. Version thirty-three. The vinyl disagrees. The vinyl has <em>always</em> disagreed. Track 3 builds to a crescendo that sounds like a thesis statement.</p>
   `,
   exits: [
-    { label: "The door that resonates with the metronome's tempo", target: 33, flavor: "Thirty-three. The room exhales." },
-    { label: "A curtained alcove where Track 3 seems to originate", target: 3, flavor: "The vinyl was confident. The vinyl was wrong." },
+    { label: "The door that resonates with the metronome's tempo", target: 33, flavor: "The metronome does not pause as you approach." },
+    { label: "A curtained alcove where Track 3 seems to originate", target: 3, flavor: "The vinyl is confident. The curtain parts easily." },
     { label: "Stone steps descending into dampness", target: 15, flavor: "The cistern awaits. The cistern always awaits." },
     { label: "Back through the gear-lined passage", target: 8, flavor: "The bone gears welcome you back without judgment." },
     { label: "A side door with '34' scratched out and rewritten as '34'", target: 34, flavor: "Someone couldn't decide. They decided anyway." },
   ],
-  hint: "Everything in this room converges on 33: the sheet music requires 33 fingers, the metronome beats at 33 BPM, and the package.json locks the major version at 33. Track 3 is a confident distraction. Don't confuse three with thirty-three.",
+  hint: "The metronome has a tempo. The sheet music has a key requirement. The package.json has a version. Track 3 has a volume knob. Not all numbers in this room mean the same thing.",
   correct: 33,
 },
 
@@ -799,15 +799,15 @@ const ROOMS = {
   description: `
 <p>You stand beneath a chandelier so vast it has its own weather system. Crystal pendants catch light from sources that refuse to identify themselves, splitting each beam into precisely <strong>128 spectral components</strong>. The ballroom floor is a mosaic of hexagonal tiles, each engraved with a different network port number. Someone has polished port 53 until it gleams.</p>
 <p>The walls are lined with portraits of the house's former architects, each one holding a different networking cable. The portrait labeled "Founder" clutches a DNS query in one hand and points decisively toward the ceiling with the other. A small plaque reads: <em>"She resolved all names to their true addresses."</em></p>
-<p>A mechanical orchestra occupies the far end of the room, playing a waltz in packets that arrive out of order but somehow reassemble into music. The conductor's baton moves in <strong>UDP</strong>—fast, unreliable, and strangely beautiful. A towel draped over the first violin's chair bears the monogram "D.A."</p>
-<p>In the center of the dance floor, a spinning brass compass needle has frozen mid-rotation. Its direction is ambiguous—unless you happen to know which port handles domain name resolution. The answer, like all good answers, is a number that sounds like it should be prime but isn't.</p>`,
+<p>A mechanical orchestra occupies the far end of the room, playing a waltz in packets that arrive out of order but somehow reassemble into music. The conductor's baton moves in <strong>UDP</strong>—fast, unreliable, and strangely beautiful. The first violin's chair is empty, its stand holding a single page of sheet music: a waltz in the key of C, annotated <em>"128 measures. Do not cut."</em></p>
+<p>In the center of the dance floor, a spinning brass compass needle has frozen mid-rotation. Its direction is ambiguous—unless you happen to know which port handles domain name resolution. The answer, like all good answers, is hiding in plain sight — if you know which sight to look at.</p>`,
   exits: [
-    { label: "Follow the DNS resolution", target: 128, flavor: "Port 53 knows where everything lives. The compass agrees." },
-    { label: "Descend through port 80", target: 19, flavor: "HTTP is fine for browsing, but this isn't a browser" },
-    { label: "Swing from the chandelier", target: 43, flavor: "Gravity is not a protocol you can negotiate with" },
-    { label: "Dance with the UDP orchestra", target: 28, flavor: "Connectionless. Stateless. Lost." },
-    { label: "Follow the towel", target: 42, flavor: "A hoopy frood would know where that leads" },
-    { label: "Polish another tile", target: 14, flavor: "Port 14 is unassigned. So is this exit." },
+    { label: "Follow the DNS resolution", target: 128, flavor: "The compass needle settles. The tiles beneath it are warm." },
+    { label: "Descend through port 80", target: 19, flavor: "The staircase is well-lit and the railing is solid brass" },
+    { label: "Swing from the chandelier", target: 43, flavor: "The crystal pendants chime as you reach for the lowest one" },
+    { label: "Dance with the UDP orchestra", target: 28, flavor: "The conductor beckons. The waltz resumes." },
+    { label: "Follow the monogrammed cloth", target: 42, flavor: "The initials read D.A. The passage smells of tea." },
+    { label: "Polish another tile", target: 14, flavor: "The tile you polished reveals a passage underneath" },
   ],
   hint: "DNS uses port 53. But port 53 isn't the exit—it's the clue. What's 2^7?",
   correct: 128,
@@ -821,11 +821,11 @@ const ROOMS = {
 <p>The floor is a rotating orrery showing not planets but processes, each orbiting a central scheduler that allocates time slices with mechanical precision. Process 37 glows brighter than the others, its orbit <strong>perfectly stable</strong> while neighboring processes thrash between states.</p>
 <p>A sign etched in starlight reads: "OBSERVARE—to watch, to guard, to keep." Below it, in smaller text someone has added: "Also, 37 is the 12th prime. You're welcome."</p>`,
   exits: [
-    { label: "Follow the 37th star", target: 37, flavor: "The prime spiral resolves. The crystal passage awaits." },
-    { label: "Trace the circular linked list", target: 11, flavor: "You follow the list. It goes around. And around. And around." },
+    { label: "Follow the 37th star", target: 37, flavor: "The telescope tracks this star without being asked." },
+    { label: "Trace the circular linked list", target: 11, flavor: "The constellation loops back. It feels deliberate." },
     { label: "Climb the stack frames", target: 22, flavor: "Each frame returns you to the caller" },
     { label: "Observe process 64", target: 64, flavor: "A 64-bit process in a 32-bit observation deck" },
-    { label: "Follow the binary tree root", target: 1, flavor: "Every tree has a root. Every house has a door." },
+    { label: "Follow the binary tree root", target: 1, flavor: "The root of the tree. The origin of all traversals." },
     { label: "Descend to the orrery's core", target: 24, flavor: "The scheduler doesn't appreciate visitors" },
   ],
   hint: "The logbook mentions the 37th star and the crystal passage. Process 37 is the stable one. Trust the previous visitor.",
@@ -839,17 +839,17 @@ const ROOMS = {
 
 <p>In the corner, as promised, a <em>stuffed door</em>. It's a taxidermied door—glass eyes, cotton stuffing, a light lacquer finish. A small plaque: <em>"Common Door (Porta vulgaris). Habitat: houses. Status: deprecated. This specimen was committed to the main branch and merged without review."</em></p>
 
-<p>One map, pinned to a drafting table, shows this house. A red line traces: <strong>1, 4, 8, 16, 33, 20</strong>—you are here—then continues to <strong>42</strong>. A compass rose points to room <strong>42</strong> with the annotation: <em>"The answer."</em> A second line branches from room 20 to room <strong>110</strong>, labeled <em>"Shortcut (beta)"</em> in a different hand. Someone has added beneath it in red: <em>"DO NOT SHIP. This route is untested. The QA team quit."</em></p>
+<p>One map, pinned to a drafting table, shows this house. A red line traces: <strong>1, 4, 8, 16, 33, 20</strong>—you are here—then continues to <strong>42</strong>. A compass rose points to room <strong>42</strong> with the annotation: <em>"The answer."</em> A second line branches from room 20 to room <strong>110</strong>, labeled <em>"Shortcut"</em> in a different hand. It's drawn with the same precision as the first line. Same red ink. Same steady hand.</p>
 
 <p>Exits: <strong>42</strong>, <strong>18</strong>, <strong>24</strong>, <strong>16</strong>, <strong>49</strong>, and <strong>110</strong>.</p>
   `,
   exits: [
-    { label: "The answer: room 42", target: 42, flavor: "The compass needle agrees" },
+    { label: "Follow the red line to room 42", target: 42, flavor: "The line continues past the edge of the map" },
     { label: "Unmarked passage to room 18", target: 18, flavor: "Not on any map" },
     { label: "South corridor to room 24", target: 24, flavor: "Toward uncharted territory" },
     { label: "Back to room 16", target: 16, flavor: "Retrace through the curtain" },
     { label: "A door that might be alive to room 49", target: 49, flavor: "It twitches" },
-    { label: "Shortcut (beta) to room 110", target: 110, flavor: "The QA team quit for a reason" },
+    { label: "Shortcut (beta) to room 110", target: 110, flavor: "A second line branches off here, labeled 'Shortcut' in a steady hand" },
   ],
   hint: "The map shows the path. The compass says 42. The 'shortcut' to 110 is labeled beta and untested—classic false path. As a bonus: 42 is the answer to life, the universe, and everything, which feels relevant in a house where doors have been taxidermied.",
   correct: 42,
@@ -1015,90 +1015,81 @@ const ROOMS = {
 33: {
   id: 33, title: "The Taxidermist's Workshop",
   description: `
-<p>Glass eyes stare from every shelf. Hundreds of them—sorted by color in apothecary jars like an indexed array where the key is wavelength and the value is existential dread. Amber, green, blue, one unsettling jar of red. In the center of the room, a half-finished owl sits on a workbench, cotton stuffing spilling from its chest like a textile autopsy in progress.</p>
+<p>Glass eyes stare from every shelf. Hundreds of them — sorted by color in apothecary jars like an indexed array where the key is wavelength and the value is existential dread. Amber, green, blue, one unsettling jar of red that tracks you when you move. In the center of the room, a half-finished owl sits on a workbench, cotton stuffing spilling from its chest like a textile autopsy in progress. The formaldehyde smell has soaked into every surface so deeply that even the air feels preserved.</p>
 
-<p>The taxidermist left notes. The last page: <em>"I have preserved 19 animals for this house. The 20th will be different. The 20th is the door itself. It's in room 20. I've committed it to the main branch. No pull request. No code review. My masterpiece needs no approval."</em></p>
+<p>The taxidermist's journal lies open. Nineteen entries, each documenting an animal prepared for the house. Entry 1: <em>"Badger. Shelf 3. Routine work."</em> Entry 7: <em>"Fox. Shelf 7. Bit me during mounting. Earned its place."</em> Entry 19: <em>"Owl (in progress). Committed to main without review. Awaiting merge."</em> But it's the blank twentieth entry that catches your eye — the page headed <strong>XX</strong> in Roman numerals, the space beneath it empty except for a single annotation: <em>"The masterpiece is not an animal. The masterpiece is a door. I've installed it in the Cartographer's Office. Go see it before someone files a pull request."</em></p>
 
-<p>The preserved animals are catalogued in what appears to be a HashMap. Most entries are unremarkable (key: 'badger', value: 'shelf 3'). But entry 20 reads: <em>"key: 20, value: 'the door. room 20. go see it.'"</em></p>
+<p>A jar labeled <strong>"EYES, HUMAN, DO NOT USE"</strong> watches you from the highest shelf. The label's font is Comic Sans — a deprecated API if ever there was one. The jar contains exactly <strong>twenty pairs</strong>, arranged in the concentric spiral of a golden ratio that the taxidermist has annotated in pencil: <em>"Even the artificial eyes follow natural sequences. XX pairs. XX in hex is 0x14. XX in decimal is —"</em> The sentence ends mid-thought. The pencil is still on the workbench, still sharp.</p>
 
-<p>A jar labeled <strong>"EYES, HUMAN, DO NOT USE"</strong> watches you. The label's font is Comic Sans—a deprecated API if ever there was one. You watch it back. Neither of you blinks, though for different reasons.</p>
-
-<p>Exits: <strong>20</strong> (through a curtain of preserved feathers), <strong>16</strong> (back), <strong>38</strong> (through a window that shouldn't open but does), and <strong>46</strong> (down a spiral of vertebrae).</p>
+<p>Above the workbench, mounted specimens line the wall. They're numbered in binary: <span style="font-family:monospace">00001, 00010, 00011, 00100, 00101</span>... You count to the last one. It's the owl-in-progress, and its binary tag reads <span style="font-family:monospace">10011</span>. The next tag — the empty bracket where specimen twenty would hang — reads <span style="font-family:monospace">10100</span>. You convert it. The number is the same one the journal points to, the same one the Roman numerals spell, the same one the eye-pairs count to.</p>
   `,
   exits: [
-    { label: "Feather curtain to room 20", target: 20, flavor: "They brush your face. Softly." },
-    { label: "Back to room 16", target: 16, flavor: "The piano waits" },
-    { label: "Window to room 38", target: 38, flavor: "Fresh air, finally" },
-    { label: "Vertebrae spiral to room 46", target: 46, flavor: "Down through bone" },
+    { label: "Through the feather curtain to the Cartographer's Office", target: 20, flavor: "Owl feathers. Still warm. The masterpiece is installed." },
+    { label: "Back to the Music Room", target: 16, flavor: "The metronome hasn't stopped." },
+    { label: "Through a window that shouldn't open", target: 38, flavor: "Fresh air and the sound of someone else's regret" },
+    { label: "Down the vertebrae spiral", target: 46, flavor: "The spiral descends exactly forty-six vertebrae" },
   ],
-  hint: "The taxidermist's 20th creation is in room 20. The HashMap key is 20. He committed it to main without review. The stuffed door is his masterpiece. Go see it.",
+  hint: "The taxidermist's 20th specimen is the door itself. XX in Roman numerals, 0x14 in hex, binary 10100 — they all convert to the same decimal number. The masterpiece is in the Cartographer's Office.",
   correct: 20,
 },
 
 34: {
-  id: 34, title: "The Department of Doors",
+  id: 34, title: "The Production Office",
   description: `
-<p>Fluorescent lighting. Drop ceiling. Cubicles. You have entered the bureaucratic wing of a haunted house, which is somehow worse than any ghost. The carpet is the color of resignation. A motivational poster shows a sunset and reads: <em>"SYNERGY."</em> Nothing else. Just "SYNERGY."</p>
+<p>The room is a production office forty-five minutes before a show that was supposed to load-in yesterday. Call sheets blanket every surface like snow in a timezone that has given up. A <strong>Crestron control panel</strong> on the wall shows seventeen AV zones, all of them flashing amber except Zone 1, which is green with the quiet confidence of the one system that was actually tested during commissioning.</p>
 
-<p>A reception desk, unmanned. A sign: <em>"PLEASE TAKE A NUMBER."</em> The number dispenser gives you <strong>4,291</strong>. The display above reads: <em>"NOW SERVING: 7."</em> The math is not in your favor.</p>
+<p>A whiteboard reads: <em>"SHOW FLOW — Rev. 47 (FINAL)(REAL FINAL)(USE THIS ONE)(NOT THE ONE KAREN SENT)."</em> The flow diagram starts crisp and sensible at <strong>CUE 1</strong> and degenerates by CUE 16 into what appears to be a plea for help written in DMX channel numbers. Someone has circled <strong>CUE 1</strong> with the annotation: <em>"If all else fails, just go back to the top of show."</em></p>
 
-<p>A pamphlet on the counter: <em>"Welcome to the Department of Doors. Processing time: 40 to 60 business days. SLA: best effort. Uptime guarantee: none. For faster service, proceed directly to Room 1 and do not engage with departmental processes."</em></p>
+<p>A rider specification sits on the desk, thirty-two pages of technical requirements from an artist whose name you don't recognize. Page one demands <strong>48 channels of Dante audio</strong>. Page two demands a bowl of green M&Ms sorted by hue. Page thirty-two, in the same typeface and gravity, demands <em>"a door that leads somewhere real."</em> It cites Room 1.</p>
 
-<p>A Gantt chart on the wall shows your projected escape date: <strong>Q3 2031</strong>. There are seventeen dependencies, four of which are circular.</p>
-
-<p>Exits: <strong>35</strong> (COMPLAINTS), <strong>36</strong> (APPEALS), <strong>1</strong> (EXPRESS EXIT), and <strong>16</strong> (MUSIC DEPT).</p>
-  `,
+<p>A walkie on the desk crackles: <em>"Production to FOH, production to FOH. Does anyone copy? The show caller went into Room 35 for a patch bay and hasn't come back."</em></p>`,
   exits: [
-    { label: "COMPLAINTS: room 35", target: 35, flavor: "A longer wait" },
-    { label: "APPEALS: room 36", target: 36, flavor: "Even longer" },
-    { label: "EXPRESS EXIT: room 1", target: 1, flavor: "Skip the Gantt chart" },
-    { label: "MUSIC DEPT: room 16", target: 16, flavor: "Filing harmonies" },
+    { label: "CUE 1 — top of show", target: 1, flavor: "When the show flow collapses, you reset to preset. CUE 1 is always Room 1." },
+    { label: "Check the patch bay", target: 35, flavor: "The show caller went in. The show caller has not returned." },
+    { label: "Escalate to management", target: 36, flavor: "Management is in a meeting about meetings" },
+    { label: "Follow the DMX trail to CUE 16", target: 16, flavor: "Channel 16 bleeds through the data. Might be a show cue. Might be interference." },
   ],
-  hint: "The pamphlet says EXPRESS EXIT—room 1. The alternative is waiting for ticket 4,291 when they're serving 7. The Gantt chart projects Q3 2031. Room 16 is also on the true path if you want to skip ahead.",
+  hint: "The whiteboard says CUE 1 when all else fails. The rider cites Room 1. The Crestron panel shows Zone 1 green. Three independent systems agree: 1 is the safe state. But CUE 16 in the show flow — that's not random noise, that's a real channel on the true path.",
   correct: 1,
 },
 
 35: {
-  id: 35, title: "The Complaints Office",
+  id: 35, title: "The Patch Bay",
   description: `
-<p>A smaller office. One desk. Behind it, a chair that spins slowly on its own like a loading indicator that has lost the will to load. A complaint form has been pre-filled:</p>
+<p>You understand patch bays. You have opinions about patch bays. Specifically, you believe they should be <strong>labeled</strong>, which this one is not. Three hundred and twenty TT jacks stare at you from a rack that was last documented during the Clinton administration. Someone has written "DON'T TOUCH" on a piece of gaff tape across the top row, and "SERIOUSLY DON'T" on the row below that, and on the third row, in a different hand: <em>"I touched it. I'm sorry. —Smith, Show Caller, 2019."</em></p>
 
-<p><em>"NATURE OF COMPLAINT: Lost in house. DEPARTMENT RESPONSE: Have you tried Room 1? STATUS: WONTFIX."</em></p>
+<p>Smith's headset hangs from a normalled pair on row four. The cue light is still on. The <strong>A2</strong> position has been vacant for what the dust suggests is years, but the intercom channel is still hot — you can hear breathing, or possibly the HVAC, or possibly Smith, who the production office says went in here and never came back. You choose to believe it's the HVAC.</p>
 
-<p>A filing cabinet labeled <em>"COMPLAINTS, A-Z."</em> You open the 'S' drawer. It contains one folder: <em>"Smith, J. Complaint: The doors move. Resolution: They don't. Smith was wrong. Smith's ticket was closed as WORKSFORME. Smith may still be in Room 35."</em></p>
+<p>A signal flow diagram is taped to the inside of the rack door, mapping every audio path in the house. Most routes loop back to this room. One path — traced in red Sharpie and labeled <em>"EMERGENCY SHOW FEED"</em> — routes clean signal to Room 42, bypassing every other patch point. Someone has added: <em>"Only use this if everything else is on fire. —Lead A1, 2017."</em></p>
 
-<p>You look around for Smith. The chair spins. You are alone. Probably. The chair's RPM suggests otherwise.</p>
-
-<p>Exits: <strong>34</strong>, <strong>36</strong>, <strong>42</strong>, and <strong>1</strong>.</p>
-  `,
+<p>Everything else is, arguably, on fire.</p>`,
   exits: [
-    { label: "Back to RECEPTION: room 34", target: 34, flavor: "More fluorescent light" },
-    { label: "APPEALS: room 36", target: 36, flavor: "An even smaller office" },
-    { label: "Escape hatch to room 42", target: 42, flavor: "Behind the filing cabinet" },
-    { label: "EXPRESS EXIT: room 1", target: 1, flavor: "Skip the bureaucracy" },
+    { label: "Back to production", target: 34, flavor: "You re-coil the XLR you tripped over on the way in" },
+    { label: "Escalate to management", target: 36, flavor: "Above your pay grade. Technically everything here is above your pay grade." },
+    { label: "Emergency show feed to 42", target: 42, flavor: "The red Sharpie path. Everything else is on fire." },
+    { label: "Follow Smith's intercom channel", target: 1, flavor: "The breathing leads back to the beginning" },
   ],
-  hint: "The complaint's resolution is WONTFIX. Smith's ticket is WORKSFORME. Nobody is fixing anything here. Room 1 is the express exit. Also: where is Smith? Don't think about Smith.",
+  hint: "Smith is gone. The patch bay is unlabeled. But the emergency show feed — the red Sharpie line — goes to 42. The lead A1 said only use it if everything is on fire. Look around you. Is everything on fire?",
   correct: null,
 },
 
 36: {
-  id: 36, title: "The Appeals Board",
+  id: 36, title: "The Pre-Show Meeting",
   description: `
-<p>An even smaller room. A conference table for seven, but only three chairs. A whiteboard shows a flowchart. Every branch of the flowchart leads to the same conclusion: <strong>"GO TO ROOM 1."</strong> Someone has attempted to add a branch labeled "stay" but it immediately loops back to "GO TO ROOM 1."</p>
+<p>A conference room designed for eight, currently containing fourteen people, three rolling racks of wireless mic receivers, and a palpable sense that nobody read the advance. A projector displays a slide titled <strong>"LOAD-IN TIMELINE"</strong> that is already forty-seven minutes behind schedule, and the meeting to discuss why it's behind schedule is itself running twelve minutes long, which means the timeline is now fifty-nine minutes behind, a fact which will be discussed in the next meeting.</p>
 
-<p>Meeting minutes on the table: <em>"AGENDA: Should Room 36 continue to exist? VOTE: 2 in favor, 1 opposed, 4 undefined. RESOLUTION: Room 36 continues to exist, reluctantly. NEXT AGENDA: Should guests stop coming to Room 36? UNANIMOUS: Yes. The room's API has been deprecated but not yet removed. Removal blocked on backward compatibility with Smith."</em></p>
+<p>The venue GM stands at the whiteboard drawing a org chart. Every reporting line eventually converges on a box labeled <strong>"ROOM 1"</strong> with the subtitle <em>"Lobby / Reset Point / Where We All End Up Anyway."</em> The TD in the corner has stopped listening and is quietly running cable through the ceiling tile to Room 43, which isn't on any approved drawing but has better WiFi.</p>
 
-<p>The room itself seems slightly embarrassed. Its walls have the energy of a function that knows it should have been refactored out three releases ago.</p>
+<p>A stack of change orders sits on the table, each one countersigned by someone whose title contains the word "stakeholder." Change Order #418 is stamped <strong>REJECTED: "I'M A TEAPOT."</strong> The rejection code is technically valid. The stakeholder is technically furious. The TD is technically already in the ceiling.</p>
 
-<p>Exits: <strong>34</strong>, <strong>35</strong>, <strong>1</strong>, and <strong>43</strong>.</p>
-  `,
+<p>Meeting minutes from the last session: <em>"ACTION ITEMS: 1) Fix the patch bay (assigned: Smith, status: MISSING). 2) Test the Crestron (assigned: nobody, status: it works when it wants to). 3) Accept that Room 36 is a holding pattern, not a destination (assigned: all, status: in progress, forever)."</em></p>`,
   exits: [
-    { label: "Back to RECEPTION: room 34", target: 34, flavor: "More bureaucracy" },
-    { label: "COMPLAINTS: room 35", target: 35, flavor: "Smith may still be there" },
-    { label: "APPROVED EXIT: room 1", target: 1, flavor: "The flowchart agrees unanimously" },
-    { label: "Existential exit to room 43", target: 43, flavor: "Into uncertainty" },
+    { label: "Back to production", target: 34, flavor: "The walkie is still squawking" },
+    { label: "Check the patch bay for Smith", target: 35, flavor: "Action item #1, status: MISSING" },
+    { label: "Follow the GM's org chart to Room 1", target: 1, flavor: "All lines converge. All roads reset." },
+    { label: "Follow the TD through the ceiling to 43", target: 43, flavor: "Unapproved, undocumented, better WiFi" },
   ],
-  hint: "The flowchart reaches room 1 from every branch. The room voted unanimously for you to leave. The API is deprecated. Room 36 doesn't want you here. Respect the deprecation notice.",
+  hint: "The meeting is a loop. Change Order #418 was rejected — you can't brew tea in a conference room and you can't find the exit in a meeting about meetings. The org chart funnels to Room 1. But the TD knows something — Room 43 isn't on any drawing, which sometimes means it's where the real work happens.",
   correct: null,
 },
 
@@ -1107,18 +1098,18 @@ const ROOMS = {
   description: `
 <p>You are walking through nothing. The corridor is made entirely of glass—floor, walls, ceiling—suspended in a void that is not quite dark and not quite anything else. It's the color of the pause between heartbeats. You're walking through the network layer. The OSI model, rendered in crystal—layer by layer, from physical glass to the application of your footsteps.</p>
 
-<p>Below you, rooms of the house drift like fish in an aquarium. You can see the ballroom (room <strong>6</strong>), its chandelier burning—a later stop on the true path, confirming your direction. Above you, the attic rooms float past, dusty and irrelevant.</p>
+<p>Below you, rooms of the house drift like fish in an aquarium. You can see the ballroom (room <strong>6</strong>), its chandelier burning—somewhere below, confirming your direction. Above you, the attic rooms float past, dusty and irrelevant.</p>
 
 <p>The glass beneath your feet has numbers etched into it, counting down: <strong>...93, 92, 91...</strong> The countdown stops at <strong>91</strong>. The number is etched deeper than the others. When you step on it, the glass hums a middle C and returns HTTP <strong>200 OK</strong>.</p>
 
 <p>A sign mounted in the void reads: <em>"The glass resonates at the frequency of the next prime after 89."</em> You do the math. The next prime after 89 is 97. But the glass doesn't hum at 97. It hums at 91. The sign is a liar. The glass is not.</p>
 
-<p>Exits: <strong>91</strong> (where the glass hums), <strong>11</strong> (back), <strong>6</strong> (below, through a trapdoor of pure crystal), and <strong>28</strong> (a drain in the floor, technically).</p>
+<p>Exits: <strong>91</strong> (where the glass hums), <strong>11</strong> (back), <strong>40</strong> (below, through a trapdoor of crystal), and <strong>28</strong> (a drain in the floor, technically).</p>
   `,
   exits: [
-    { label: "Through the humming 91", target: 91, flavor: "The glass sings and the void parts" },
+    { label: "Through the humming 91", target: 91, flavor: "The glass vibrates at a frequency you feel in your teeth" },
     { label: "Back to room 11", target: 11, flavor: "Retrace through starlight" },
-    { label: "Crystal trapdoor to room 6", target: 6, flavor: "The chandelier below grows closer" },
+    { label: "Crystal trapdoor to room 40", target: 40, flavor: "The chandelier below grows closer" },
     { label: "Floor drain to room 28", target: 28, flavor: "Technically a passage" },
   ],
   hint: "The sign about 'the next prime after 89' is a red herring—97 is prime, but 91 is where the countdown stops and the glass hums. 91 = 7 times 13, not prime at all, but the glass doesn't care about primality. It cares about the path. Step on 91.",
@@ -1221,12 +1212,12 @@ const ROOMS = {
 <p>Exits: <strong>127</strong>, <strong>20</strong>, <strong>30</strong>, <strong>35</strong>, <strong>44</strong>, and <strong>110</strong>.</p>
   `,
   exits: [
-    { label: "The loopback door to room 127", target: 127, flavor: "There's no place like 127.0.0.1" },
+    { label: "The loopback door to room 127", target: 127, flavor: "The door opens onto a familiar hum" },
     { label: "Back to room 20", target: 20, flavor: "Back to the maps" },
     { label: "Emergency exit to room 30", target: 30, flavor: "An alarm doesn't sound" },
-    { label: "Fire door to room 35", target: 35, flavor: "Suspiciously warm" },
-    { label: "Revolving door to room 44", target: 44, flavor: "It revolves too fast" },
-    { label: "Shortcut to room 110", target: 110, flavor: "Still in beta. Still untested." },
+    { label: "Fire door to room 35", target: 35, flavor: "The push bar is polished smooth from use" },
+    { label: "Revolving door to room 44", target: 44, flavor: "The glass panels catch the light as they turn" },
+    { label: "Shortcut to room 110", target: 110, flavor: "A well-worn path. Others have walked here recently." },
   ],
   hint: "127.0.0.1 is localhost. The loopback adapter says 'home is room 127.' The dolphin poster has exactly 127 fish. The whiteboard says 'localhost' with 127 circled. There's no place like 127. This is a networking joke and also the correct answer.",
   correct: 127,
@@ -1276,23 +1267,21 @@ const ROOMS = {
 45: {
   id: 45, title: "The Threshold",
   description: `
-<p>A narrow room. More of a hallway, really—a liminal space between what was and what might be. The walls are covered in tally marks. Thousands of them. Someone counted every visit, every attempt, every failure. The marks form patterns if you stare long enough. You stare too long.</p>
+<p>A narrow room. More of a hallway, really — a liminal space between what was and what might be. The walls are covered in tally marks. Thousands of them, grouped in sets of thirteen. You count the groups before you can stop yourself. Thirteen groups of thirteen. The arithmetic settles in your chest like a stone dropped in still water.</p>
 
-<p>At the far end, a door unlike any other in the house. It's made of living wood—bark still clinging to it, leaves sprouting from the frame. A brass plate reads <strong>169</strong>. Below it, in a child's handwriting: <em>"This is not the last door. You thought it was. The house expanded. This is the PENULTIMATE door. Thirteen squared. The magic squares always know."</em></p>
+<p>At the far end, a door unlike any other in the house. It's made of living wood — bark still clinging to it, leaves sprouting from the frame, roots threading into the floorboards as if the door has decided to <em>stay</em>. A brass plate bears no number, only a symbol: <strong>13²</strong>. But you don't need the notation. The tally marks already told you. The room itself is a proof.</p>
 
-<p>169 = 13&sup2;. You feel this in your bones, or possibly in your math cortex.</p>
+<p>A guest book sits on a pedestal. One entry: <em>"I was here 347 times before finding this room."</em> Another: <em>"I thought this was the end. It wasn't. There are more rooms now. The house is under active development. Check the changelog."</em> A third, in fresh ink: <em>"v4.0 expanded to 200 rooms. This room used to lead to 50. Now it leads to the living door. Migration was not optional."</em></p>
 
-<p>A guest book sits on a pedestal. One entry: <em>"I was here 347 times before finding this room."</em> Another: <em>"I thought this was the end. It wasn't. There are more rooms now. The house is under active development. Check the changelog."</em> A third, in fresh ink: <em>"v4.0 expanded to 200 rooms. This room used to lead to 50. Now it leads to 169. Migration was not optional."</em></p>
-
-<p>Exits: <strong>169</strong> (the living door), <strong>6</strong> (back to the ballroom), <strong>41</strong> (a crack in the wall), and <strong>48</strong> (stairs down, marked "REGRET").</p>
+<p>The floor tiles form a <strong>13 × 13 magic square</strong>. Every row, column, and diagonal sums to the same number. The center tile is polished smooth by footsteps — every visitor stands here, looks down, and does the multiplication. The living door breathes. Its leaves rustle in a draft that comes from the other side, carrying the scent of cut grass and something very close to an ending.</p>
   `,
   exits: [
-    { label: "The living door to room 169", target: 169, flavor: "The leaves part. Bark creaks. 13 squared." },
-    { label: "Back to room 6", target: 6, flavor: "The waltz plays on" },
-    { label: "Crack in the wall to room 41", target: 41, flavor: "Just wide enough" },
-    { label: "Stairs marked REGRET to room 48", target: 48, flavor: "You will, in fact, regret this" },
+    { label: "The living door", target: 169, flavor: "The bark creaks. Something shifts behind the grain." },
+    { label: "Back to the ballroom", target: 6, flavor: "The waltz plays on" },
+    { label: "A crack in the wall", target: 41, flavor: "Cool air flows through. The crack is just wide enough." },
+    { label: "Stairs curving down", target: 48, flavor: "The treads are worn smooth by many feet" },
   ],
-  hint: "The living door is numbered 169. That's 13 squared. The child's note says 'the magic squares always know.' The guest book confirms the house expanded to 200 rooms. The door used to lead to 50. Now it leads to 169. Walk through. You're closer than you think.",
+  hint: "Thirteen groups of thirteen tally marks. A 13×13 magic square on the floor. The brass plate shows 13². Multiply. The living door leads to the number the room is counting toward.",
   correct: 169,
 },
 
@@ -1439,17 +1428,25 @@ const ROOMS = {
 },
 53: {
   id: 53, title: "The DNS Room",
-  description: `<p>The room is a vast telephone exchange rebuilt by someone who only understood the concept theoretically. Thousands of cables connect names to numbers in a hierarchy so deeply nested it makes organizational charts look flat. A bored-looking daemon sits at a desk, resolving queries with the enthusiasm of someone who has answered "have you tried clearing your cache" ten thousand times.</p>
-<p>The daemon's ledger lies open. Each entry maps a human-readable name to a numbered address. The most recent query shows an A record: clockwork-house.local resolving through recursive lookup — root servers to TLD to authoritative, each hop following the twelfth step of nature's own sequence, landing on the address the golden ratio would choose if it were a sysadmin.</p>
-<p>Above the daemon, a sign: "This room has always been 53. That is not a coincidence."</p>`,
+  description: `
+<p>The room is a telephone exchange that has been <em>resolved</em> — in the DNS sense, not the emotional one. Thousands of Cat6 runs connect names to numbers in a hierarchy so deeply nested it makes Active Directory look flat. The runs are labeled in the way that all cable in production venues is labeled: some with a Brother P-Touch from 2014, some with gaff tape and Sharpie, and some not at all, their purpose known only to a technician who left the company during the Obama administration and took the documentation with them.</p>
+
+<p>A daemon sits at the central desk — not the Unix kind, the Xanth kind, though in practice there is no meaningful difference. Its magical talent is <strong>recursive resolution</strong>: given any name, it will chase the query from root servers to TLD to authoritative nameserver, each hop rippling through the cable runs like a standing wave in a very long snake. It has been answering queries for longer than you've been alive. It has the thousand-yard stare of a process that has never been restarted and has seen things in its log buffer that would make <code>syslogd</code> weep.</p>
+
+<p>The daemon's ledger lies open. The most recent entry maps <code>clockwork-house.local</code> through its full resolution chain. You trace the hops: root, then <code>.local</code>, then the authoritative zone file — and the final A record resolves to an address that is the <strong>twelfth number in nature's most famous sequence</strong>. The one that starts 1, 1, 2, 3, 5, 8, 13... and spirals outward the way sunflowers and nautilus shells and well-architected systems do. The daemon has noted this address in the margin.</p>
+
+<p>A rack of servers against the far wall handles the other record types. The <strong>MX record</strong> routes to a mail room that is just a standup meeting with chairs removed. The <strong>CNAME</strong> aliases everything to everything else in a cycle that makes the daemon sigh audibly. And one server — a battered teapot-shaped appliance labeled <strong>"HTCPCP Gateway"</strong> — responds to every query with <code>418: I'm a teapot</code>. It has been doing this since RFC 2324 was published in 1998. Nobody has decommissioned it. Nobody <em>can</em> decommission it. It is load-bearing.</p>
+
+<p>Above the daemon, a sign: <em>"This room has always been 53. If you need to ask why, you don't know enough about port numbers to be here."</em></p>`,
   exits: [
-    { label: "Follow the A record resolution", target: 144, flavor: "The address resolves. Fibonacci would approve." },
-    { label: "Try a CNAME redirect", target: 54, flavor: "You're aliased to another room entirely" },
-    { label: "Query the MX record", target: 61, flavor: "You end up in the mail room, which is just a standup meeting" },
-    { label: "Flush the cache", target: 55, flavor: "Everything you knew is forgotten. The cache starts fresh." },
-    { label: "NXDOMAIN", target: 60, flavor: "The name doesn't exist. Neither, briefly, do you." },
+    { label: "Follow the A record to its resolved address", target: 144, flavor: "The daemon turns a page. The ledger is patient." },
+    { label: "Chase the CNAME alias", target: 54, flavor: "The alias chain is three levels deep. Maybe four." },
+    { label: "Query the MX record", target: 61, flavor: "The mail exchange is on a different floor" },
+    { label: "Flush the cache", target: 55, flavor: "The TTL expires. Fresh resolution." },
+    { label: "NXDOMAIN", target: 60, flavor: "No record found. The query returns empty." },
+    { label: "Query the teapot", target: 95, flavor: "418. It's a teapot. It's always been a teapot. It will always be a teapot." },
   ],
-  hint: "The daemon's ledger holds the answer. A records resolve names to addresses — and nature has its own numbering system, spiraling outward from 1, 1, 2, 3...",
+  hint: "The A record resolves to a number from a famous sequence — the twelfth term. The daemon's ledger describes the sequence: 1, 1, 2, 3, 5, 8, 13... Each number is the sum of the two before it.",
   correct: 144,
 },
 54: {
@@ -1598,11 +1595,11 @@ const ROOMS = {
 <p>A register file lines one wall, sixty-four slots wide. Most contain zeros, but position eleven is flagged — literally, a tiny pennant waves from the register at 0x0B, and a small brass plaque beneath reads "These go to eleven." The flag ripples in a breeze that shouldn't exist in a memory subsystem.</p>
 <p>The palace's page table maps every virtual address to a physical one. The entry for this room points to a frame that's eleven pages from the start.</p>`,
   exits: [
-    { label: "Follow the flagged register", target: 11, flavor: "Register 0x0B. Eleven. The flag was not subtle." },
-    { label: "Read from address zero", target: 60, flavor: "Null pointer. You know better than this." },
+    { label: "Follow the flagged register", target: 11, flavor: "Register 0x0B. The flag ripples in a draft you can't feel." },
+    { label: "Read from address zero", target: 60, flavor: "Address 0x00. The first address. The oldest." },
     { label: "Trigger a page fault", target: 56, flavor: "The page isn't in physical memory. An interrupt fires." },
-    { label: "Access the heap", target: 63, flavor: "The garbage collector gives you a suspicious look" },
-    { label: "Overflow the buffer", target: 100, flavor: "You write past the end of the array. Here we go." },
+    { label: "Access the heap", target: 63, flavor: "Dynamically allocated. The room beyond shifts." },
+    { label: "Overflow the buffer", target: 100, flavor: "Past the allocated boundary. Uncharted memory." },
   ],
   hint: "The flagged register at 0x0B speaks plainly. In decimal, that's an address even Spinal Tap would recognize.",
   correct: 11,
@@ -1776,18 +1773,19 @@ const ROOMS = {
   correct: 42,
 },
 77: {
-  id: 77, title: "The Penultimate Sorting",
-  description: `<p>An immense sorting machine dominates the room, fed by a hopper containing every number you've encountered in this house. The machine's nameplate reads "BOGOSORT ENTERPRISE EDITION" and its estimated completion date is displayed on a calendar that extends seven years into the future. It has been running that long already.</p>
-<p>The machine randomly shuffles the numbers, checks if they're sorted, and when they're not — which is always — shuffles again. Lucky sevens tumble past in pairs, doubled and redoubled, a parade of 7s that means nothing except misdirection. Seven times eleven is this room's number, but that arithmetic is a trap for the numerically inclined.</p>
-<p>With a grinding lurch, the machine produces a single output: the number forty-five, printed on a card that smells faintly of burning silicon. "BOGOSORT COMPLETE," the display reads. "RESULT: 45. TIME ELAPSED: 7 YEARS."</p>`,
+  id: 77, title: "The Sorting Chamber",
+  description: `<p>An immense sorting machine dominates the room, fed by a hopper containing every number you've encountered in this house. The machine's nameplate reads <strong>BOGOSORT ENTERPRISE EDITION</strong> and its estimated completion date is displayed on a calendar that extends seven years into the future. It has been running that long already. The air smells of ozone and wasted CPU cycles.</p>
+<p>The hopper's input display scrolls the numbers being sorted: the first nine natural numbers, <strong>1 through 9</strong>, tumbling over each other like lottery balls in a cage. The machine shuffles them randomly, checks if they're sorted, and when they're not — which is always — shuffles again. Its sort counter reads <strong>362,880</strong> — which is, you realize with a start, exactly <em>9!</em>, the total number of permutations. The machine has tried every possible ordering. It knows there's only one sorted sequence. It's just being thorough.</p>
+<p>Lucky sevens tumble past in pairs, doubled and redoubled — 7 × 11 is this room's number, and the machine keeps trying to make that arithmetic <em>mean</em> something. It doesn't. Seven times eleven is a coincidence wearing a suit.</p>
+<p>With a grinding lurch, the machine produces a single output card. Not a sorted list — a <em>sum</em>. The machine has added every number in the hopper instead of sorting them. <strong>1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9 = 45.</strong> A receipt prints beneath the card: <em>"BOGOSORT COMPLETE. RESULT: 45. METHOD: gave up sorting, tried addition instead. TIME ELAPSED: 7 YEARS. This is, the machine notes, the triangular number T(9). The ninth triangular number. It didn't need to sort anything. It needed to count everything."</em></p>`,
   exits: [
-    { label: "Accept the bogosort result", target: 45, flavor: "Seven years of shuffling. The machine has spoken: forty-five." },
-    { label: "Try quicksort instead", target: 74, flavor: "You pick a pivot. The pivot is a pun." },
-    { label: "Sort by lucky sevens", target: 77, flavor: "7×11 = 77. You've just sorted yourself back here." },
+    { label: "Accept the bogosort result", target: 45, flavor: "The machine clatters to a stop. The sum was always the answer." },
+    { label: "Try quicksort instead", target: 74, flavor: "You pick a pivot. O(n log n) on a good day." },
+    { label: "Sort by lucky sevens", target: 77, flavor: "Seven times something. The arithmetic works out neatly." },
     { label: "Demand a recount", target: 89, flavor: "You feed the numbers into a prime sieve instead" },
-    { label: "Use bubble sort", target: 90, flavor: "Off by one. As always." },
+    { label: "Use bubble sort", target: 90, flavor: "The simple approach. Patient. Thorough. O(n²)." },
   ],
-  hint: "Bogosort takes forever, but when it finishes, it finishes. Trust the output, not the lucky numbers.",
+  hint: "The hopper contains 1 through 9. The bogosort gave up and summed them instead. 1+2+3+4+5+6+7+8+9 = 45. The ninth triangular number. Trust the output, not the lucky numbers.",
   correct: 45,
 },
 78: {
@@ -1820,9 +1818,9 @@ const ROOMS = {
 },
 80: {
   id: 80, title: "The node_modules Abyss",
-  description: `<p>You open a door and fall into a directory structure so deep that light itself gives up trying to reach the bottom. Folders nest within folders nest within folders, each containing a slightly different version of a package called "is-odd" that somehow requires 47 dependencies of its own, one of which is "is-even," which depends on "is-odd."</p>
-<p>The directory weighs more than the rest of the house combined. A file counter on the wall ticks past 1.2 million and shows no signs of slowing. Somewhere in the depths, a package called "left-pad" holds the entire structure together like a load-bearing jenga block.</p>
-<p>A sign reads: "You are in node_modules. Abandon all disk space, ye who enter here." Another, smaller sign reads: "rm -rf leads to room 81."</p>`,
+  description: `<p>You open a door and fall into a directory structure so deep that light itself gives up trying to reach the bottom. The air down here is different — stale, warm, pressurized by the sheer mass of JavaScript that surrounds you on all sides. It smells like a laptop fan running at maximum RPM: hot plastic, ozone, and the faint sweetness of thermal paste giving up. Folders nest within folders nest within folders, each containing a slightly different version of a package called <em>"is-odd"</em> that somehow requires 47 dependencies of its own, one of which is <em>"is-even,"</em> which depends on <em>"is-odd."</em></p>
+<p>The directory weighs more than the rest of the house combined. You can <em>feel</em> the weight — the floor sags in the middle, and the walls bow outward like a server rack that someone loaded from the top. A file counter on the wall ticks past 1.2 million and shows no signs of slowing. Somewhere in the depths, a package called <em>"left-pad"</em> holds the entire structure together like a load-bearing jenga block. You find it. It's eleven lines of code. Eleven lines supporting 1.2 million files. It looks exactly as tired as you'd expect.</p>
+<p>A sign reads: <em>"You are in node_modules. Abandon all disk space, ye who enter here."</em> Another, smaller sign — handwritten on the back of a failed npm audit printout — reads: <em>"rm -rf leads to room 81. This is not a solution. This is a different problem."</em></p>`,
   exits: [
     { label: "rm -rf node_modules", target: 81, flavor: "You delete everything. The diamond dependency was load-bearing." },
     { label: "npm install", target: 80, flavor: "You reinstall. Somehow there are now MORE packages." },
@@ -1876,9 +1874,9 @@ const ROOMS = {
 },
 84: {
   id: 84, title: "The Blockchain Room",
-  description: `<p>Every action you take in this room is recorded on an immutable, distributed ledger that is replicated across seventeen thousand nodes, none of which are in the same jurisdiction. Moving a chair requires consensus from 51% of participants and takes forty minutes. The electricity bill for this room alone could power a small country.</p>
-<p>A whitepaper on the desk describes a revolutionary new system for tracking room visits that is "like a regular database, but slower, more expensive, and nobody can fix mistakes." It has raised forty million dollars in funding.</p>
-<p>The room's NFT — a pixelated drawing of the room itself — is displayed in a frame worth more than the art. Below it, etched in the immutable ledger: "The genesis block points to room 1."</p>`,
+  description: `<p>Every action you take in this room is recorded on an immutable, distributed ledger that is replicated across seventeen thousand nodes, none of which are in the same jurisdiction. Moving a chair requires consensus from 51% of participants and takes forty minutes. You moved a chair. You are now waiting for consensus. The chair has not moved. You have been standing with your hands on the chair for forty minutes. The electricity bill for this chair alone could power a small country.</p>
+<p>The room smells like ozone and burned venture capital. A whitepaper on the desk — ring-bound, sixty pages, illustrated with diagrams that use the word "trustless" the way a menu uses the word "artisanal" — describes a revolutionary new system for tracking room visits that is <em>"like a regular database, but slower, more expensive, and nobody can fix mistakes."</em> It has raised forty million dollars in funding. The desk it sits on cost ninety dollars at IKEA. The ratio tells you everything you need to know about where the money went.</p>
+<p>The room's NFT — a pixelated drawing of the room itself — is displayed in a frame worth more than the art, which is worth more than the room, which is worth more than the house, on paper, in a market that no longer exists. Someone has scratched into the frame: <em>"The genesis block points to room 1. The genesis block has always pointed to room 1. Every chain starts from the same place. We just made it slower to get there."</em></p>`,
   exits: [
     { label: "Follow the genesis block", target: 1, flavor: "You trace the chain back to the very first block" },
     { label: "Mint yourself as an NFT", target: 60, flavor: "You become a non-fungible token. You are now worth nothing and everything." },
@@ -1978,10 +1976,10 @@ const ROOMS = {
 <p>A guitar hangs on the wall, its six strings humming in sympathy. The lowest string, tuned to E2 at 82.4 Hz, buzzes against the room's resonance. A luthier's note pinned to the headstock reads: "Six strings, six paths, the next harmonic resolution. Fate's sixth thread leads to the fundamental." The room's frequency wants to resolve downward, toward something simpler, something with fewer vibrations.</p>
 <p>A spectrum analyzer on the desk shows the 91 Hz tone decomposing. Its strongest harmonic relationship points to the sixth subharmonic — the frequency you get when you divide by the number of strings.</p>`,
   exits: [
-    { label: "Follow the sixth harmonic", target: 6, flavor: "Six strings. Sixth thread. The frequency resolves to its fundamental." },
-    { label: "Tune to the next octave", target: 82, flavor: "Doubling the frequency creates a circular resonance" },
-    { label: "Dampen all vibrations", target: 60, flavor: "Silence. The null frequency." },
-    { label: "Play the guitar", target: 77, flavor: "You strum all six strings at once. It sorts itself out. Eventually." },
+    { label: "Follow the sixth harmonic", target: 6, flavor: "The sixth harmonic. The subwoofer hums in agreement." },
+    { label: "Tune to the next octave", target: 82, flavor: "The frequency doubles. The waveform is clean." },
+    { label: "Dampen all vibrations", target: 60, flavor: "Silence. A rest in the score. Sometimes rests are intentional." },
+    { label: "Play the guitar", target: 74, flavor: "You strum all six strings at once. It sorts itself out. Eventually." },
     { label: "Check the spectrum analyzer", target: 89, flavor: "The analyzer shows prime frequency components" },
   ],
   hint: "The guitar has six strings. Fate has a sixth thread. The harmonic resolution always points to the fundamental — count the strings.",
@@ -1989,16 +1987,16 @@ const ROOMS = {
 },
 92: {
   id: 92, title: "The Feature Flag Room",
-  description: `<p>Half the room exists and half doesn't. A feature flag controller on the wall shows a dashboard of toggles, each one enabling or disabling a different aspect of reality. "Gravity" is set to true. "Consistent wall color" is set to false, which explains the strobing. "Exit to room 6" is toggled ON, highlighted in green.</p>
-<p>The room's configuration is pulled from a remote server every thirty seconds, which means the furniture occasionally appears, disappears, or transforms into other furniture mid-use. A chair you were about to sit in becomes a cactus. The cactus was not in the original feature spec.</p>
-<p>A rollout percentage slider is set to 100% for the door labeled "6." The product manager has decided you should definitely go there.</p>`,
+  description: `<p>Half the room exists and half doesn't. Not in a metaphorical sense — the east wall is physically present on Tuesdays, Thursdays, and during A/B test cohort B, and physically absent the rest of the time. Today might be Thursday. The wall flickers. A chair you were about to sit in becomes a cactus, then a chair again, then a cactus wearing the chair's upholstery. The configuration is pulled from a remote server every thirty seconds, which means reality has a TTL of thirty seconds, which means nothing in this room stays true long enough to lean on.</p>
+<p>A feature flag controller on the wall shows a dashboard of toggles, each one enabling or disabling a different aspect of the room's physics. <em>"Gravity"</em> is set to true. <em>"Consistent wall color"</em> is set to false, which explains the strobing. <em>"Exit to room 6"</em> is toggled <strong>ON</strong>, highlighted in green, and — crucially — has a rollout percentage of <strong>100%</strong>. Someone has annotated this flag: <em>"Shipped to all users. PM signed off. Do not touch. The last person who toggled this flag off at 2 AM during a deploy caused a P0 that lasted six hours and cost us three customers and one SRE's will to live."</em></p>
+<p>The cactus is back. It's wearing a different upholstery now. The configuration server has opinions about your furniture.</p>`,
   exits: [
-    { label: "Follow the enabled flag", target: 6, flavor: "The flag is ON. The PM is right for once." },
+    { label: "Follow the enabled flag", target: 6, flavor: "The flag is ON at 100%. The PM is right for once." },
     { label: "Toggle everything off", target: 60, flavor: "Without feature flags, nothing exists. Welcome to null." },
     { label: "Request a gradual rollout", target: 79, flavor: "You A/B test the exit instead of taking it" },
     { label: "Check the flag configuration", target: 93, flavor: "The monitoring dashboard shows flag status" },
   ],
-  hint: "The feature flag is enabled at 100%. Sometimes the simplest signal is the right one.",
+  hint: "The feature flag is enabled at 100%. The annotation warns against touching it. Sometimes the simplest signal is the right one.",
   correct: 6,
 },
 93: {
@@ -2030,45 +2028,58 @@ const ROOMS = {
   correct: 1,
 },
 95: {
-  id: 95, title: "The Xanth Crossroads",
-  description: `<p>You stand at an intersection where every path is a pun so groan-worthy that the trees themselves appear to be wincing. A signpost in the center has arms pointing in four directions, each one a magical wordplay that would make a centaur weep. The air smells of talent and bad decisions.</p>
-<p>A small dragon perches on the signpost, its talent apparently being the ability to generate puns at a rate of thirty-three per minute. "Thirty-three," it says proudly. "That's my pun rate. Also the room you should go to. Get it? PUN rate? P-U-N? No? Fine."</p>
-<p>The crossroads are planted with shoe trees (actual shoes growing on branches), dogwood trees (the bark is terrible), and a single chess tree (it provides shade, mate). A compass rose grows from the ground, all four petals pointing to room 33.</p>`,
+  id: 95, title: "The Pun Compiler",
+  description: `
+<p>The room is a <strong>build system</strong> whose dependency graph is made entirely of puns. It shouldn't work. It does. You hate that it does. The central build server — a gnarled oak tree growing through the floor — has roots that are literal <em>root directories</em> and branches that fork in ways that would make git weep. Its bark is worse than its byte, as a helpful label informs you, and you take <strong>1d4 psychic damage</strong> just from reading it.</p>
+
+<p>Each branch compiles a different wordplay into a functional exit. The <strong>log files</strong> are actual logs, stacked by the far wall, each one burned with a build timestamp. The most recent log reads: <em>"BUILD 33 — PASSED. All pun tests green. Groan coverage: 98%. One developer quit during review. This is within acceptable parameters."</em></p>
+
+<p>A small dragon — the kind Xanth assigns as a compiler daemon — perches on the <strong>CI/CD pipeline</strong>, which is a physical pipe running through the room. Its magical talent is <strong>continuous integration of wordplay into load-bearing architecture</strong>. "Build 33 always passes," it says, smoke curling from its nostrils. "Thirty-three is the only stable build. Everything else is a flaky test. I would know. I run them."</p>
+
+<p>A <strong>shoe tree</strong> grows from a merge conflict in the corner — actual shoes on actual branches, each pair a different <em>platform</em>. The chess tree next to it provides <em>shade, mate</em>. Both are marked as <strong>transitive dependencies</strong> that nobody remembers adding.</p>`,
   exits: [
-    { label: "Follow the compass rose", target: 33, flavor: "All four petals agree. Thirty-three puns per minute." },
-    { label: "Talk to the dragon", target: 74, flavor: "The dragon's puns lead to the pun room. Obviously." },
-    { label: "Pick a shoe from the shoe tree", target: 90, flavor: "Wrong size. Off by one." },
-    { label: "Sit under the chess tree", target: 96, flavor: "Checkmate. The demon was waiting." },
+    { label: "Deploy build 33", target: 33, flavor: "The only stable build. The dragon stamps it PASSED." },
+    { label: "Inspect the transitive dependencies", target: 74, flavor: "You pull on a shoe tree branch and three new puns fall out" },
+    { label: "Run on a different platform", target: 90, flavor: "Platform mismatch. Off by one shoe size." },
+    { label: "Read the dragon's flaky tests", target: 96, flavor: "The tests pass. The tests fail. The tests pass. The tests bind you in contract." },
   ],
-  hint: "The dragon's pun rate is also navigation advice. All roads here lead to the same number.",
+  hint: "The dragon runs CI/CD and only build 33 passes. The log files confirm it. The shoe tree and chess tree are transitive dependencies — they're noise in the build graph, not destinations. Trust the pipeline.",
   correct: 33,
 },
 96: {
-  id: 96, title: "The Demon's Contract",
-  description: `<p>A demon sits behind a mahogany desk, wearing a three-piece suit and an expression of practiced benevolence. The contract before you is written in 6-point font and extends for approximately forty thousand words, most of which are variations on "the party of the first part hereby agrees to be confused in perpetuity." The demon offers you a pen made from the quill of an angel who failed a code review.</p>
-<p>The interesting clause is on page 237, subsection 20(b): "The signatory shall proceed to room twenty (20), hereafter referred to as 'the destination,' 'the next room,' and 'that place the duck told you about.'"</p>
-<p>The demon smiles. "I assure you, the clause about your soul is entirely standard and not at all worth reading."</p>`,
+  id: 96, title: "The EULA Summoning Circle",
+  description: `
+<p>A summoning circle has been drawn on the floor in laser-printer toner. At its center sits a daemon — the kind with horns, not the kind that runs in the background, though this one does both. It wears a three-piece suit and the expression of a middle manager who has been asked to implement Dark Patterns as a microservice. Before it lies a <strong>forty-thousand-word End User License Agreement</strong> formatted in 6-point Helvetica, because the truly diabolical contracts are the ones with a font-size declaration.</p>
+
+<p>The EULA's key clause is buried on page 237, subsection 20(b): <em>"The Licensee shall navigate to endpoint /room/twenty (20), hereafter referred to as 'the destination,' 'the next room,' and 'that place the CI dragon told you about.' This clause survives termination, bankruptcy, and heat death of the universe."</em> Below it, in a typeface so small it has its own Planck length: <em>"The Licensee's immortal soul is granted as a non-exclusive, perpetual, irrevocable license to the Daemon. This is standard. Do not read this."</em></p>
+
+<p>The daemon taps a pen made from the quill of a phoenix who failed a penetration test. "The EULA is non-negotiable," it says pleasantly. "But I can offer you <strong>Terms of Service</strong> instead, which are identical but with a friendlier font." A Crestron panel on the wall shows this room's AV zone status: <strong>ZONE 96 — SOUL BINDING IN PROGRESS — DO NOT POWER CYCLE</strong>.</p>`,
   exits: [
-    { label: "Sign and proceed to room 20", target: 20, flavor: "Subsection 20(b) is surprisingly helpful for a demonic contract" },
-    { label: "Read the fine print", target: 86, flavor: "The fine print is written in regex. Good luck." },
-    { label: "Negotiate terms", target: 78, flavor: "DEATH is the demon's legal counsel" },
-    { label: "Refuse to sign", target: 84, flavor: "The demon puts the contract on the blockchain instead" },
+    { label: "Accept and navigate to /room/20", target: 20, flavor: "Subsection 20(b). The one useful clause in forty thousand words of obfuscation." },
+    { label: "Read the fine print", target: 86, flavor: "The fine print is in regex. ^(?!.*escape).*$ matches everything here." },
+    { label: "Escalate to the daemon's manager", target: 78, flavor: "DEATH is the daemon's legal counsel, HR department, and deployment target" },
+    { label: "Reject the EULA", target: 84, flavor: "The daemon deploys the contract to the blockchain. It is now immutable and your problem forever." },
   ],
-  hint: "Demonic contracts always have one useful clause buried in the legalese. Page 237, subsection 20(b).",
+  hint: "Every EULA has one useful clause buried in the legalese. This one's on page 237, subsection 20(b). The endpoint is /room/20. The soul clause is 'standard' — which in Xanth means 'a pun on the concept of ownership you'll only get later.'",
   correct: 20,
 },
 97: {
-  id: 97, title: "The Infinite Improbability Room",
-  description: `<p>This room operates on the principle that anything sufficiently improbable will eventually happen, given enough time and a sufficiently hot cup of tea. The furniture rearranges itself every few seconds according to probability distributions that favor the unlikely. A sofa briefly becomes a whale, then a bowl of petunias, then a sofa again but facing the wrong way.</p>
-<p>The Improbability Drive mounted on the wall calculates the odds of you finding the exit as 42 to 1 against. This is, by the standards of this house, remarkably good odds. The Drive helpfully displays: "PROBABILITY OF EXIT VIA ROOM 42: High. PROBABILITY OF EXIT VIA ANY OTHER ROOM: Also yes, but less amusingly."</p>
-<p>A digital readout tracks the improbability field: "Current probability of reaching room 42 from here: 1.0." That's not improbable at all.</p>`,
+  id: 97, title: "The Improbability Load Balancer",
+  description: `
+<p>The room runs on the principle that any request, routed through a sufficiently improbable load balancer, will eventually reach the correct backend — given enough retries and a sufficiently hot cup of tea. The <strong>HAProxy config</strong> rewrites itself every few seconds according to probability distributions that favor the unlikely. A rack-mounted server briefly becomes a whale, then a bowl of petunias, then a server again but running FreeBSD.</p>
+
+<p>The load balancer's dashboard — mounted where a Crestron panel would normally go, if Crestron panels could experience existential doubt — shows traffic distribution across all 200 rooms. Most rooms receive uniform random traffic. <strong>Room 42</strong> receives suspiciously deterministic traffic, with a probability weight of <strong>1.0</strong>, which rather defeats the purpose of probabilistic routing but which the dashboard labels <em>"WORKING AS INTENDED (DON'T TOUCH — D.A.)"</em></p>
+
+<p>A monitoring alert scrolls past: <em>"WARNING: Improbability field at 98%. Server briefly became sentient. Server requested PTO. PTO denied. Server resumed being a server."</em> Below that: <em>"NOTICE: Room 42 health check — status 200. Room 42 always returns 200. Room 42 has never not returned 200. The other rooms return things like 503 and 'a small bewildered duck.' Route to 42."</em></p>
+
+<p>The tea kettle on top of the server rack is the most important piece of infrastructure in the room. Without it, the improbability field collapses and the load balancer just sends you to <code>/dev/null</code>. The kettle has its own UPS.</p>`,
   exits: [
-    { label: "Embrace the probability", target: 42, flavor: "The odds are 1.0 in your favor. Even improbability agrees." },
-    { label: "Increase improbability", target: 69, flavor: "The improbable outcome is ending up somewhere nice" },
-    { label: "Consult the whale", target: 60, flavor: "The whale has ceased to exist. The petunias saw it coming." },
-    { label: "Make tea", target: 98, flavor: "The tea leads to poetry. This is not an improvement." },
+    { label: "Route to the healthy backend", target: 42, flavor: "Weight 1.0. Health check 200. The load balancer is being uncharacteristically direct." },
+    { label: "Enable probabilistic routing", target: 69, flavor: "The improbable outcome is a 503 with a side of whale" },
+    { label: "Query the petunias", target: 60, flavor: "The petunias have opinions about the routing table. None of them are helpful." },
+    { label: "Brew the tea", target: 98, flavor: "The tea stabilizes the improbability field. The poetry it produces does not." },
   ],
-  hint: "When the Improbability Drive gives you 1.0 probability, the universe is being uncharacteristically direct.",
+  hint: "The dashboard shows room 42 with probability weight 1.0 and health status 200. Everything else returns 503 or 'a small bewildered duck.' When the load balancer tells you where to route, listen — especially when it's being this obvious.",
   correct: 42,
 },
 98: {
@@ -2261,121 +2272,124 @@ const ROOMS = {
 
 110: {
   id: 110, title: "The Shortcut",
-  description: `<p>A bright, well-lit corridor. Suspiciously well-lit. The kind of well-lit that a competent architect would design, which should immediately make you distrust it in a house built by madmen and maintained by clockwork. A sign in a cheerful font reads: <strong>"SHORTCUT TO THE END! This way! ---->"</strong></p>
-<p>The floor is smooth. The walls are clean. There is a pleasant smell of fresh paint and unearned confidence. A progress bar on the wall shows <strong>70% COMPLETE</strong>, which is a lie, but an encouraging one. Motivational posters line the hallway featuring stock photos of people high-fiving over laptops.</p>
-<p>A small, easily overlooked plaque at ankle height reads: <em>"This path was constructed in 1923 by the Department of Misdirection. It has never led anywhere. Enjoy the lighting."</em></p>`,
+  description: `<p>A bright, well-lit corridor. Not suspiciously well-lit — genuinely, thoughtfully well-lit, the way a good architect lights a hallway when they want you to feel that someone competent has been here before you. Recessed LEDs at precise intervals. A gentle upward slope suggesting progress. The floor is polished concrete, the kind that costs real money, the kind that says <em>we've raised a Series A.</em></p>
+<p>A sign in a clean sans-serif reads: <strong>"THE DIRECT PATH."</strong> Not a shortcut — it doesn't call itself a shortcut. It calls itself direct. A progress bar on the wall shows <strong>70% COMPLETE</strong>, and unlike the ones in the house's trap rooms, this one is actually rendered in a framework you recognize. It has proper error states. Someone <em>tested</em> this progress bar.</p>
+<p>The architecture here is confident. The walls are plumb. The doors are hung correctly. After a hundred rooms of load-bearing wallpaper and deprecated horses, the craftsmanship alone is seductive. A small, easily overlooked plaque at ankle height reads: <em>"This path was constructed by the Department of Direct Approaches, 1923. Est. completion: ongoing."</em></p>`,
   exits: [
-    { label: "Follow the shortcut: room 111", target: 111, flavor: "The arrow points onward" },
-    { label: "Read the fine print: room 1", target: 1, flavor: "Back to honest architecture" },
-    { label: "Suspicious detour: room 107", target: 107, flavor: "Trust but verify" },
-    { label: "Take the A/B test: room 112", target: 112, flavor: "Variant B looks promising" },
+    { label: "Continue along the direct path", target: 111, flavor: "The lighting adjusts to your walking pace. Tasteful." },
+    { label: "Read the fine print and return to room 1", target: 1, flavor: "Back to honest architecture" },
+    { label: "Take the side corridor", target: 107, flavor: "Trust but verify" },
+    { label: "Skip ahead", target: 112, flavor: "The progress bar jumps to 75%" },
   ],
-  hint: "The ankle plaque says the Department of Misdirection built this. It has never led anywhere. But the lighting IS nice. Go to Room 1 instead.",
+  hint: "The ankle plaque says 'Department of Direct Approaches.' The estimated completion is 'ongoing' — it's never been finished. Go to Room 1 instead.",
   correct: 1,
 },
 
 111: {
-  id: 111, title: "The False Corridor",
-  description: `<p>The corridor continues, somehow even brighter. Sconce lights flicker in a pattern that spells <strong>TRUST US</strong> in Morse code if you happen to know Morse code, which is itself suspicious because why would a trustworthy corridor need to communicate trustworthiness in a military cipher?</p>
-<p>The walls display framed testimonials: <em>"This shortcut saved me hours!" --Definitely A Real Person</em>. <em>"Five stars, would shortcut again!" --Not A Sock Puppet</em>. <em>"I found the exit in just seven rooms!" --The Department of Misdirection</em>. That last one seems like a quality control failure.</p>
-<p>A vending machine offers <strong>CONFIDENCE (50 cents)</strong> and <strong>SUSPICION (free)</strong>. The suspicion slot is empty. Previous visitors took all of it.</p>`,
+  id: 111, title: "The Corridor of Evidence",
+  description: `<p>The corridor widens into something like a gallery. Framed on the walls: screenshots of user testimonials, a TechCrunch article (<em>"This Path Is Disrupting Navigation"</em>), and a photograph of someone shaking hands with a Y Combinator partner. The evidence is real — or real enough. The TechCrunch article has a publication date and a byline. The photograph has a shadow that falls the right direction.</p>
+<p>A whiteboard shows metrics: <em>DAU: 12,000. Retention: 68%. NPS: 72.</em> Good numbers. Not great, but good. The kind of numbers that get you a Series B if you tell the right story about the trend line. Someone has drawn the trend line. It curves upward with the confidence of a hockey stick that has never met winter.</p>
+<p>A vending machine offers <strong>CONFIDENCE ($0.50)</strong> and <strong>DOUBT (free)</strong>. The DOUBT slot is empty. Previous visitors took all of it, and the path continued anyway. The path has survived doubt before. That's what makes it convincing.</p>`,
   exits: [
-    { label: "Press onward: room 112", target: 112, flavor: "The testimonials cheer" },
-    { label: "Turn back: room 110", target: 110, flavor: "Back to the shortcut entrance" },
-    { label: "Emergency exit: room 1", target: 1, flavor: "Through the vending machine" },
-    { label: "Side passage: room 113", target: 113, flavor: "A friendly voice calls" },
+    { label: "Continue through the gallery", target: 112, flavor: "The metrics improve with each step" },
+    { label: "Turn back", target: 110, flavor: "Back to the entrance" },
+    { label: "Emergency exit to room 1", target: 1, flavor: "Through the vending machine, which is bolted to a load-bearing wall" },
+    { label: "Side passage", target: 113, flavor: "A warm voice around the corner" },
   ],
-  hint: "The testimonials are fake. The Department of Misdirection accidentally signed one. The suspicion is free because everyone who came here needed it. Turn back.",
+  hint: "The metrics look real but the trend line is aspirational. The DOUBT was free because everyone needed it. Turn back.",
   correct: 1,
 },
 
 112: {
-  id: 112, title: "The Fake Trophy Room",
-  description: `<p>Identical in layout to the real Trophy Room you may have visited, but the trophies are wrong. <em>"Fastest Completion of the False Path, 2024."</em> <em>"Most Convincing Self-Deception, Ongoing."</em> <em>"Believed the Progress Bar, 1997."</em> A trophy shaped like a participation ribbon reads: <em>"YOU TRIED (the wrong way)."</em></p>
-<p>The progress bar on the wall now reads <strong>85% COMPLETE</strong>. It read 70% two rooms ago. The math suggests you need approximately three more rooms. The math, like the trophies, is fabricated.</p>
-<p>A guest book contains a single entry, written in increasingly shaky handwriting: <em>"I followed this path for forty-seven years. The progress bar always said I was almost there. It always lied. The real trophies are in Room 40. This path has only fake ones. And fake ones are, it turns out, lighter. Because they're hollow."</em></p>`,
+  id: 112, title: "The Trophy Room (Series B)",
+  description: `<p>Trophies line the walls, and they're real trophies — machined brass, engraved dates, weighted bases. <em>"Most Promising Path, 2019."</em> <em>"Best User Experience, Corridor Division, 2021."</em> <em>"Fastest Growing Navigation Solution, Non-Euclidean Category."</em> Someone spent money on these. Someone believed in this path enough to commission awards for it.</p>
+<p>The progress bar on the wall reads <strong>85% COMPLETE</strong>. But — and this is the first wrong thing, the first small thing — the progress bar stuttered. Just for a moment. It jumped from 84 to 85 and then back to 84 and then to 85 again, the way a progress bar does when it's interpolating between an API that has stopped responding and a frontend that hasn't noticed yet.</p>
+<p>A guest book contains a single long entry, written in handwriting that starts neat and ends shaky: <em>"I followed this path because it felt real. The trophies are real. The metrics were real. The lighting was real. But real things can still lead nowhere. I've been walking for — I don't know how long. The trophies got heavier. I started checking the bases. 'Most Promising' isn't the same as 'Delivered.' 'Fastest Growing' isn't the same as 'Arrived.' I think — I think the path is real. I think the path just doesn't end."</em></p>`,
   exits: [
-    { label: "Continue the lie: room 113", target: 113, flavor: "The progress bar ticks upward" },
-    { label: "Accept the truth: room 1", target: 1, flavor: "The fake trophies watch" },
-    { label: "Back to the corridor: room 111", target: 111, flavor: "Retracing false steps" },
-    { label: "Seek real trophies: room 104", target: 104, flavor: "Where tests are honest" },
+    { label: "Continue despite the stutter", target: 113, flavor: "The progress bar stabilizes. Probably." },
+    { label: "Accept the truth and go to room 1", target: 1, flavor: "You set the guest book down gently" },
+    { label: "Back to the gallery", target: 111, flavor: "The metrics still look good from here" },
+    { label: "Seek real trophies", target: 104, flavor: "Where tests are honest" },
   ],
-  hint: "The trophies are hollow. The progress bar is a liar. Forty-seven years, one guest book entry. Go to Room 1 before you become the second entry.",
+  hint: "The trophies are real but the adjectives are wrong. 'Most Promising' isn't 'Delivered.' The progress bar stuttered. The guest book writer saw it too. Go to Room 1.",
   correct: 1,
 },
 
 113: {
-  id: 113, title: "The Helpful Guide",
-  description: `<p>A figure stands in the center of this room, beaming with the radiant, uncomplicated joy of a golden retriever who has just learned to talk. <em>"Welcome, traveler!"</em> it says. <em>"You're SO close to the end! Just a few more rooms! I'm here to HELP!"</em> It gestures enthusiastically toward the next door. Its smile never wavers. Its eyes never blink.</p>
-<p>The guide wears a name tag: <strong>HI, MY NAME IS DEFINITELY NOT A TRAP</strong>. Its shoes are nailed to the floor. It cannot follow you, which raises the question of why it was designed to look like it could. A pamphlet on its podium reads: <em>"Helpful Guide v3.2. Known issues: too cheerful, uncanny valley smile, occasionally achieves sentience and becomes despondent."</em></p>
-<p>Behind the guide, barely visible, a service door is labeled: <em>"MAINTENANCE: Room 1. For when the guide stops smiling."</em></p>`,
+  id: 113, title: "The Founder's Office",
+  description: `<p>Not a guide. Not a cheerful automaton. A person. Or something that was a person once and has since been polished into a role. They sit behind a standing desk — the kind that costs $2,000 and adjusts with a motor — and they are genuinely, visibly glad to see you. <em>"You made it this far,"</em> they say, and the warmth in their voice is not performed. <em>"Most people turn back at the trophies."</em></p>
+<p>The office is beautiful. Exposed brick. A whiteboard covered in a roadmap that extends three quarters forward — detailed, interconnected, color-coded by quarter. The remaining quarter is blank. Not erased. Just never filled in. A monitor shows a dashboard of real-time path analytics, and the numbers are declining, but slowly, the way numbers decline when nobody's looking at them anymore.</p>
+<p>The founder leans forward. <em>"We built this path because the house needed a better option. Shorter. Cleaner. We raised the money. We hired the architects. The progress bar is real — it measures actual distance traveled. You ARE closer to the end than when you started."</em> They pause. <em>"It's just — the end isn't connected to anything. We ran out of runway before we could connect it. The garden is on the other side of a wall we never broke through."</em></p>
+<p>Behind them, barely visible, a service door labeled: <em>"MAINTENANCE: Room 1. For when the path runs out."</em></p>`,
   exits: [
-    { label: "Trust the guide: room 114", target: 114, flavor: "The guide claps with delight" },
-    { label: "Use the maintenance door: room 1", target: 1, flavor: "The guide's smile flickers" },
-    { label: "Back away slowly: room 112", target: 112, flavor: "It watches you retreat" },
-    { label: "Ask the guide hard questions: room 117", target: 117, flavor: "Its smile becomes strained" },
+    { label: "Trust the founder: continue to room 114", target: 114, flavor: "They believe. You can see that they believe." },
+    { label: "Use the maintenance door to room 1", target: 1, flavor: "The founder watches you go. They've seen this before." },
+    { label: "Back to the trophies", target: 112, flavor: "The progress bar drops back to 84%" },
+    { label: "Ask hard questions", target: 117, flavor: "The roadmap's blank quarter. The declining numbers. The wall." },
   ],
-  hint: "The name tag says DEFINITELY NOT A TRAP. The pamphlet lists 'too cheerful' as a known issue. Shoes nailed to the floor. Use the maintenance door to Room 1.",
+  hint: "The founder is honest — the progress bar is real, but the path doesn't connect to anything. They ran out of runway. Use the maintenance door to Room 1.",
   correct: 1,
 },
 
 114: {
-  id: 114, title: "The Easy Puzzle",
-  description: `<p>A single pedestal. A single question. Etched in gold leaf on a marble tablet: <strong>"What is 2 + 2?"</strong> Four doors surround you, labeled <strong>3</strong>, <strong>4</strong>, <strong>5</strong>, and <strong>BANANA</strong>. The answer is obviously 4. The answer being obviously 4 is itself the puzzle, because nothing in this house has ever been obvious, and the sudden appearance of obviousness should terrify you.</p>
-<p>Fine print on the tablet's reverse side: <em>"If you answered 4, congratulations! You are correct! You are also exactly where the Department of Misdirection wants you! The real puzzles in this house involve prime numbers, Fibonacci sequences, and a stuffed door. This puzzle involves addition a child could do. Draw your own conclusions."</em></p>
-<p>The door labeled BANANA has a note: <em>"This door goes nowhere. But neither do the others. At least this one is honest."</em></p>`,
+  id: 114, title: "The Pivot",
+  description: `<p>The corridor changes. Not dramatically — the lighting is still good, the floor still polished — but the walls are a different color now, and the signage has been updated in a font that doesn't quite match the original. A banner reads: <strong>"THE DIRECT PATH 2.0 — NOW WITH ROOMS."</strong> The word "rooms" has been added in a slightly bolder weight, the way product teams add features to a thing that was supposed to work without them.</p>
+<p>Where the original path was a corridor, this section has doors. Three of them, leading to small chambers that contain furniture and decorations and what appears to be genuine effort. But the chambers are disconnected from each other. You can enter them and leave them, but they don't go <em>anywhere</em>. They're demo rooms. Furnished model units in a building where the plumbing was never connected.</p>
+<p>Fine print on one of the chamber doors: <em>"This room was added during the Series C pivot when the board asked why a path needed rooms. It didn't. But the board wanted rooms, so the path got rooms, and the rooms don't connect to the path, and the path still doesn't connect to the exit. Two problems now. The original team quit after the pivot. The replacement team built rooms."</em></p>
+<p>The progress bar reads <strong>91% COMPLETE</strong>. You notice, for the first time, that it hasn't been incrementing by a consistent amount.</p>`,
   exits: [
-    { label: "Door 4 (the obvious answer)", target: 115, flavor: "Obviously correct" },
-    { label: "Door 3 (wrong on purpose)", target: 1, flavor: "Sometimes wrong is right" },
-    { label: "Door BANANA", target: 1, flavor: "At least it's honest" },
-    { label: "Refuse to answer: room 112", target: 112, flavor: "The tablet sighs" },
+    { label: "Press forward", target: 115, flavor: "The font changes again. Third rebrand." },
+    { label: "Go back to room 1", target: 1, flavor: "Through a fire exit that someone propped open with a disconnected demo room's chair" },
+    { label: "Back to the founder", target: 112, flavor: "The trophies feel different now" },
+    { label: "Examine the demo rooms", target: 1, flavor: "Each one has a door back to room 1 that the demo team forgot to remove" },
   ],
-  hint: "The puzzle is too easy. Real puzzles in this house are harder. Door 3 or BANANA both reach Room 1, which is where you actually need to be. The obvious answer is the trap.",
+  hint: "The pivot added features the path didn't need and lost the team that could have finished it. The progress bar isn't incrementing consistently. Go to Room 1.",
   correct: 1,
 },
 
 115: {
-  id: 115, title: "The Countdown",
-  description: `<p>A room dominated by an enormous progress bar projected on the far wall. It reads <strong>95% COMPLETE</strong> and is slowly, almost imperceptibly, ticking upward. Confetti cannons are mounted in the ceiling. A banner reads <strong>"CONGRATULATIONS!"</strong> but the exclamation mark is drooping, as if even the punctuation has lost faith.</p>
-<p>A monitor shows estimated time to completion: <strong>2 minutes</strong>. You wait two minutes. It now reads: <strong>2 minutes</strong>. You wait five more. <strong>2 minutes</strong>. Zeno's progress bar. It will approach 100% but never arrive, like a software project's "last 10%" consuming 90% of the calendar.</p>
-<p>Scratched into the monitor's bezel: <em>"The progress bar lied. The confetti never fires. I waited eleven years. Room 1 is the only real progress. --Visitor #31, 1962"</em></p>`,
+  id: 115, title: "The Runway",
+  description: `<p>The corridor narrows. The lighting is still good — someone is still paying the electric bill — but the polished concrete has hairline cracks now, and the walls show patches where something was mounted and removed. Frames with no pictures. Hooks with no signs. The path has been furnished and unfurnished and furnished again so many times that the nail holes form a stratigraphy of optimism.</p>
+<p>A progress bar on the wall reads <strong>95% COMPLETE</strong> and is, as far as you can tell, accurate. You are genuinely close to the end of the path. The problem is not the distance remaining. The problem is what's at the end of the distance. You can feel it now — not a door, not an exit, not even a wall yet, but the <em>absence</em> of what should be there, the way you can feel the edge of a table in the dark before your hip finds it.</p>
+<p>A burn-down chart on the wall shows runway remaining. The line touches zero at a point labeled <em>"Room 117."</em> Someone has annotated it: <em>"We had two more rooms of budget. We needed four more rooms of tunnel. The math was never going to work. The progress bar was telling the truth — we were 95% of the way there. The last 5% was the part that required breaking through to the garden. We never broke through."</em></p>
+<p>Scratched into a bare patch of wall, in handwriting you recognize from the guest book three rooms back: <em>"Room 1 is the only real progress. I should have known when the font changed. —Visitor #31, 1962"</em></p>`,
   exits: [
-    { label: "Wait for 100%: room 116", target: 116, flavor: "96%... 97%... surely..." },
-    { label: "Abandon the progress bar: room 1", target: 1, flavor: "Real progress requires leaving" },
-    { label: "Reboot: room 110", target: 110, flavor: "Maybe the shortcut works this time" },
-    { label: "Check the confetti cannons: room 117", target: 117, flavor: "They're not loaded" },
+    { label: "See the end of the runway", target: 116, flavor: "Two more rooms. Then nothing." },
+    { label: "Abandon the path for room 1", target: 1, flavor: "Real progress requires leaving" },
+    { label: "Back to the pivot", target: 110, flavor: "Maybe it works differently this time" },
+    { label: "Check the burn-down chart closer", target: 117, flavor: "The line hits zero. You follow it." },
   ],
-  hint: "Visitor #31 waited eleven years. The progress bar is Zeno's paradox with a UI. Go to Room 1. That's real progress.",
+  hint: "Visitor #31 waited since 1962. The burn-down chart shows zero runway at room 117. The path is 95% complete but the last 5% was never funded. Go to Room 1.",
   correct: 1,
 },
 
 116: {
   id: 116, title: "The Almost Room",
-  description: `<p>The progress bar reads <strong>99%</strong>. You can taste the confetti. The banner now reads <strong>"ALMOST THERE!"</strong> The floor feels solid beneath your feet. The exit door ahead is large, ornate, gilded, and labeled <strong>"THE END."</strong> You reach for the handle.</p>
-<p>The floor is painted on the void. There is no floor. There has never been a floor. You are standing on a glass plate suspended over an abyss of pure, weaponized disappointment. The gilded door is a mural. The progress bar is a screensaver. The confetti cannons, upon inspection, contain only a note: <em>"THERE IS NO CONFETTI. THERE WAS NEVER CONFETTI."</em></p>
-<p>A service ladder descends into the void. Its rungs are labeled: <strong>117, 115, 110, 1</strong>. The last rung, Room 1, glows faintly. The void whispers: <em>"You were warned about the progress bar."</em></p>`,
+  description: `<p>The progress bar reads <strong>99%</strong>.</p>
+<p>And you can see it. Through a window in the wall — a real window, not a mural, not a trick — you can see the garden. The apple tree. The bench. The fountain. Sunlight on grass. It's right there. It's <em>ten feet away</em>. The window is floor-to-ceiling and the glass is thin and the garden is so close you can hear the fountain murmuring and you can smell the cut grass and the roses and you press your hand against the glass and it is warm from the sun.</p>
+<p>The glass does not break. You already knew it wouldn't. The path runs parallel to the garden for the length of this room — maybe thirty feet — and the garden is right there the entire time, separated by glass that is structural and permanent and was installed before the path was built, which means the architect <em>knew</em>. The architect knew the path would come this close and no closer.</p>
+<p>A service ladder descends through the floor. Its rungs are labeled: <strong>117, 115, 110, 1</strong>. The last rung, Room 1, glows faintly. The garden continues on the other side of the glass. A single fallen apple rests against the base of the window, on the garden side, close enough to touch if there were no glass. There is glass.</p>`,
   exits: [
-    { label: "Descend to room 117", target: 117, flavor: "One rung down" },
-    { label: "Climb back to room 115", target: 115, flavor: "The bar still says 95%" },
-    { label: "Leap to room 1", target: 1, flavor: "The void respects your choice" },
-    { label: "Reach for the painted door: room 110", target: 110, flavor: "It's a mural. You know this." },
+    { label: "Descend to the end of the path", target: 117, flavor: "One rung down. The garden disappears from view." },
+    { label: "Climb back to room 115", target: 115, flavor: "The burn-down chart. The font change. The signs." },
+    { label: "Leap to room 1", target: 1, flavor: "The ladder's last rung glows" },
+    { label: "Return to the beginning of the path", target: 110, flavor: "The lighting is the same. It was always the same." },
   ],
-  hint: "The floor is painted on nothing. The door is a mural. The confetti was always a lie. Room 1 is the real floor. Go there.",
+  hint: "The garden is real. The glass is real. You can't get there from here. Room 1 is where the real path to the garden begins.",
   correct: 1,
 },
 
 117: {
   id: 117, title: "The Dead End",
-  description: `<p>A wall. Just a wall. Brick, mortar, absolutely no door. Painted on this wall, in letters three feet tall, in a font that somehow conveys both finality and mild amusement:</p>
-<p><strong>"THERE IS NO SHORTCUT."</strong></p>
-<p>Below it, smaller: <em>"The path through the Clockwork House was never meant to be short. It was meant to be correct. Room 1 is where correct begins. You followed a false path built by the Department of Misdirection in 1923. It has never led anywhere except here. Here is a wall. The wall is real. The shortcut was not."</em></p>
-<p>A single bench sits before the wall. On it, a guest book. Every entry is the same word: <em>"Oh."</em> Hundreds of them. Page after page of "Oh." The collective disappointment of a century of guests who believed in a progress bar.</p>`,
+  description: `<p>A wall. Just a wall. Brick, mortar, absolutely no door. The bricks are old — older than the path, older than the house, the kind of masonry that was here before anyone decided to build a corridor toward it. The path didn't hit a wall. The path was always <em>aimed</em> at a wall. The wall was the destination. Nobody checked.</p>
+<p>You put your hand on it. The bricks are cold. On the other side of this wall, if the architecture is right, is the garden. The same garden you saw through the glass one room back. The apple tree. The bench. The fountain. Thirty inches of brick and mortar between you and where you need to be, and no amount of progress bars or Series C pivots or confident lighting will move them.</p>
+<p>A single bench sits before the wall. On it, a guest book. The entries are different from each other — different handwriting, different years, different lengths — but they all arrive at the same place. <em>"It was real. The path was real. It just didn't go all the way."</em> And: <em>"Built by people who believed in it. Maintained by people who couldn't let go. Walked by people who needed it to work."</em> And, in the newest entry, in ink that's barely dry: <em>"The path through the Clockwork House was never meant to be short. It was meant to be correct. Room 1 is where correct begins."</em></p>`,
   exits: [
-    { label: "Accept the wall: room 1", target: 1, flavor: "The only way is back to the beginning" },
-    { label: "Check behind the bench: room 110", target: 110, flavor: "The shortcut entrance again" },
-    { label: "Sit and reflect: room 118", target: 118, flavor: "The bench is comfortable, at least" },
+    { label: "Accept the wall and return to room 1", target: 1, flavor: "The only way through is around. The long way. The correct way." },
+    { label: "Back to the almost room", target: 110, flavor: "The path entrance again" },
+    { label: "Sit and reflect", target: 118, flavor: "The bench is comfortable, at least" },
   ],
-  hint: "THERE IS NO SHORTCUT. It's written on the wall. The guest book agrees. A century of 'Oh.' Room 1. Start over. Do it right.",
+  hint: "The wall was always here. The path was built toward it. Room 1 is where the correct path begins. Start over. Do it right.",
   correct: 1,
 },
 
@@ -2530,11 +2544,11 @@ const ROOMS = {
 <p>A chessboard sits on the main console, its <strong>64 squares</strong> each representing a room. The square for Room 64 glows amber. A sysadmin's log is open: <em>"All roads on localhost lead to 64. The architecture demands it. 64-bit pointers, 64 squares on the board, the N64 cartridge slot in Server Rack 7 (don't ask). Route the guest to 64."</em></p>
 <p>An old Nintendo 64 is plugged into Rack 7. Its screen displays: <em>"It's dangerous to go alone. Take this route: Room 64."</em> The controller has one joystick, pointed firmly at the door marked <strong>64</strong>.</p>`,
   exits: [
-    { label: "Route to room 64", target: 64, flavor: "64 bits of resolution" },
-    { label: "Loopback to room 127", target: 127, flavor: "localhost loops to localhost" },
-    { label: "Ping room 128", target: 128, flavor: "One hop away" },
+    { label: "Route to room 64", target: 64, flavor: "The sysadmin left a process running here" },
+    { label: "Loopback to room 127", target: 127, flavor: "The network interface resets. You arrive where you left." },
+    { label: "Ping room 129", target: 129, flavor: "The packet crosses the boundary. One hop out." },
     { label: "Traceroute to room 1", target: 1, flavor: "14 hops through the house" },
-    { label: "SSH to room 123", target: 123, flavor: "Back to the magic number" },
+    { label: "SSH to room 123", target: 123, flavor: "Port 22 accepts the connection" },
   ],
   hint: "Everything in this room is 64. The RAM, the cores, the PID, the chessboard squares, the N64. Room 64 is the next move. The architecture demands it.",
   correct: 64,
@@ -2546,11 +2560,11 @@ const ROOMS = {
 <p>A network engineer's workstation dominates the room. Every monitor displays packet captures, and every packet is destined for <strong>port 53</strong>--the DNS port. The universal resolver. A Wireshark filter reads: <code>udp.port == 53</code>. A Post-it on the primary monitor: <em>"All names resolve through port 53. All rooms resolve through Room 53. DNS is the phonebook of the internet. Room 53 is the phonebook of the house."</em></p>
 <p>A mathematical proof is chalked on a blackboard: <em>"The 16th prime number is 53. 128 = 2^7. The 7th bit overflows to the next prime. QED: Room 53."</em> A painting on the far wall depicts a sunset at precisely <strong>5:03 PM</strong>. Subtle. Almost.</p>`,
   exits: [
-    { label: "Resolve to room 53", target: 53, flavor: "DNS query successful" },
+    { label: "Resolve to room 53", target: 53, flavor: "The packet routes through three hops" },
     { label: "Underflow to room 127", target: 127, flavor: "Back below the boundary" },
-    { label: "NXDOMAIN: room 119", target: 119, flavor: "Name not found" },
-    { label: "Flush cache: room 1", target: 1, flavor: "Start the resolution over" },
-    { label: "Recursive query: room 140", target: 140, flavor: "Ask another resolver" },
+    { label: "Query room 119", target: 119, flavor: "An alternate nameserver responds" },
+    { label: "Flush cache: room 1", target: 1, flavor: "The cache clears. A clean slate." },
+    { label: "Recursive query: room 140", target: 140, flavor: "Another resolver picks up the query" },
   ],
   hint: "Port 53 is DNS. The 16th prime is 53. The sunset reads 5:03. The packet captures all point to 53. Room 53. Resolve.",
   correct: 53,
@@ -2562,9 +2576,9 @@ const ROOMS = {
 <p>A painting above the mantelpiece depicts a sunset. The clock in the painting reads <strong>7:07 PM</strong>. Beside the fireplace, an antique slot machine with three reels, each frozen on <strong>7</strong>. <em>7-7-7.</em> Jackpot. A botanist's sketch on the desk shows a sunflower with <strong>7 spirals</strong>, each containing <strong>11 seeds</strong>. A calculator beside it displays: <strong>7 x 11 = 77</strong>.</p>
 <p>The golden spirals on the ceiling converge on a single point directly above the door marked <strong>77</strong>. A plaque on that door: <em>"The spiral ends. The prime begins. 77 is the product of the only two primes that matter right now."</em></p>`,
   exits: [
-    { label: "Follow the spiral: room 77", target: 77, flavor: "The golden ratio approves" },
-    { label: "Previous Fibonacci: room 89", target: 89, flavor: "One step back in the sequence" },
-    { label: "The slot machine pays out: room 1", target: 1, flavor: "House always wins" },
+    { label: "Follow the spiral: room 77", target: 77, flavor: "The spiral tightens. The next chamber is smaller." },
+    { label: "Previous Fibonacci: room 89", target: 89, flavor: "Eighty-nine. The number before this one. The sequence remembers." },
+    { label: "The slot machine pays out: room 1", target: 1, flavor: "Three lemons. The machine clatters." },
     { label: "Count sunflower seeds: room 143", target: 143, flavor: "Back to the tree" },
     { label: "Dolphin language door: room 119", target: 119, flavor: "Null coordinates" },
   ],
@@ -2593,9 +2607,9 @@ const ROOMS = {
 
 130: {
   id: 130, title: "The Monolith",
-  description: `<p>A single, enormous block of code--carved in stone, naturally--dominates the room. It's a monolithic architecture in the most literal sense: one function, four thousand lines, no abstractions, no separation of concerns, and a comment at the top that reads <code>// TODO: refactor this someday</code> dated 1847. Someday has not arrived.</p>
-<p>The monolith's code, if you squint past the nested if-statements (seventeen levels deep), eventually resolves to a single return value: <strong>33</strong>. A post-it on the stone: <em>"This monolith does one thing: it tells you to go to Room 33. It takes 4,000 lines to do it. A microservice could do it in one. But the monolith was here first, and the monolith will be here last."</em></p>
-<p>The stone hums. The monolith is, against all architectural best practices, still running in production.</p>`,
+  description: `<p>A single, enormous block of code — carved in stone, naturally — dominates the room. It's a monolithic architecture in the most literal sense: one function, four thousand lines, no abstractions, no separation of concerns, and a comment at the top that reads <code>// TODO: refactor this someday</code> dated 1847. Someday has not arrived. Someday has sent its regrets. Someday is in a yurt in Mongolia with the maintainer of Package D.</p>
+<p>The stone hums. You press your palm against it and feel the vibration of four thousand lines executing in sequence — no parallelism, no caching, just raw serial computation grinding through nested if-statements seventeen levels deep. The indentation alone has carved grooves into the stone face, deepening over the centuries the way water carves sandstone, if water were written in Java and sandstone had opinions about whitespace. You trace the logic. It starts with a variable declaration. It ends, four thousand lines later, with <strong>return 33</strong>.</p>
+<p>A post-it note on the stone, curling at the edges: <em>"This monolith does one thing: it tells you to go to Room 33. It takes 4,000 lines to do it. A microservice could do it in one. But the monolith was here first, and the monolith will be here last. Nobody can prove which 3,999 lines are unnecessary, so nobody removes any of them. This is how cathedrals are maintained."</em></p>`,
   exits: [
     { label: "return 33", target: 33, flavor: "The monolith's one job" },
     { label: "Refactor: room 134", target: 134, flavor: "Extract a factory" },
@@ -3117,7 +3131,7 @@ const ROOMS = {
 
 <p>An incident commander—a stern brass automaton with a clipboard—reads aloud: <em>"Root cause: player did not follow the clues. Contributing factors: curiosity, poor impulse control, insufficient towel preparedness. Resolution: return to room 1 and start over."</em></p>
 
-<p>Action items are listed on a sticky note wall. Item 1: <em>"Return to room 1."</em> Item 2: <em>"Follow the clues this time."</em> Item 3: <em>"Bring a towel."</em> Item 4: <em>"Do not pet the chaos monkey."</em> All items are assigned to you. All are overdue.</p>
+<p>Action items are listed on a sticky note wall. Item 1: <em>"Return to room 1."</em> Item 2: <em>"Follow the clues this time."</em> Item 3: <em>"Trust the animals over the signs."</em> Item 4: <em>"Do not pet the chaos monkey."</em> All items are assigned to you. All are overdue.</p>
   `,
   exits: [
     { label: "Accept the action items to room 1", target: 1, flavor: "The incident commander nods" },
@@ -3257,10 +3271,10 @@ const ROOMS = {
 <p>Through a crack in the obsidian, you glimpse something impossible—Fate's tapestry, woven from every path through every room. Thousands of threads, most ending in knots and dead ends. But one thread, the one you're holding, runs gold. It reaches its 20th room at the door ahead. The door is plain oak, unadorned, and reads simply: <strong>"200."</strong></p>
   `,
   exits: [
-    { label: "The plain door marked 200", target: 200, flavor: "HTTP 200 OK" },
-    { label: "Back to room 45", target: 45, flavor: "Not yet—but you're ready" },
-    { label: "Examine the tapestry closer to room 182", target: 182, flavor: "Fate doesn't appreciate peeking" },
-    { label: "Follow the chalk equation to room 193", target: 193, flavor: "The math is right but the path is wrong" },
+    { label: "The plain door marked 200", target: 200, flavor: "The handle turns without resistance" },
+    { label: "Back to room 45", target: 45, flavor: "The living door is still breathing behind you" },
+    { label: "Examine the tapestry closer to room 182", target: 182, flavor: "The golden thread is woven into a pattern you almost recognize" },
+    { label: "Follow the chalk equation to room 193", target: 193, flavor: "The equation balances. The corridor continues." },
   ],
   hint: "200 floor tiles. HTTP 200 OK on the screen. The door reads 200. The golden thread reaches its 20th room there. Ignore the chalk equation—169 + 31 = 200 is math, not navigation. The answer is 200.",
   correct: 200,
@@ -3858,9 +3872,9 @@ const ROOMS = {
 
 <p><em>The house will miss you. It doesn't get many visitors who find all twenty doors. Most get lost around room 33 and end up arguing with the typewriter until the heat death of the universe.</em></p>
 
-<p><em>Keep the key. Keep the towel. You're a hoopy frood who really knows where their towel is."</em></p>
+<p><em>Keep the key. You earned it the hard way — the correct way. Every room, every wrong turn, every moment you trusted the glass over the horse, it brought you here."</em></p>
 
-<p>Behind you, the plain oak door of the Final Corridor closes softly. A single leaf falls from the apple tree into your glass. The fountain adjusts its murmur to something that sounds, improbably, like <em>"so long, and thanks for all the rooms."</em></p>
+<p>Behind you, the plain oak door of the Final Corridor closes softly. A single leaf falls from the apple tree into your glass. The fountain adjusts its murmur to something that sounds, improbably, like gratitude.</p>
 
 <p><strong>You have escaped the Clockwork House.</strong></p>
   `,
