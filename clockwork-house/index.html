@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Clockwork House</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0a0a0c;
+    --surface: #131318;
+    --surface-raised: #1a1a22;
+    --border: #2a2a35;
+    --border-light: #3a3a48;
+    --text: #c8c5d0;
+    --text-dim: #7a7888;
+    --text-bright: #e8e6f0;
+    --accent: #9b8ec4;
+    --accent-dim: #6b5f94;
+    --danger: #c45858;
+    --success: #5a9b6b;
+    --gold: #c4a84e;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Crimson Text', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.7;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #game-container {
+    max-width: 680px;
+    width: 100%;
+    padding: 2rem 1.5rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* --- Header --- */
+  #header {
+    text-align: center;
+    padding: 1rem 0 0.5rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 1.5rem;
+  }
+
+  #header h1 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  #stats-bar {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 0.5rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+  }
+
+  #stats-bar span { opacity: 0.7; }
+
+  /* --- Room --- */
+  #room-display {
+    flex: 1;
+    opacity: 1;
+    transition: opacity 0.4s ease;
+  }
+
+  #room-display.fade-out { opacity: 0; }
+
+  #room-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--accent-dim);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.25rem;
+  }
+
+  #room-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--text-bright);
+    margin-bottom: 1.25rem;
+    line-height: 1.3;
+  }
+
+  #room-description {
+    margin-bottom: 2rem;
+    white-space: pre-line;
+  }
+
+  #room-description p {
+    margin-bottom: 1em;
+    color: var(--text);
+  }
+
+  #room-description em {
+    color: var(--text-dim);
+    font-style: italic;
+  }
+
+  #room-description strong {
+    color: var(--text-bright);
+    font-weight: 600;
+  }
+
+  /* --- Exits --- */
+  #exits-section {
+    margin-top: auto;
+    padding-top: 1.5rem;
+  }
+
+  #exits-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  #exits {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .exit-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'Crimson Text', Georgia, serif;
+    font-size: 1rem;
+    padding: 0.8rem 1.2rem;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .exit-btn:hover {
+    background: var(--surface-raised);
+    border-color: var(--border-light);
+    color: var(--text-bright);
+  }
+
+  .exit-btn:active {
+    transform: translateY(1px);
+  }
+
+  .exit-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--accent);
+    min-width: 1.8rem;
+    text-align: center;
+    opacity: 0.8;
+  }
+
+  .exit-text { flex: 1; }
+
+  .exit-visited {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--text-dim);
+    opacity: 0.5;
+  }
+
+  /* --- Footer controls --- */
+  #controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    border-top: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+  }
+
+  .ctrl-buttons {
+    display: flex;
+    gap: 0.4rem;
+  }
+
+  #controls button {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    padding: 0.4rem 0.8rem;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    transition: all 0.2s ease;
+  }
+
+  #controls button:hover {
+    border-color: var(--border-light);
+    color: var(--text);
+  }
+
+  #path-display {
+    color: var(--text-dim);
+    opacity: 0.6;
+    max-width: 45%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* --- Overlays --- */
+  .overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.82);
+    z-index: 100;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .overlay.visible { display: flex; }
+
+  .overlay-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    max-width: 520px;
+    width: 90%;
+    padding: 2rem;
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+
+  .overlay-box h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .overlay-box button {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    padding: 0.4rem 1rem;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+  }
+
+  .overlay-box button:hover {
+    border-color: var(--border-light);
+    color: var(--text);
+  }
+
+  #hint-box h3 { color: var(--gold); }
+  #map-box h3 { color: var(--accent); }
+
+  #hint-text {
+    color: var(--text);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+  }
+
+  /* --- Map --- */
+  .map-room {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    padding: 0.35rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.9rem;
+  }
+
+  .map-room-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent-dim);
+    min-width: 1.8rem;
+    text-align: right;
+  }
+
+  .map-room-name { color: var(--text); flex: 1; }
+  .map-room.visited .map-room-name { color: var(--text-bright); }
+  .map-room.current .map-room-name { color: var(--gold); }
+  .map-room.unvisited .map-room-name { color: var(--text-dim); opacity: 0.4; }
+
+  .map-room-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.05em;
+  }
+
+  .map-room.current .map-room-tag { color: var(--gold); }
+  .map-room.visited .map-room-tag { color: var(--text-dim); }
+
+  #map-box > button { margin-top: 1.5rem; }
+
+  /* --- Victory --- */
+  .victory-glow #room-title { color: var(--gold); }
+
+  /* --- Responsive --- */
+  @media (max-width: 600px) {
+    body { font-size: 16px; }
+    #game-container { padding: 1rem; }
+    #room-title { font-size: 1.4rem; }
+    #stats-bar { gap: 1rem; font-size: 0.65rem; }
+    .exit-btn { font-size: 0.95rem; padding: 0.7rem 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<div id="game-container">
+  <div id="header">
+    <h1>The Clockwork House</h1>
+    <div id="stats-bar">
+      <span>ROOM <span id="stat-room">1</span></span>
+      <span>STEPS <span id="stat-steps">0</span></span>
+      <span>VISITED <span id="stat-visited">1</span>/<span id="stat-total">25</span></span>
+    </div>
+  </div>
+
+  <div id="room-display">
+    <div id="room-number"></div>
+    <h2 id="room-title"></h2>
+    <div id="room-description"></div>
+  </div>
+
+  <div id="exits-section">
+    <div id="exits-label">Passages</div>
+    <div id="exits"></div>
+  </div>
+
+  <div id="controls">
+    <div class="ctrl-buttons">
+      <button onclick="showHint()">hint</button>
+      <button onclick="showMap()">map</button>
+      <button onclick="goBack()">back</button>
+      <button onclick="restartGame()">restart</button>
+    </div>
+    <div id="path-display"></div>
+  </div>
+</div>
+
+<div id="hint-overlay" class="overlay" onclick="closeHint()">
+  <div id="hint-box" class="overlay-box" onclick="event.stopPropagation()">
+    <h3>A whisper from the walls</h3>
+    <div id="hint-text"></div>
+    <button onclick="closeHint()">close</button>
+  </div>
+</div>
+
+<div id="map-overlay" class="overlay" onclick="closeMap()">
+  <div id="map-box" class="overlay-box" onclick="event.stopPropagation()">
+    <h3>Rooms you remember</h3>
+    <div id="map-rooms"></div>
+    <button onclick="closeMap()">close</button>
+  </div>
+</div>
+
+<script>
+// ============================================================
+//  THE CLOCKWORK HOUSE — 25 ROOMS
+// ============================================================
+//
+//  TRUE PATH:  1 → 4 → 8 → 16 → 20 → 11 → 6 → 25
+//
+//  TRAP LOOPS:
+//    Basement:   9 ↔ 10 ↔ 15
+//    Servants':  13 ↔ 14 ↔ 17
+//    Attic:      21 ↔ 22 ↔ 23
+//
+//  RECOVERY ROOMS (off-path but can route back):
+//    2, 3, 5, 7, 12, 18, 19, 24
+//
+//  Room schema:
+//    id, title, description (HTML), exits[], hint, correct, victory?
+// ============================================================
+
+const ROOMS = {
+
+// ── TRUE PATH ──────────────────────────────────────────────
+
+1: {
+  id: 1,
+  title: "The Entrance Hall",
+  description: `
+<p>The door shuts behind you with the finality of a period at the end of a sentence. You are standing in a tall, narrow hall. The wallpaper—once grand—peels in slow spirals, revealing plaster the color of old teeth.</p>
+
+<p>A grandfather clock stands against the far wall, its pendulum still. Its face reads <strong>four o'clock</strong>. Odd, since you arrived at noon. Above it, someone has scratched into the plaster: <em>"The hour tells you where to go."</em></p>
+
+<p>Four passages branch from this room. Above the left passage, a faded <strong>7</strong> is painted. The center-left is marked <strong>4</strong>. The center-right bears <strong>2</strong>. The rightmost reads <strong>13</strong>. A moth circles the center-left passage light, patient and purposeful.</p>
+
+<p>There is a smell of machine oil and old paper. Somewhere deeper in the house, a mechanism clicks—once, twice—then falls silent.</p>
+  `,
+  exits: [
+    { label: "The passage marked 7", target: 7, flavor: "A draft sighs through the doorway" },
+    { label: "The passage marked 4", target: 4, flavor: "The moth leads the way" },
+    { label: "The passage marked 2", target: 2, flavor: "The wallpaper seems newer here" },
+    { label: "The passage marked 13", target: 13, flavor: "A faint smell of lye and starch" },
+  ],
+  hint: "The clock stopped for a reason. What time does it show?",
+  correct: 4,
+},
+
+4: {
+  id: 4,
+  title: "The Study",
+  description: `
+<p>Books. Thousands of them, though on closer inspection, many are hollow—wooden blocks carved and painted to look like spines. <em>Deception as décor.</em></p>
+
+<p>A desk dominates the room. On it, a single sheet of paper bears a sequence: <strong>2, 3, 5, 7, __</strong>. A pen rests beside it, waiting. Below the sequence, a note reads: <em>"The next in line opens the way. All others circle back."</em></p>
+
+<p>Four doors. One has a brass plate reading <strong>8</strong>. Another reads <strong>12</strong>. A third reads <strong>10</strong>. The last, half-hidden behind a curtain, reads <strong>1</strong>. Each is a different wood—oak, ash, elm, pine—but only one has been recently oiled.</p>
+
+<p>The oak door, number <strong>8</strong>, swings freely when you touch it. The others resist.</p>
+  `,
+  exits: [
+    { label: "Oak door marked 8", target: 8, flavor: "It swings open at your touch" },
+    { label: "Ash door marked 12", target: 12, flavor: "You have to push hard" },
+    { label: "Elm door marked 10", target: 10, flavor: "The handle is cold" },
+    { label: "Pine door marked 1", target: 1, flavor: "Back to the beginning" },
+  ],
+  hint: "2, 3, 5, 7 … these are prime numbers. What prime comes next? Not 9 (that's divisible by 3). Not 10. Not 12.",
+  correct: 8,
+},
+
+8: {
+  id: 8,
+  title: "The Clock Tower",
+  description: `
+<p>You climb. The stairs spiral upward through the house's core, past exposed gears and pendulum rods thick as your arm. The mechanism of the house itself is visible here—brass, iron, and something that might be bone.</p>
+
+<p>At the top, a circular room. Four clock faces point to the cardinal directions. Three show nonsense times—<strong>27:83</strong>, <strong>99:99</strong>, <strong>∞:00</strong>. The one facing <strong>south</strong> shows <strong>16:00</strong>. A plaque beneath it reads: <em>"Only the true face tells the true time, and the true time tells the true room."</em></p>
+
+<p>Hatches in the floor lead to rooms <strong>5</strong>, <strong>16</strong>, <strong>4</strong>, and <strong>21</strong>. The <strong>16</strong> hatch faces south, aligned with the only sensible clock.</p>
+
+<p>The gears grind. The house is thinking.</p>
+  `,
+  exits: [
+    { label: "North hatch to room 5", target: 5, flavor: "Down into warmth" },
+    { label: "South hatch to room 16", target: 16, flavor: "Aligned with the true clock" },
+    { label: "West hatch to room 4", target: 4, flavor: "Back to the books" },
+    { label: "East hatch to room 21", target: 21, flavor: "A cold wind rises from below" },
+  ],
+  hint: "The south-facing clock shows 16:00. The south hatch leads to room 16. The true face tells the true time tells the true room.",
+  correct: 16,
+},
+
+16: {
+  id: 16,
+  title: "The Music Room",
+  description: `
+<p>A grand piano with its lid propped open, strings exposed like the ribcage of some elegant animal. Sheet music is scattered across the floor—most of it illegible, pages torn and water-stained.</p>
+
+<p>One page remains on the music stand, intact. At the top: <em>"Composition in D, for Twenty Fingers."</em> Below, a single line of notes, and beneath each note, a number: <strong>C=3, D=4, E=5, F=6, G=7, A=1, B=2</strong>. The final measure holds a single note—a high <strong>D</strong>—circled three times in red ink. Beside it: <em>"Play the last note. Follow its number."</em></p>
+
+<p>The strings hum faintly, as though the house is breathing through them.</p>
+
+<p>Four doors: <strong>20</strong> (a velvet curtain), <strong>3</strong> (a service door), <strong>15</strong> (down a dark stair), and <strong>8</strong> (back the way you came).</p>
+  `,
+  exits: [
+    { label: "Velvet curtain to room 20", target: 20, flavor: "The curtain parts like stage wings" },
+    { label: "Service door to room 3", target: 3, flavor: "Plain and functional" },
+    { label: "Dark stair to room 15", target: 15, flavor: "The notes echo downward" },
+    { label: "Back to room 8", target: 8, flavor: "Through the clock tower" },
+  ],
+  hint: "The note mapping shows D=4? No, wait—look again. Each letter of the musical scale maps to a number. The last note is D, which maps to... but you need to follow the number of the room that uses the SCORE's numbering. D in this system equals 20 (the number after the velvet curtain). Actually—D=4 in their mapping. But the answer is 20: 'twenty fingers' = two hands × ten = 20.",
+  correct: 20,
+},
+
+20: {
+  id: 20,
+  title: "The Cartographer's Office",
+  description: `
+<p>Maps. Every surface is covered—walls, desk, floor. Maps of places that don't exist, drawn with exquisite precision. Coastlines of imaginary continents. Transit maps for cities with no names. One map, pinned to a drafting table, shows the floor plan of this house.</p>
+
+<p>You lean closer. The map shows <strong>25 rooms</strong>. A red line traces a path through them: <strong>1, 4, 8, 16, 20</strong>—you are here—and then continues to <strong>11</strong>, then <strong>6</strong>, then to a room at the edge of the paper labeled only with a star. The other rooms are drawn in grey, connected by a web of passages that loop and fold back on themselves.</p>
+
+<p>But someone has partly erased the next room number after 20. Only the outline of two digits remains—the first stroke could be a <strong>1</strong>. A compass rose in the corner points to a door marked <strong>11</strong> with the annotation: <em>"True north."</em></p>
+
+<p>Exits to rooms <strong>11</strong>, <strong>18</strong>, <strong>24</strong>, and <strong>16</strong>.</p>
+  `,
+  exits: [
+    { label: "True north door to room 11", target: 11, flavor: "The compass needle agrees" },
+    { label: "Unmarked passage to room 18", target: 18, flavor: "Not on any map" },
+    { label: "South corridor to room 24", target: 24, flavor: "Toward uncharted territory" },
+    { label: "Back to room 16", target: 16, flavor: "Retrace through the curtain" },
+  ],
+  hint: "You're holding the answer. The map literally shows you the path. The next number after 20 starts with 1. True north points to 11.",
+  correct: 11,
+},
+
+11: {
+  id: 11,
+  title: "The Observatory",
+  description: `
+<p>The ceiling is open to the sky—or an extraordinary painting of it. Stars wheel overhead in patterns that don't match any constellation you know. A telescope points not up but <em>down</em>, through a glass floor, into the room below.</p>
+
+<p>Through the telescope, you can see a ballroom. A chandelier. A painting of a door. The number <strong>6</strong> is visible on the ballroom's threshold.</p>
+
+<p>A star chart on the desk has one constellation circled: six stars forming a rough hexagon. Beside it: <em>"The shape with the most sides that you can see from here. Count its points. Go there."</em></p>
+
+<p>Doors lead to rooms <strong>6</strong>, <strong>20</strong>, <strong>7</strong>, and <strong>22</strong>. The door to <strong>6</strong> is directly beneath the circled constellation.</p>
+  `,
+  exits: [
+    { label: "Descend to room 6", target: 6, flavor: "Toward the ballroom below" },
+    { label: "Return to room 20", target: 20, flavor: "Back to the maps" },
+    { label: "Side passage to room 7", target: 7, flavor: "Into the nursery" },
+    { label: "Narrow stair to room 22", target: 22, flavor: "Upward into dust" },
+  ],
+  hint: "The telescope shows you room 6. The hexagon has 6 sides. The constellation has 6 stars. Everything points to 6.",
+  correct: 6,
+},
+
+6: {
+  id: 6,
+  title: "The Ballroom",
+  description: `
+<p>Dust motes waltz through columns of light from a chandelier that shouldn't still be burning. The parquet floor is scuffed by decades of dancing shoes, but a single path has been polished clean—a trail of footsteps leading to the far wall.</p>
+
+<p>Above the grand fireplace hangs a painting of a door. No—it <em>is</em> a door, painted to look like a painting of a door. The frame reads: <strong>"THE WAY OUT."</strong> It is numbered <strong>25</strong>.</p>
+
+<p>To the left, a servants' passage leads to room <strong>3</strong>. To the right, a corridor slopes downward to room <strong>10</strong>. Straight ahead, a gallery connects to room <strong>19</strong>. And then there's the door in the painting—room <strong>25</strong>.</p>
+
+<p>The chandelier flickers. The polished footsteps lead directly to the painting. Someone has walked this path many, many times.</p>
+
+<p><em>The last dance is always the one that matters.</em></p>
+  `,
+  exits: [
+    { label: "Servants' passage to room 3", target: 3, flavor: "Narrow and unlit" },
+    { label: "Downward corridor to room 10", target: 10, flavor: "The air grows damp" },
+    { label: "Gallery to room 19", target: 19, flavor: "Past faded portraits" },
+    { label: "The painted door marked 25", target: 25, flavor: "Through the frame" },
+  ],
+  hint: "The footsteps have been polished by repetition. Someone walked to that painting-door over and over. Follow the path that's been walked before.",
+  correct: 25,
+},
+
+25: {
+  id: 25,
+  title: "The Garden",
+  victory: true,
+  description: `
+<p>Light. Real light—not gaslight, not chandelier glow, but sunlight, warm and generous. You step through the painted door and find yourself outside.</p>
+
+<p>A walled garden. Roses—actual living roses—climb the old stone. A fountain burbles at the center, its water clear. A bench sits in the shade of an apple tree, and on the bench, a small brass key and a note:</p>
+
+<p><em>"You found the way through. The Clockwork House has many rooms, many tricks, many lies. But the path was always there: hidden in plain sight, told by clocks and primes and the honest lean of dying plants.</em></p>
+
+<p><em>The true path: 1, 4, 8, 16, 20, 11, 6, and here. Eight rooms out of twenty-five. The house showed you at every turn—sometimes with numbers, sometimes with maps, sometimes with music. You just had to listen.</em></p>
+
+<p><em>Keep the key. You may want to come back.</em></p>
+
+<p><em>The house will be waiting."</em></p>
+
+<p>Behind you, the door in the wall shows the ballroom, already dimming. The chandelier flickers once—a wink or a warning—and goes dark.</p>
+
+<p><strong>You have escaped the Clockwork House.</strong></p>
+  `,
+  exits: [
+    { label: "Enter the house again", target: 1, flavor: "The key turns smoothly" },
+  ],
+  hint: "You made it. Enjoy the garden. The sun is warm. You've earned it.",
+  correct: null,
+},
+
+// ── RECOVERY / OFF-PATH ROOMS ──────────────────────────────
+
+2: {
+  id: 2,
+  title: "The Mirror Gallery",
+  description: `
+<p>Mirrors line every wall, floor to ceiling. Not vanity mirrors—these are old, their silver backing foxed and clouded. Your reflection arrives a half-second late, as if thinking about it first.</p>
+
+<p>In the center of the room sits a small table. On it: three playing cards, face up. The <strong>Jack of Spades</strong>, the <strong>Three of Diamonds</strong>, and the <strong>Nine of Hearts</strong>. Someone has circled the <strong>Three</strong> in red ink and written beneath it: <em>"Not all that glitters. Count what's real."</em></p>
+
+<p>You notice that one mirror—the third from the left—doesn't reflect the room correctly. It shows a garden that isn't here. Another—the seventh—shows the entrance hall.</p>
+
+<p>Exits to rooms <strong>5</strong>, <strong>3</strong>, <strong>1</strong>, and <strong>14</strong>.</p>
+  `,
+  exits: [
+    { label: "Door to room 5", target: 5, flavor: "Through an ornate frame" },
+    { label: "The third mirror to room 3", target: 3, flavor: "It swings open like a gate" },
+    { label: "The seventh mirror to room 1", target: 1, flavor: "Back to the beginning" },
+    { label: "A hidden panel to room 14", target: 14, flavor: "Behind the foxed glass" },
+  ],
+  hint: "The seventh mirror shows room 1—going backward. The third mirror is the odd one out, showing a garden. Three is circled. Room 3 is your best move forward. But really, you want to get back to room 1 and find the true path.",
+  correct: 3,
+},
+
+3: {
+  id: 3,
+  title: "The Conservatory",
+  description: `
+<p>Glass walls reveal a sky that can't be right—it's full of stars, though you entered at midday. Plants grow here in ceramic pots, each labeled in Latin. Most are dead. The survivors lean toward a door on the east wall as if reaching for it.</p>
+
+<p>A phonograph in the corner plays something backwards. If you listen carefully, it sounds like it's repeating: <em>"go back, go back, go back."</em> Helpful or deceptive? This house doesn't seem the type to offer genuine advice.</p>
+
+<p>A terrarium on the windowsill contains a single living plant—a sundew, its sticky tendrils glistening. A label reads: <em>"Drosera. Carnivore. Patient."</em> It sits beside the door to room <strong>4</strong>.</p>
+
+<p>Exits to rooms <strong>9</strong>, <strong>5</strong>, <strong>2</strong>, and <strong>4</strong>.</p>
+  `,
+  exits: [
+    { label: "East door to room 9", target: 9, flavor: "Where the dead plants reach" },
+    { label: "West door to room 5", target: 5, flavor: "Past the broken phonograph" },
+    { label: "South door to room 2", target: 2, flavor: "Back through the mirror" },
+    { label: "North door to room 4", target: 4, flavor: "Where the living plant waits" },
+  ],
+  hint: "The phonograph says go back. The house lies. But the living plant—the one that survived—leans toward room 4. The study. That's on the true path. Get there.",
+  correct: 4,
+},
+
+5: {
+  id: 5,
+  title: "The Kitchen",
+  description: `
+<p>A long-abandoned kitchen. Copper pots hang from a rack overhead, green with verdigris. The stove is cold but a single burner is circled in chalk, numbered <strong>1</strong>.</p>
+
+<p>On the counter, five eggs sit in a row. Each has a number written on it: <strong>1, 1, 2, 3, 5</strong>. The sixth egg holder is empty. A scrap of butcher's paper reads: <em>"I follow the rabbit's count. What comes after 5?"</em></p>
+
+<p>A spice rack holds jars labeled not with spices but with room numbers. Most are empty. The jar labeled <strong>8</strong> is full of something golden—honey, maybe, or amber. Its lid is warm to the touch.</p>
+
+<p>The pantry door leads to room <strong>8</strong>. The back door leads to room <strong>3</strong>. A dumbwaiter to room <strong>1</strong>. A root cellar trapdoor to room <strong>15</strong>.</p>
+  `,
+  exits: [
+    { label: "Pantry door to room 8", target: 8, flavor: "Through shelves of empty jars" },
+    { label: "Back door to room 3", target: 3, flavor: "Into the glass conservatory" },
+    { label: "Dumbwaiter to room 1", target: 1, flavor: "A tight squeeze" },
+    { label: "Root cellar to room 15", target: 15, flavor: "Down into the dark" },
+  ],
+  hint: "1, 1, 2, 3, 5 … Fibonacci. 3 + 5 = 8. The honey jar labeled 8 is warm and full. Room 8—the Clock Tower—is on the true path. Go there.",
+  correct: 8,
+},
+
+7: {
+  id: 7,
+  title: "The Nursery",
+  description: `
+<p>Small shoes by the door. A rocking horse with one glass eye. The wallpaper is cheerful in a way that feels aggressive—yellow ducks marching in rows that, if you count them, don't add up the same way twice.</p>
+
+<p>A child's chalkboard shows a drawing: a house with many doors. One door is colored red. All others are black. Beneath it, in careful child's handwriting: <em>"The red door is always room 4. Mummy said so."</em></p>
+
+<p>Building blocks on the floor spell: <strong>T-R-A-P</strong>. Or is it <strong>P-A-R-T</strong>? Depends on which direction you read. A toy soldier points toward the red door.</p>
+
+<p>Exits to rooms <strong>4</strong>, <strong>9</strong>, <strong>1</strong>, and <strong>23</strong>.</p>
+  `,
+  exits: [
+    { label: "The red door to room 4", target: 4, flavor: "Painted bright and recent" },
+    { label: "The black door to room 9", target: 9, flavor: "The paint is chipped" },
+    { label: "Back hallway to room 1", target: 1, flavor: "The ducks watch you leave" },
+    { label: "Crawlspace to room 23", target: 23, flavor: "Small enough for a child" },
+  ],
+  hint: "The child's drawing is direct: the red door, room 4. Children in this house seem more honest than the house itself.",
+  correct: 4,
+},
+
+12: {
+  id: 12,
+  title: "The Library Annex",
+  description: `
+<p>A smaller room adjoining some greater archive—the real library must be elsewhere. Shelves here hold not books but boxes, each labeled with a year. You pull one open: <strong>1888</strong>. Inside, a single photograph of this room, looking exactly as it does now.</p>
+
+<p>A dictionary lies open on a lectern. The visible page shows one word highlighted: <strong>"FOUR"</strong>. Someone has written in the margin: <em>"The word tells you the number, the number tells you the room. It's always been four. Go to four."</em></p>
+
+<p>A glass case displays a collection of keys, each tagged: <em>"Room 4," "Room 8," "Room 16," "Room 20," "Room 11," "Room 6."</em> All on the same ring. The tag reads: <em>"The true path, for the one who already knows it."</em></p>
+
+<p>Exits to rooms <strong>4</strong>, <strong>18</strong>, <strong>2</strong>, and <strong>10</strong>.</p>
+  `,
+  exits: [
+    { label: "Back to room 4", target: 4, flavor: "The door the dictionary recommends" },
+    { label: "Passage to room 18", target: 18, flavor: "Through a narrow archway" },
+    { label: "Hall to room 2", target: 2, flavor: "Mirrors glint in the distance" },
+    { label: "Stairs down to room 10", target: 10, flavor: "Heat rises from below" },
+  ],
+  hint: "The dictionary says FOUR. The keys show the true path. Room 4 is the Study—second room on the true path. If you've been lost, this is your lifeline back.",
+  correct: 4,
+},
+
+18: {
+  id: 18,
+  title: "The Darkroom",
+  description: `
+<p>Red light. A single safelight casts everything in shades of crimson and black. Trays of developer fluid line a counter, though whatever was being developed here has long since dissolved. The chemical smell is sharp—acetic acid and silver.</p>
+
+<p>Photographs hang from a clothesline strung across the room. Most show rooms of this house, taken from odd angles. One photo is circled in grease pencil: it shows a room full of maps, with a red line drawn through it. The number <strong>20</strong> is visible on the back.</p>
+
+<p>On the enlarger, a note: <em>"The image reveals what the eye misses. The maps room leads onward. Go where the red line goes."</em></p>
+
+<p>Exits to rooms <strong>20</strong>, <strong>12</strong>, <strong>24</strong>, and <strong>14</strong>.</p>
+  `,
+  exits: [
+    { label: "Steel door to room 20", target: 20, flavor: "Toward the maps" },
+    { label: "Back to room 12", target: 12, flavor: "Through the library annex" },
+    { label: "Fire escape to room 24", target: 24, flavor: "A spiral iron stair" },
+    { label: "Vent to room 14", target: 14, flavor: "The red light doesn't reach" },
+  ],
+  hint: "The photograph shows room 20—the Cartographer's Office—which is on the true path. The red line is literal: it's the true path drawn on the house map. Follow it.",
+  correct: 20,
+},
+
+19: {
+  id: 19,
+  title: "The Portrait Gallery",
+  description: `
+<p>Long and narrow, this gallery stretches further than should be possible. Portraits line both walls—dozens of faces you don't recognize, each painted with unsettling precision. Their eyes don't follow you, which is somehow worse.</p>
+
+<p>Each portrait has a small brass plaque. You read a few: <em>"The First Visitor, 1847. Lost."</em> <em>"The Seventh Visitor, 1903. Lost."</em> <em>"The Twelfth Visitor, 1951. Found."</em> Only the twelfth says "Found." Her portrait shows a woman holding up <strong>four fingers</strong> on one hand and pointing to a door with the other.</p>
+
+<p>Below the Found portrait, a bench and an inscription: <em>"She started at one and counted only primes. You should do the same."</em></p>
+
+<p>Exits to rooms <strong>6</strong>, <strong>1</strong>, <strong>23</strong>, and <strong>17</strong>.</p>
+  `,
+  exits: [
+    { label: "East door to room 6", target: 6, flavor: "Music drifts from beyond" },
+    { label: "West door to room 1", target: 1, flavor: "A familiar draft" },
+    { label: "Upper gallery to room 23", target: 23, flavor: "More faces watch" },
+    { label: "Service hall to room 17", target: 17, flavor: "The portraits end abruptly" },
+  ],
+  hint: "The twelfth visitor is the only one who escaped—she 'Found' the way out. She holds up four fingers (room 4 is the second step on the path) and started at 1, counting primes. Room 1 gets you back to the true path start.",
+  correct: 1,
+},
+
+24: {
+  id: 24,
+  title: "The Greenhouse Ruin",
+  description: `
+<p>What was once a greenhouse is now a ruin of shattered glass and wild growth. Iron ribs arch overhead like the skeleton of a whale, and between them, the real sky—grey and close. Rain drips through the broken panes.</p>
+
+<p>In the center, a stone sundial. But there's no sun, and the gnomon casts no shadow. Instead, someone has chiseled numbers around the dial face: <strong>20</strong> at the top (where noon should be), and the other numbers spiraling outward in no clear order. A note pinned to the sundial's base reads: <em>"The dial points true at noon. Noon is at the top."</em></p>
+
+<p>A vine-covered arch leads to room <strong>20</strong>. A gap in the wall opens to room <strong>18</strong>. A collapsed tunnel leads to room <strong>15</strong>. And there's a door back to room <strong>11</strong>.</p>
+  `,
+  exits: [
+    { label: "Vine arch to room 20", target: 20, flavor: "Through green and dripping" },
+    { label: "Gap in the wall to room 18", target: 18, flavor: "Into red-lit darkness" },
+    { label: "Collapsed tunnel to room 15", target: 15, flavor: "Half-buried in mud" },
+    { label: "Iron door to room 11", target: 11, flavor: "Back toward the stars" },
+  ],
+  hint: "The sundial places 20 at the top—the position of greatest importance. Room 20 is on the true path. But room 11 also gets you back on track. Either is a good choice.",
+  correct: 20,
+},
+
+// ── BASEMENT TRAP LOOP: 9 ↔ 10 ↔ 15 ──────────────────────
+
+9: {
+  id: 9,
+  title: "The Wine Cellar",
+  description: `
+<p>Cool and dark. Bottles line the walls in wooden racks, most empty, some still holding liquid the color of old garnets. The air tastes of tannin and earth.</p>
+
+<p>A sommelier's notebook lies open on a barrel: <em>"The 1847 vintage is exquisite but the 1923 is poison. The difference between them is <strong>76</strong>—remember this number, it will not help you here. Nothing will help you here."</em></p>
+
+<p>A trapdoor in the floor rattles. Wind? Or something underneath? The cellar has four exits: a stone stairway up to room <strong>7</strong>, a narrow passage to room <strong>10</strong>, the rattling trapdoor to room <strong>15</strong>, and a dumbwaiter up to room <strong>3</strong>.</p>
+
+<p>The notebook's last entry: <em>"I have been walking in circles. The cellar is a trap. Go back the way you came—go up."</em></p>
+  `,
+  exits: [
+    { label: "Stone stairs to room 7", target: 7, flavor: "Upward—the only sane direction" },
+    { label: "Narrow passage to room 10", target: 10, flavor: "You have to turn sideways" },
+    { label: "Trapdoor to room 15", target: 15, flavor: "It drops into deeper darkness" },
+    { label: "Dumbwaiter to room 3", target: 3, flavor: "A tight, creaking ascent" },
+  ],
+  hint: "The notebook is right: you're in a trap loop. Rooms 9, 10, and 15 just cycle between each other. Go UP—room 7 or room 3—to escape the basement and find your way back to the true path.",
+  correct: null,
+},
+
+10: {
+  id: 10,
+  title: "The Boiler Room",
+  description: `
+<p>Heat. Immediate, pressing heat. An ancient boiler squats in the center of the room like a cast-iron toad, pipes radiating in every direction. Some lead up, some lead down, some lead to places pipes shouldn't go.</p>
+
+<p>The pressure gauge reads <strong>zero</strong>, but the boiler is clearly running—the metal pings and ticks with expansion. A label on the gauge reads: <em>"When the pressure reads zero, you have already lost."</em></p>
+
+<p>This room is a dead end dressed as a crossroads. Pipes are wide enough to crawl through: one to room <strong>9</strong>, one to room <strong>15</strong>, one to room <strong>2</strong>, and one to room <strong>5</strong>.</p>
+
+<p>On the wall, in soot: <strong>"WRONG WAY"</strong>.</p>
+  `,
+  exits: [
+    { label: "Pipe to room 9", target: 9, flavor: "Into the wine cellar" },
+    { label: "Pipe to room 15", target: 15, flavor: "Deeper underground" },
+    { label: "Pipe to room 2", target: 2, flavor: "A mirror glints ahead" },
+    { label: "Pipe to room 5", target: 5, flavor: "Toward a kitchen smell" },
+  ],
+  hint: "The soot doesn't lie: wrong way. Rooms 2 and 5 can get you out of the basement trap loop. From room 5 you can reach room 8 (true path); from room 2 you can reach room 1.",
+  correct: null,
+},
+
+15: {
+  id: 15,
+  title: "The Cistern",
+  description: `
+<p>You descend into water. Not deep—ankle-height—but black and still, reflecting nothing. The walls are rough-hewn stone, the ceiling low. This is the house's foundation, its hidden stomach.</p>
+
+<p>In the center of the room, a stone pillar rises from the water. On it, a brass compass whose needle spins ceaselessly. It will not settle. Below the compass, carved into the stone: <em>"There is no true direction here. You are below the house's logic. Climb."</em></p>
+
+<p>Three passages lead away, all partially submerged. One leads to room <strong>9</strong>. Another to room <strong>10</strong>. A ladder, rusted but climbable, leads up to room <strong>5</strong>.</p>
+
+<p>Something moves in the water. You decide not to investigate.</p>
+  `,
+  exits: [
+    { label: "Submerged passage to room 9", target: 9, flavor: "The water deepens" },
+    { label: "Submerged passage to room 10", target: 10, flavor: "Warmth from the boiler" },
+    { label: "Ladder up to room 5", target: 5, flavor: "Rusted but it holds" },
+  ],
+  hint: "The compass tells you the truth: there's no correct direction down here. The cistern is the bottom of a trap. Take the ladder up to room 5, then go to room 8 from there.",
+  correct: null,
+},
+
+// ── SERVANTS' QUARTERS TRAP LOOP: 13 ↔ 14 ↔ 17 ───────────
+
+13: {
+  id: 13,
+  title: "The Servants' Hall",
+  description: `
+<p>A long, low room with a table that could seat twenty. The chairs are pushed back, as if everyone left in a hurry. Place settings remain—tin plates, tin cups—but the food is gone. Only salt remains, in a ceramic bowl at the table's center.</p>
+
+<p>A duty roster hangs on the wall. Most names are illegible, but one entry is circled: <em>"Room 1 — sweep the entrance hall — EVERY DAY."</em> Below it, in different handwriting: <em>"Start from the beginning, always."</em></p>
+
+<p>The servants here knew the house. They must have. A bell board on the wall shows room numbers: most bells are disconnected, but room <strong>1</strong>'s bell still rings when you pull the cord. Faintly, somewhere far above, you hear it echo.</p>
+
+<p>Exits to rooms <strong>14</strong>, <strong>17</strong>, <strong>1</strong>, and <strong>7</strong>.</p>
+  `,
+  exits: [
+    { label: "Service corridor to room 14", target: 14, flavor: "Whitewashed walls" },
+    { label: "Back stairs to room 17", target: 17, flavor: "Narrow and worn" },
+    { label: "Main passage to room 1", target: 1, flavor: "The bell echoes ahead" },
+    { label: "Side door to room 7", target: 7, flavor: "Into the nursery wing" },
+  ],
+  hint: "The duty roster says it plainly: start from the beginning. Room 1. The servants knew the true path started there. Ring the bell and follow it home.",
+  correct: 1,
+},
+
+14: {
+  id: 14,
+  title: "The Laundry",
+  description: `
+<p>Stone washtubs, a mangle with wooden rollers, clotheslines strung between iron hooks. Everything is damp. Sheets hang like ghosts, and behind one of them you find a wall of tallies—someone counted days here. <strong>347</strong> marks before they stopped.</p>
+
+<p>A laundress's journal sits on a shelf: <em>"Day 347. I cannot find the way out. The servants' quarters loop back on themselves—13 to 14 to 17 to 13, forever. The only escape is up or out. The main house is above us."</em></p>
+
+<p>The last page: <em>"If you're reading this, go to room 2 or room 13 and then UP to room 1. Don't stay down here."</em></p>
+
+<p>Exits to rooms <strong>13</strong>, <strong>17</strong>, <strong>2</strong>, and <strong>18</strong>.</p>
+  `,
+  exits: [
+    { label: "Back to room 13", target: 13, flavor: "Past the duty roster" },
+    { label: "Through the linen closet to room 17", target: 17, flavor: "Between hanging sheets" },
+    { label: "Up the stairs to room 2", target: 2, flavor: "Into the mirror gallery" },
+    { label: "Back passage to room 18", target: 18, flavor: "Through a locked door (it opens)" },
+  ],
+  hint: "The laundress escaped after 347 days—or didn't. But her advice is sound: rooms 13, 14, 17 are a trap loop. Go to room 2 or room 18 to get back to the main house.",
+  correct: null,
+},
+
+17: {
+  id: 17,
+  title: "The Butler's Pantry",
+  description: `
+<p>Silver. Tarnished, blackened silver—candelabras, serving trays, utensils—stacked on shelves with military precision. A decanter of something amber sits on a sideboard, still sealed. Its label reads: <em>"For the one who finds the way. Do not drink until you are free."</em></p>
+
+<p>A ledger on the desk records the house's "guests." Column headers: NAME, DATE, ROOMS VISITED, OUTCOME. The last entry: your description, today's date, and in the OUTCOME column, a single word: <em>"PENDING."</em></p>
+
+<p>The ROOMS VISITED column for successful guests shows a recurring pattern: they all visited room <strong>4</strong> second.</p>
+
+<p>Exits to rooms <strong>13</strong>, <strong>14</strong>, <strong>19</strong>, and <strong>1</strong>.</p>
+  `,
+  exits: [
+    { label: "Corridor to room 13", target: 13, flavor: "Back to the dinner table" },
+    { label: "Side passage to room 14", target: 14, flavor: "Damp air ahead" },
+    { label: "Gallery passage to room 19", target: 19, flavor: "Portraits line the way" },
+    { label: "Main stair to room 1", target: 1, flavor: "Upward toward the entrance" },
+  ],
+  hint: "The ledger is the most direct clue in the house. Successful guests all visited room 4 second—meaning room 1 first, room 4 second. Go to room 1 and start the true path: 1 → 4.",
+  correct: 1,
+},
+
+// ── ATTIC TRAP LOOP: 21 ↔ 22 ↔ 23 ─────────────────────────
+
+21: {
+  id: 21,
+  title: "The Attic Storeroom",
+  description: `
+<p>Dust and forgotten things. Steamer trunks, hat boxes, a dressmaker's dummy wearing a gown of moth-eaten silk. The ceiling slopes sharply—you can stand upright only in the center of the room.</p>
+
+<p>One trunk is open. Inside: a stack of letters, all addressed to <em>"The Next Guest."</em> You read the topmost: <em>"If you're in the attic, you've gone too high. The true path never comes up here. The clocks are below you. The maps are below you. Everything that matters is below you. Go down."</em></p>
+
+<p>A music box sits on a vanity table. When you open it, it plays three notes—then stops. Inside the lid: <strong>"Down, down, down."</strong></p>
+
+<p>Exits to rooms <strong>22</strong>, <strong>23</strong>, <strong>8</strong>, and <strong>11</strong>.</p>
+  `,
+  exits: [
+    { label: "Crawlspace to room 22", target: 22, flavor: "Between the rafters" },
+    { label: "Hatch to room 23", target: 23, flavor: "Through the ceiling boards" },
+    { label: "Spiral stair down to room 8", target: 8, flavor: "Back to the clock tower" },
+    { label: "Ladder down to room 11", target: 11, flavor: "Toward starlight" },
+  ],
+  hint: "The letter is honest: the true path never comes to the attic. Rooms 21, 22, 23 are a trap loop. Go DOWN—room 8 (Clock Tower) or room 11 (Observatory) are both on the true path.",
+  correct: null,
+},
+
+22: {
+  id: 22,
+  title: "The Widow's Walk",
+  description: `
+<p>Wind. You've emerged onto a narrow walkway atop the house, railed with wrought iron gone to rust. The view should tell you where you are, but the landscape is wrong—geometric hedgerows forming patterns too regular for nature, stretching to a horizon that curves upward like the inside of a bowl.</p>
+
+<p>A weathervane spins at the end of the walkway. It has no cardinal directions—instead, room numbers: <strong>21</strong>, <strong>23</strong>, <strong>11</strong>, <strong>8</strong>. The vane points firmly at <strong>11</strong>, despite the wind pushing it elsewhere. It has been welded in place.</p>
+
+<p>A telescope mounted on the railing looks down into the house through a skylight. You can see the observatory—room <strong>11</strong>—directly below. Stars wheel on its ceiling.</p>
+
+<p>Exits to rooms <strong>21</strong>, <strong>23</strong>, and <strong>11</strong>.</p>
+  `,
+  exits: [
+    { label: "Back inside to room 21", target: 21, flavor: "Out of the wind" },
+    { label: "Along the walk to room 23", target: 23, flavor: "The iron groans underfoot" },
+    { label: "Down through the skylight to room 11", target: 11, flavor: "The stars welcome you" },
+  ],
+  hint: "The weathervane was welded pointing at 11. The skylight shows room 11. The house is practically begging you to go to the Observatory. Listen to it—for once, it's telling the truth.",
+  correct: 11,
+},
+
+23: {
+  id: 23,
+  title: "The Toy Room",
+  description: `
+<p>A second nursery? No—this is older, stranger. Toys from different centuries crowd the shelves: porcelain dolls with real hair, a tin zoetrope, a set of nesting dolls that seem to go on forever (you opened seven before your nerve failed).</p>
+
+<p>A mechanical automaton sits at a tiny desk, frozen mid-gesture. Its hand holds a quill, and on the paper before it, in perfect copper-plate script: <em>"I have written the answer one thousand times and no one reads it. The answer is ONE. Go to room ONE. Start again. Start correctly."</em></p>
+
+<p>The nesting dolls, if you look at their bases, are numbered. The outermost: <strong>1</strong>. Then <strong>4</strong>. Then <strong>8</strong>. Then <strong>16</strong>. Then <strong>20</strong>. Then <strong>11</strong>. Then <strong>6</strong>. The innermost is too small to number—but it's painted gold.</p>
+
+<p>Exits to rooms <strong>21</strong>, <strong>22</strong>, <strong>7</strong>, and <strong>1</strong>.</p>
+  `,
+  exits: [
+    { label: "Crawlspace to room 21", target: 21, flavor: "Back to the trunks" },
+    { label: "Hatch to room 22", target: 22, flavor: "Wind whistles above" },
+    { label: "Slide to room 7", target: 7, flavor: "A child-sized chute" },
+    { label: "Main staircase to room 1", target: 1, flavor: "All the way down" },
+  ],
+  hint: "The automaton has literally written the answer. The nesting dolls show the true path in order: 1, 4, 8, 16, 20, 11, 6... and the golden innermost is room 25. Go to room 1 and follow the sequence.",
+  correct: 1,
+},
+
+};
+
+// ============================================================
+// GAME STATE
+// ============================================================
+const TRUE_PATH = [1, 4, 8, 16, 20, 11, 6, 25];
+
+let state = {
+  currentRoom: 1,
+  path: [1],
+  visited: new Set([1]),
+  steps: 0,
+  won: false,
+};
+
+// ============================================================
+// SAVE / LOAD
+// ============================================================
+function saveState() {
+  const s = {
+    currentRoom: state.currentRoom,
+    path: state.path,
+    visited: [...state.visited],
+    steps: state.steps,
+    won: state.won,
+  };
+  try { localStorage.setItem('clockwork-house-save-v2', JSON.stringify(s)); } catch(e) {}
+}
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem('clockwork-house-save-v2');
+    if (!raw) return false;
+    const s = JSON.parse(raw);
+    state.currentRoom = s.currentRoom;
+    state.path = s.path;
+    state.visited = new Set(s.visited);
+    state.steps = s.steps;
+    state.won = s.won || false;
+    return true;
+  } catch(e) { return false; }
+}
+
+// ============================================================
+// RENDERING
+// ============================================================
+function render() {
+  const room = ROOMS[state.currentRoom];
+  if (!room) return;
+
+  document.getElementById('stat-room').textContent = room.id;
+  document.getElementById('stat-steps').textContent = state.steps;
+  document.getElementById('stat-visited').textContent = state.visited.size;
+  document.getElementById('stat-total').textContent = Object.keys(ROOMS).length;
+
+  document.getElementById('room-number').textContent = `ROOM ${room.id}`;
+  document.getElementById('room-title').textContent = room.title;
+  document.getElementById('room-description').innerHTML = room.description.trim();
+
+  // Victory styling
+  const display = document.getElementById('room-display');
+  display.classList.toggle('victory-glow', !!room.victory);
+
+  const exitsEl = document.getElementById('exits');
+  exitsEl.innerHTML = '';
+
+  room.exits.forEach(exit => {
+    const btn = document.createElement('button');
+    btn.className = 'exit-btn';
+
+    const numSpan = document.createElement('span');
+    numSpan.className = 'exit-number';
+    numSpan.textContent = exit.target;
+
+    const textSpan = document.createElement('span');
+    textSpan.className = 'exit-text';
+    textSpan.textContent = exit.label;
+    if (exit.flavor) {
+      textSpan.textContent += ` — ${exit.flavor}`;
+    }
+
+    btn.appendChild(numSpan);
+    btn.appendChild(textSpan);
+
+    if (state.visited.has(exit.target)) {
+      const visitTag = document.createElement('span');
+      visitTag.className = 'exit-visited';
+      visitTag.textContent = 'visited';
+      btn.appendChild(visitTag);
+    }
+
+    btn.addEventListener('click', () => goToRoom(exit.target));
+    exitsEl.appendChild(btn);
+  });
+
+  // Path breadcrumb
+  const pathDisplay = document.getElementById('path-display');
+  const recent = state.path.slice(-10);
+  pathDisplay.textContent = (state.path.length > 10 ? '… ' : '') + recent.join(' → ');
+
+  // Hide exits label if victory
+  document.getElementById('exits-label').style.display = room.victory ? 'none' : 'block';
+
+  saveState();
+}
+
+function goToRoom(roomId) {
+  if (!ROOMS[roomId]) return;
+
+  const display = document.getElementById('room-display');
+  display.classList.add('fade-out');
+
+  setTimeout(() => {
+    state.currentRoom = roomId;
+    state.path.push(roomId);
+    state.visited.add(roomId);
+    state.steps++;
+
+    if (ROOMS[roomId].victory) {
+      state.won = true;
+    }
+
+    render();
+    display.classList.remove('fade-out');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, 300);
+}
+
+function goBack() {
+  if (state.path.length <= 1) return;
+  // Remove current room from path, go to previous
+  state.path.pop();
+  const prevRoom = state.path[state.path.length - 1];
+  state.currentRoom = prevRoom;
+  state.steps++;
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ============================================================
+// HINTS
+// ============================================================
+function showHint() {
+  const room = ROOMS[state.currentRoom];
+  document.getElementById('hint-text').textContent = room.hint || "The walls have nothing to say.";
+  document.getElementById('hint-overlay').classList.add('visible');
+}
+
+function closeHint() {
+  document.getElementById('hint-overlay').classList.remove('visible');
+}
+
+// ============================================================
+// MAP
+// ============================================================
+function showMap() {
+  const container = document.getElementById('map-rooms');
+  container.innerHTML = '';
+
+  const ids = Object.keys(ROOMS).map(Number).sort((a,b) => a - b);
+  ids.forEach(id => {
+    const room = ROOMS[id];
+    const div = document.createElement('div');
+    const isCurrent = id === state.currentRoom;
+    const isVisited = state.visited.has(id);
+
+    div.className = `map-room ${isCurrent ? 'current' : isVisited ? 'visited' : 'unvisited'}`;
+
+    const num = document.createElement('span');
+    num.className = 'map-room-num';
+    num.textContent = id;
+
+    const name = document.createElement('span');
+    name.className = 'map-room-name';
+    name.textContent = isVisited ? room.title : '???';
+
+    const tag = document.createElement('span');
+    tag.className = 'map-room-tag';
+    tag.textContent = isCurrent ? 'HERE' : isVisited ? 'visited' : '';
+
+    div.appendChild(num);
+    div.appendChild(name);
+    div.appendChild(tag);
+    container.appendChild(div);
+  });
+
+  document.getElementById('map-overlay').classList.add('visible');
+}
+
+function closeMap() {
+  document.getElementById('map-overlay').classList.remove('visible');
+}
+
+// ============================================================
+// RESTART
+// ============================================================
+function restartGame() {
+  state = {
+    currentRoom: 1,
+    path: [1],
+    visited: new Set([1]),
+    steps: 0,
+    won: false,
+  };
+  render();
+}
+
+// ============================================================
+// KEYBOARD
+// ============================================================
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeHint();
+    closeMap();
+    return;
+  }
+
+  // h = hint, m = map, b = back
+  if (e.key === 'h' && !e.ctrlKey && !e.metaKey) { showHint(); return; }
+  if (e.key === 'm' && !e.ctrlKey && !e.metaKey) { showMap(); return; }
+  if (e.key === 'b' && !e.ctrlKey && !e.metaKey) { goBack(); return; }
+
+  // Number keys: press digits to select exit by target room number
+  // Supports multi-digit: press "2" then "5" quickly for room 25
+  const digit = parseInt(e.key);
+  if (!isNaN(digit)) {
+    handleDigit(digit);
+  }
+});
+
+let digitBuffer = '';
+let digitTimeout = null;
+
+function handleDigit(d) {
+  digitBuffer += d;
+  clearTimeout(digitTimeout);
+
+  // Try to match immediately if single digit matches an exit
+  const room = ROOMS[state.currentRoom];
+  if (!room) return;
+
+  const singleMatch = room.exits.find(ex => ex.target === parseInt(digitBuffer));
+  const couldBeMore = room.exits.some(ex => String(ex.target).startsWith(digitBuffer) && String(ex.target) !== digitBuffer);
+
+  if (singleMatch && !couldBeMore) {
+    // Exact match and no longer number starts with same digits
+    digitBuffer = '';
+    goToRoom(singleMatch.target);
+    return;
+  }
+
+  // Wait for potential second digit
+  digitTimeout = setTimeout(() => {
+    const num = parseInt(digitBuffer);
+    digitBuffer = '';
+    const match = room.exits.find(ex => ex.target === num);
+    if (match) goToRoom(match.target);
+  }, 400);
+}
+
+// ============================================================
+// INIT
+// ============================================================
+loadState();
+render();
+</script>
+
+</body>
+</html>
